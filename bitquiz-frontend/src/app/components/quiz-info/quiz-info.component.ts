@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Kviz } from '../../common/kviz';
+import { KvizService } from '../../services/kviz.service';
 
 @Component({
   selector: 'app-quiz-info',
@@ -15,7 +16,11 @@ import { Kviz } from '../../common/kviz';
 })
 export class QuizInfoComponent implements OnInit {
   kvizInfoForm: FormGroup;
-  constructor(private formBuilder: FormBuilder, private router: Router) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private kvizService: KvizService
+  ) {}
 
   ngOnInit(): void {
     this.kvizInfoForm = this.formBuilder.group({
@@ -43,6 +48,8 @@ export class QuizInfoComponent implements OnInit {
   onSubmit() {
     let kviz = new Kviz();
     kviz = this.kvizInfoForm.controls['info'].value;
+
+    this.kvizService.kvizInfo = kviz;
 
     if (this.kvizInfoForm.valid) {
       console.log(this.kvizInfoForm.value);

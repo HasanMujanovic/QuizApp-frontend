@@ -29,26 +29,28 @@
             />
           </div>
 
-          <div
-            formArrayName="odgovori"
-            *ngFor="
-              let odgovor of pitanje.get('odgovori').controls;
-              let j = index
-            "
-          >
-            <div class="mb-4">
+          <div class="mb-4" formArrayName="odgovori">
+            <div
+              *ngFor="
+                let odgovor of pitanje.get('odgovori').controls;
+                let i = index
+              "
+              [formGroupName]="i"
+            >
               <label
                 class="block text-gray-700 text-sm font-bold mb-2"
-                for="answer{{ i }}-{{ j }}"
-                >Odgovor {{ j + 1 }}:</label
+                [for]="'answer' + i"
+                >Odgovor {{ i + 1 }}:</label
               >
               <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="answer{{ i }}-{{ j }}"
+                [id]="'answer' + i"
                 type="text"
-                [formControlName]="j"
                 placeholder="Unesi odgovor..."
+                formControlName="tekst"
               />
+              <input class="mr-2" type="checkbox" formControlName="tacno" />
+              <label for="tacno{{ i }}">Tačno</label>
             </div>
           </div>
 
