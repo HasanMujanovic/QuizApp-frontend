@@ -10,8 +10,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { CreateQuizComponent } from './components/create-quiz/create-quiz.component';
+import { QuizInfoComponent } from './components/quiz-info/quiz-info.component';
+import { HeaderComponent } from './components/header/header.component';
 
 const routes: Routes = [
+  { path: 'quiz-info', component: QuizInfoComponent },
   { path: 'create-quiz', component: CreateQuizComponent },
   { path: 'quizes', component: QuizesComponent },
   { path: '', component: LandingPageComponent },
@@ -25,6 +28,8 @@ const routes: Routes = [
     QuizesComponent,
     LandingPageComponent,
     CreateQuizComponent,
+    QuizInfoComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,

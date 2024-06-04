@@ -1,1 +1,82 @@
-<p>create-quiz works!</p>
+<app-header></app-header>
+<section class="min-h-screen bg-gray-100 py-8">
+  <div class="container mx-auto px-4">
+    <h1 class="text-3xl font-semibold mb-6">Napravi Kviz</h1>
+
+    <form
+      [formGroup]="kvizForm"
+      class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+      (ngSubmit)="onSubmit()"
+    >
+      <div formArrayName="pitanja">
+        <div
+          *ngFor="let pitanje of pitanja.controls; let i = index"
+          [formGroupName]="i"
+          class="mb-6"
+        >
+          <div class="mb-4">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="question{{ i }}"
+              >Pitanje:</label
+            >
+            <input
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="question{{ i }}"
+              type="text"
+              formControlName="pitanje"
+              placeholder="Unesi pitanje..."
+            />
+          </div>
+
+          <div
+            formArrayName="odgovori"
+            *ngFor="
+              let odgovor of pitanje.get('odgovori').controls;
+              let j = index
+            "
+          >
+            <div class="mb-4">
+              <label
+                class="block text-gray-700 text-sm font-bold mb-2"
+                for="answer{{ i }}-{{ j }}"
+                >Odgovor {{ j + 1 }}:</label
+              >
+              <input
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="answer{{ i }}-{{ j }}"
+                type="text"
+                [formControlName]="j"
+                placeholder="Unesi odgovor..."
+              />
+            </div>
+          </div>
+
+          <button
+            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
+            type="button"
+            (click)="addOdgovor(i)"
+          >
+            Dodaj Odgovor
+          </button>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="button"
+          (click)="addPitanje()"
+        >
+          Dodaj Pitanje
+        </button>
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="submit"
+        >
+          Sačuvaj Kviz
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

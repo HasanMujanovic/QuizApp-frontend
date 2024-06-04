@@ -1,0 +1,83 @@
+<app-header></app-header>
+
+<section class="min-h-screen bg-gray-100 py-8">
+  <div class="container mx-auto px-4">
+    <h1 class="text-3xl font-semibold mb-6">Napravi Kviz</h1>
+
+    <form
+      [formGroup]="kvizInfoForm"
+      class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+      (ngSubmit)="onSubmit()"
+    >
+      <div formGroupName="info">
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="category"
+            >Kategorija:</label
+          >
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="category"
+            type="text"
+            placeholder="Unesi kategoriju..."
+            formControlName="kategorija"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="status"
+            >Status:</label
+          >
+          <select
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="status"
+            formControlName="status"
+          >
+            <option value="privatni">Privatni</option>
+            <option value="javni">Javni</option>
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="difficulty"
+            >Težina:</label
+          >
+          <select
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="difficulty"
+            formControlName="tezina"
+          >
+            <option value="laka">Laka</option>
+            <option value="srednja">Srednja</option>
+            <option value="teška">Teška</option>
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="title"
+            >Naslov:</label
+          >
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="title"
+            type="text"
+            placeholder="Unesi naslov..."
+            formControlName="ime"
+          />
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="submit"
+        >
+          Nastavi na Kviz
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
