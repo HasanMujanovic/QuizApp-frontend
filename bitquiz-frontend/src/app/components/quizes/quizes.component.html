@@ -1,0 +1,41 @@
+<section class="flex flex-col min-h-screen">
+  <header
+    class="h-16 w-screen bg-customLessYellow flex justify-between items-center px-6"
+  >
+    <img src="../assets/images/logo.png" alt="Logo" class="h-full" />
+
+    <div class="flex items-center">
+      <img
+        src="../assets/images/download.jpg"
+        alt="Profile Picture"
+        class="h-14 rounded-full mr-2"
+      />
+      <p class="mr-2">171</p>
+      <p>Level</p>
+    </div>
+  </header>
+
+  <main class="bg-customBlue flex-grow grid grid-cols-[20%_80%]">
+    <div class="h-full bg-slate-300 p-4">
+      <ul class="space-y-4">
+        <li class="text-lg font-semibold">Practice</li>
+        <li
+          routerLink="/create-quiz"
+          class="cursor-pointer text-lg font-semibold text-blue-700 hover:underline"
+        >
+          Create quiz
+        </li>
+      </ul>
+    </div>
+    <div class="h-full bg-red-600 p-6 text-white flex flex-col items-center">
+      <h1 class="text-2xl font-bold mb-4">LeaderBoard</h1>
+      <ul class="space-y-2 text-left w-full pl-8">
+        <li>Prvi</li>
+        <li>Drugi</li>
+        <li>Treći</li>
+        <li>Četvrti</li>
+        <li>Peti</li>
+      </ul>
+    </div>
+  </main>
+</section>
