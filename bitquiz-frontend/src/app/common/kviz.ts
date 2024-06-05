@@ -4,6 +4,8 @@ export class Kviz {
   public status: string;
   public tezina: string;
   public ime: string;
+  public svidjanja: number;
+  public zavrsili: number;
   public vreme: number;
   public bodovi: number;
 }

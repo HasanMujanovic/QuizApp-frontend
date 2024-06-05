@@ -12,8 +12,12 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 import { CreateQuizComponent } from './components/create-quiz/create-quiz.component';
 import { QuizInfoComponent } from './components/quiz-info/quiz-info.component';
 import { HeaderComponent } from './components/header/header.component';
+import { QuizesPageComponent } from './components/quizes-page/quizes-page.component';
+import { QuizDetailsComponent } from './components/quiz-details/quiz-details.component';
 
 const routes: Routes = [
+  { path: 'quiz-details/:id', component: QuizDetailsComponent },
+  { path: 'quizes-page', component: QuizesPageComponent },
   { path: 'quiz-info', component: QuizInfoComponent },
   { path: 'create-quiz', component: CreateQuizComponent },
   { path: 'quizes', component: QuizesComponent },
@@ -30,6 +34,8 @@ const routes: Routes = [
     CreateQuizComponent,
     QuizInfoComponent,
     HeaderComponent,
+    QuizesPageComponent,
+    QuizDetailsComponent,
   ],
   imports: [
     BrowserModule,

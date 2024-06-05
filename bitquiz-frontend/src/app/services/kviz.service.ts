@@ -23,7 +23,7 @@ export class KvizService {
 
   getSingleKviz(id: number): Observable<Kviz> {
     const kvizById = this.searchUrl + `/${id}`;
-    return this.http.get<Kviz>(this.searchUrl);
+    return this.http.get<Kviz>(kvizById);
   }
 
   napraviKviz(napraviKviz: NapraviKviz) {

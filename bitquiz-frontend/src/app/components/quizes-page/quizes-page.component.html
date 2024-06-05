@@ -1,0 +1,57 @@
+<app-header></app-header>
+<div class="grid grid-cols-4 gap-4 overflow-x-hidden min-w-0 w-screen">
+  <div class="col-span-1 p-4">
+    <h2 class="text-lg font-semibold mb-4">Filtriraj Kvizove</h2>
+    <label class="block mb-2">
+      <span class="text-gray-700">Kategorija:</span>
+      <select class="form-select mt-1 block w-full">
+        <option>Svi</option>
+        <option>Kategorija 1</option>
+        <option>Kategorija 2</option>
+        <option>Kategorija 3</option>
+      </select>
+    </label>
+
+    <label class="block mb-2">
+      <span class="text-gray-700">Tezina:</span>
+      <select class="form-select mt-1 block w-full">
+        <option>Svi</option>
+        <option>Laki</option>
+        <option>Srednji</option>
+        <option>Teski</option>
+      </select>
+    </label>
+
+    <label class="block mb-2">
+      <span class="text-gray-700">Status:</span>
+      <select class="form-select mt-1 block w-full">
+        <option>Svi</option>
+        <option>Privatni</option>
+        <option>Javni</option>
+      </select>
+    </label>
+
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+    >
+      Primeni filter
+    </button>
+  </div>
+  <div class="col-span-3 p-4 grid grid-cols-3 gap-4">
+    <div
+      *ngFor="let kviz of kvizovi"
+      class="bg-white rounded-lg shadow-md p-4 max-w-xs"
+    >
+      <h2 class="text-lg font-semibold mb-2">{{ kviz.ime }}</h2>
+      <p class="text-gray-700 mb-2">Kategorija: {{ kviz.kategorija }}</p>
+      <p class="text-gray-700 mb-2">Težina: {{ kviz.tezina }}</p>
+      <p class="text-gray-700 mb-2">Bodovi: {{ kviz.bodovi }}</p>
+      <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+        routerLink="/quiz-details/{{ kviz.id }}"
+      >
+        Počni Kviz
+      </button>
+    </div>
+  </div>
+</div>
