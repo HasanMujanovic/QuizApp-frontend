@@ -1,4 +1,3 @@
-<app-header></app-header>
 <section class="min-h-screen bg-gray-100 py-8">
   <div class="container mx-auto px-4">
     <h1 class="text-3xl font-semibold mb-6">Napravi Kviz</h1>
@@ -29,29 +28,49 @@
             />
           </div>
 
+          <div class="mb-4">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="points{{ i }}"
+              >Broj bodova koje nosi pitanje:</label
+            >
+            <input
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="points{{ i }}"
+              type="number"
+              formControlName="bodovi"
+              placeholder="Unesi broj bodova..."
+            />
+          </div>
+
           <div class="mb-4" formArrayName="odgovori">
             <div
               *ngFor="
                 let odgovor of pitanje.get('odgovori').controls;
-                let i = index
+                let j = index
               "
-              [formGroupName]="i"
+              [formGroupName]="j"
             >
               <label
                 class="block text-gray-700 text-sm font-bold mb-2"
-                [for]="'answer' + i"
-                >Odgovor {{ i + 1 }}:</label
+                [for]="'answer' + i + j"
+                >Odgovor {{ j + 1 }}:</label
               >
               <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                [id]="'answer' + i"
+                [id]="'answer' + i + j"
                 type="text"
                 placeholder="Unesi odgovor..."
                 formControlName="tekst"
               />
               <input class="mr-2" type="checkbox" formControlName="tacno" />
-              <label for="tacno{{ i }}">Tačno</label>
+              <label [for]="'tacno' + i + j">Tačno</label>
             </div>
+          </div>
+
+          <div *ngIf="pitanje.get('odgovori').length > 2" class="mb-4">
+            <input type="checkbox" formControlName="dozvoljenaPomoc" />
+            <label for="dozvoljenaPomoc">Dozvoljena pomoć 50:50</label>
           </div>
 
           <button
@@ -80,5 +99,11 @@
         </button>
       </div>
     </form>
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      routerLink="/quizes"
+    >
+      Odustani
+    </button>
   </div>
 </section>

@@ -41,6 +41,8 @@ export class QuizInfoComponent implements OnInit {
           Validators.required,
           Validators.minLength(3),
         ]),
+
+        vreme: new FormControl('', [Validators.required, Validators.min(1)]),
       }),
     });
   }
