@@ -14,8 +14,10 @@ import { QuizInfoComponent } from './components/quiz-info/quiz-info.component';
 import { HeaderComponent } from './components/header/header.component';
 import { QuizesPageComponent } from './components/quizes-page/quizes-page.component';
 import { QuizDetailsComponent } from './components/quiz-details/quiz-details.component';
+import { QuizPlayingComponent } from './components/quiz-playing/quiz-playing.component';
 
 const routes: Routes = [
+  { path: 'quiz-playing/:id', component: QuizPlayingComponent },
   { path: 'quiz-details/:id', component: QuizDetailsComponent },
   { path: 'quizes-page', component: QuizesPageComponent },
   { path: 'quiz-info', component: QuizInfoComponent },
@@ -36,6 +38,7 @@ const routes: Routes = [
     HeaderComponent,
     QuizesPageComponent,
     QuizDetailsComponent,
+    QuizPlayingComponent,
   ],
   imports: [
     BrowserModule,
