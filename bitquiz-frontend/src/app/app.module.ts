@@ -17,6 +17,8 @@ import { QuizDetailsComponent } from './components/quiz-details/quiz-details.com
 import { QuizPlayingComponent } from './components/quiz-playing/quiz-playing.component';
 
 const routes: Routes = [
+  { path: 'signup', component: SignupComponent },
+  { path: 'login', component: LoginComponent },
   { path: 'quiz-playing/:id', component: QuizPlayingComponent },
   { path: 'quiz-details/:id', component: QuizDetailsComponent },
   { path: 'quizes-page', component: QuizesPageComponent },
