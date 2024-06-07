@@ -10,6 +10,9 @@ import { User } from '../../common/user';
 import { AuthenticateService } from '../../services/authenticate.service';
 import { SacuvajZavrsenKviz } from '../../common/sacuvaj-zavrsen-kviz';
 import { ZavrsenKviz } from '../../common/zavrsen-kviz';
+import { SacuvajKvizProgres } from '../../common/sacuvaj-kviz-progres';
+import { KvizProgres } from '../../common/kviz-progres';
+import { SaveQuizService } from '../../services/save-quiz.service';
 
 @Component({
   selector: 'app-quiz-playing',
@@ -37,7 +40,8 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
     private kvizPlayService: QuizPlayingService,
     private kvizService: KvizService,
     private zavrsenKvizService: ZavrsenKvizService,
-    private authService: AuthenticateService
+    private authService: AuthenticateService,
+    private sacuvProgresService: SaveQuizService
   ) {}
 
   ngOnInit(): void {
@@ -145,10 +149,6 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
     }, interval);
   }
 
-  ngOnDestroy(): void {
-    clearInterval(this.timerInterval);
-  }
-
   formatirajVreme(sekunde: number): string {
     const minuti = Math.floor(sekunde / 60);
     const sekundeRest = sekunde % 60;
@@ -173,5 +173,27 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
     this.zavrsenKvizService
       .sacuvajKviz(sacuvajZavKviz)
       .subscribe(() => console.log('sacuvalo se'));
+  }
+
+  sacuvajProgres() {
+    let sacuvajProgres = new SacuvajKvizProgres();
+    let progresKviz = new KvizProgres();
+
+    sacuvajProgres.user = this.user;
+    sacuvajProgres.kviz = this.kviz;
+
+    progresKviz.vreme = this.preostaloVreme;
+    progresKviz.bodovi = this.bodovi;
+    progresKviz.odgovorenihPitanja = this.flag;
+
+    sacuvajProgres.kvizProgres = progresKviz;
+
+    this.sacuvProgresService
+      .sacuvajProgres(sacuvajProgres)
+      .subscribe(() => console.log('Progres sacuvan'));
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.timerInterval);
   }
 }

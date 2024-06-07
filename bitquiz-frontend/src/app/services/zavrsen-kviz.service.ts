@@ -11,7 +11,7 @@ export class ZavrsenKvizService {
   constructor(private http: HttpClient) {}
 
   sacuvajKviz(kviz: SacuvajZavrsenKviz) {
-    const napraviUrl = 'http://localhost:8080/bit/zavrseni-kviz/napravi';
+    const napraviUrl = `${this.baseUrl}/zavrseni-kviz/napravi`;
     return this.http.post<SacuvajZavrsenKviz>(napraviUrl, kviz);
   }
 }

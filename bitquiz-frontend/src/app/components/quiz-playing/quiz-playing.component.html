@@ -40,6 +40,13 @@
       >
         50:50
       </button>
+      <button
+        (click)="sacuvajProgres()"
+        [disabled]="isFiftyFiftyDisabled()"
+        class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline mr-4 disabled:cursor-not-allowed"
+      >
+        Sacuvaj progres
+      </button>
     </div>
   </div>
 </div>
