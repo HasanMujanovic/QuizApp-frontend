@@ -5,6 +5,11 @@ import { Kviz } from '../../common/kviz';
 import { KvizService } from '../../services/kviz.service';
 import { KvizPitanja } from '../../common/kviz-pitanja';
 import { KvizOdgovori } from '../../common/kviz-odgovori';
+import { ZavrsenKvizService } from '../../services/zavrsen-kviz.service';
+import { User } from '../../common/user';
+import { AuthenticateService } from '../../services/authenticate.service';
+import { SacuvajZavrsenKviz } from '../../common/sacuvaj-zavrsen-kviz';
+import { ZavrsenKviz } from '../../common/zavrsen-kviz';
 
 @Component({
   selector: 'app-quiz-playing',
@@ -23,10 +28,16 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
   preostaloVreme: number;
   timerInterval: any;
 
+  storage: Storage = sessionStorage;
+  email: string = JSON.parse(this.storage.getItem('user'));
+  user: User = new User();
+
   constructor(
     private route: ActivatedRoute,
     private kvizPlayService: QuizPlayingService,
-    private kvizService: KvizService
+    private kvizService: KvizService,
+    private zavrsenKvizService: ZavrsenKvizService,
+    private authService: AuthenticateService
   ) {}
 
   ngOnInit(): void {
@@ -36,6 +47,7 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
       this.getPitanja(kvizId);
     });
     this.timer();
+    this.getUser();
   }
 
   getKviz(id: number) {
@@ -51,6 +63,11 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
       this.activePitanje = this.pitanja[0];
       this.pocetnoPitanje(+this.activePitanje.id);
     });
+  }
+  getUser() {
+    this.authService
+      .getUser(this.email)
+      .subscribe((data) => (this.user = data));
   }
 
   pocetnoPitanje(pitanjeId: number) {
@@ -139,5 +156,22 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
     const formatiraneSekunde =
       sekundeRest < 10 ? '0' + sekundeRest : sekundeRest;
     return `${formatiraniMinuti}:${formatiraneSekunde}`;
+  }
+
+  sacuvajKviz() {
+    let sacuvajZavKviz = new SacuvajZavrsenKviz();
+    let zavKviz = new ZavrsenKviz();
+
+    sacuvajZavKviz.user = this.user;
+    sacuvajZavKviz.kviz = this.kviz;
+
+    zavKviz.osvojeniBodovi = this.bodovi;
+    zavKviz.preostaloVreme = this.preostaloVreme;
+
+    sacuvajZavKviz.zavrsenKviz = zavKviz;
+
+    this.zavrsenKvizService
+      .sacuvajKviz(sacuvajZavKviz)
+      .subscribe(() => console.log('sacuvalo se'));
   }
 }

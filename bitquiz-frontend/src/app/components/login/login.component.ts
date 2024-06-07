@@ -48,14 +48,18 @@ export class LoginComponent implements OnInit {
         console.log('nastavak');
         console.log();
 
-        if (res.roles === this.role && sifra === res.sifra) {
+        if (
+          res.roles === this.role &&
+          sifra === res.sifra &&
+          email === res.email
+        ) {
           this.storage.setItem('user', JSON.stringify(res.email));
           this.storage.setItem('role', JSON.stringify(res.roles));
           this.router.navigate(['/quizes']);
           console.log('Login successful:', res);
         } else {
-          alert('User not found or incorrect credentials.');
           console.log('Login failed:', res);
+          this.flag = true;
         }
       },
       error: () => (this.flag = true),
