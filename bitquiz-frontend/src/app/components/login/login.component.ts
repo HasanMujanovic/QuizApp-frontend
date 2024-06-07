@@ -46,16 +46,13 @@ export class LoginComponent implements OnInit {
     this.authService.getUser(email).subscribe({
       next: (res) => {
         console.log('nastavak');
+        console.log();
 
-        if (res && res.roles === this.role && sifra === res.sifra) {
+        if (res.roles === this.role && sifra === res.sifra) {
           this.storage.setItem('user', JSON.stringify(res.email));
           this.storage.setItem('role', JSON.stringify(res.roles));
           this.router.navigate(['/quizes']);
           console.log('Login successful:', res);
-
-          setTimeout(() => {
-            window.location.reload();
-          }, 5);
         } else {
           alert('User not found or incorrect credentials.');
           console.log('Login failed:', res);

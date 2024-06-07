@@ -12,6 +12,8 @@ import { KvizPitanja } from '../../common/kviz-pitanja';
 import { KvizOdgovori } from '../../common/kviz-odgovori';
 import { Kviz } from '../../common/kviz';
 import { NapraviKviz } from '../../common/napravi-kviz';
+import { User } from '../../common/user';
+import { AuthenticateService } from '../../services/authenticate.service';
 
 @Component({
   selector: 'app-create-quiz',
@@ -27,10 +29,17 @@ export class CreateQuizComponent {
   kvizPitanja: KvizPitanja[] = [];
   kvizOdgovori: KvizOdgovori[] = [];
 
+  storage: Storage = sessionStorage;
+  userEmail: string = JSON.parse(this.storage.getItem('user'));
+  user: User = new User();
+
   constructor(
     private formBuilder: FormBuilder,
-    private kvizService: KvizService
-  ) {}
+    private kvizService: KvizService,
+    private authService: AuthenticateService
+  ) {
+    this.getUser(this.userEmail);
+  }
 
   ngOnInit(): void {
     this.kvizForm = this.formBuilder.group({
@@ -87,7 +96,15 @@ export class CreateQuizComponent {
       pitanjaGroup.addControl('dozvoljenaPomoc', new FormControl(false));
     }
   }
+
+  getUser(email: string) {
+    this.authService.getUser(email).subscribe((data) => {
+      this.user = data;
+    });
+  }
   onSubmit(): void {
+    console.log('USER');
+
     let kviz = new Kviz();
     kviz = this.kvizService.kvizInfo;
     kviz.bodovi = 0;
@@ -115,7 +132,7 @@ export class CreateQuizComponent {
     napraviKviz.kviz = kviz;
     napraviKviz.kvizOdgovori = this.kvizOdgovori;
     napraviKviz.kvizPitanja = this.kvizPitanja;
-    console.log(this.kvizOdgovori);
+    napraviKviz.user = this.user;
 
     this.kvizService
       .napraviKviz(napraviKviz)
