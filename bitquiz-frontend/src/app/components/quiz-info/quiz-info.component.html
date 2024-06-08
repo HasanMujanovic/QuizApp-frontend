@@ -1,7 +1,7 @@
 <app-header></app-header>
 <section class="min-h-screen bg-gray-100 py-8">
   <div class="container mx-auto px-4">
-    <h1 class="text-3xl font-semibold mb-6">Napravi Kviz</h1>
+    <h1 class="text-3xl font-semibold mb-6">Make Quiz</h1>
 
     <form
       [formGroup]="kvizInfoForm"
@@ -13,14 +13,14 @@
           <label
             class="block text-gray-700 text-sm font-bold mb-2"
             for="category"
-            >Kategorija:</label
+            >Category:</label
           >
           <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="category"
             type="text"
-            placeholder="Unesi kategoriju..."
-            formControlName="kategorija"
+            placeholder="Enter Category..."
+            formControlName="category"
           />
         </div>
 
@@ -47,24 +47,24 @@
           <select
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="difficulty"
-            formControlName="tezina"
+            formControlName="difficulty"
           >
-            <option value="laka">Laka</option>
-            <option value="srednja">Srednja</option>
-            <option value="teška">Teška</option>
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
           </select>
         </div>
 
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="title"
-            >Naslov:</label
+            >Title:</label
           >
           <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="title"
             type="text"
-            placeholder="Unesi naslov..."
-            formControlName="ime"
+            placeholder="Enter title..."
+            formControlName="name"
           />
         </div>
 
@@ -72,15 +72,15 @@
           <label
             class="block text-gray-700 text-sm font-bold mb-2"
             for="time-limit"
-            >Vremensko ograničenje (u minutima):</label
+            >Time limit (in minutes):</label
           >
           <input
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="time-limit"
             type="number"
             min="0"
-            placeholder="Unesi vremensko ograničenje..."
-            formControlName="vreme"
+            placeholder="Enter Time Limit..."
+            formControlName="time"
           />
         </div>
       </div>
@@ -90,7 +90,7 @@
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="submit"
         >
-          Nastavi na Kviz
+          Continue
         </button>
       </div>
     </form>
@@ -98,7 +98,7 @@
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
       routerLink="/quizes"
     >
-      Odustani
+      Abort
     </button>
   </div>
 </section>

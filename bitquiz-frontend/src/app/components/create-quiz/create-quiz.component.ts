@@ -7,11 +7,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { KvizService } from '../../services/kviz.service';
-import { KvizPitanja } from '../../common/kviz-pitanja';
-import { KvizOdgovori } from '../../common/kviz-odgovori';
-import { Kviz } from '../../common/kviz';
-import { NapraviKviz } from '../../common/napravi-kviz';
+import { QuizService } from '../../services/quiz.service';
+import { QuizQuestion } from '../../common/quiz-question';
+import { QuizResponse } from '../../common/quiz-response';
+import { Quiz } from '../../common/quiz';
+import { MakeQuiz } from '../../common/make-quiz';
 import { User } from '../../common/user';
 import { AuthenticateService } from '../../services/authenticate.service';
 
@@ -21,13 +21,13 @@ import { AuthenticateService } from '../../services/authenticate.service';
   styleUrl: './create-quiz.component.css',
 })
 export class CreateQuizComponent {
-  kvizForm: FormGroup;
-  svaPitanja: any[] = [];
-  sviOdgovori: any[] = [];
-  sviBodovi: any[] = [];
-  svePomocoi: any[] = [];
-  kvizPitanja: KvizPitanja[] = [];
-  kvizOdgovori: KvizOdgovori[] = [];
+  quizForm: FormGroup;
+  allQuestions: any[] = [];
+  allResponses: any[] = [];
+  allScores: any[] = [];
+  allHelps: any[] = [];
+  quizQuestions: QuizQuestion[] = [];
+  quizResponese: QuizResponse[] = [];
 
   storage: Storage = sessionStorage;
   userEmail: string = JSON.parse(this.storage.getItem('user'));
@@ -35,65 +35,66 @@ export class CreateQuizComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private kvizService: KvizService,
+    private quizService: QuizService,
     private authService: AuthenticateService
   ) {
     this.getUser(this.userEmail);
   }
 
   ngOnInit(): void {
-    this.kvizForm = this.formBuilder.group({
-      pitanja: this.formBuilder.array([this.createPitanjeGroup()]),
+    this.quizForm = this.formBuilder.group({
+      questions: this.formBuilder.array([this.createQuestionGroup()]),
     });
   }
 
-  get pitanja(): FormArray {
-    return this.kvizForm.get('pitanja') as FormArray;
+  get questions(): FormArray {
+    return this.quizForm.get('questions') as FormArray;
   }
 
-  createPitanjeGroup(): FormGroup {
+  createQuestionGroup(): FormGroup {
     return this.formBuilder.group({
-      pitanje: ['', Validators.required],
-      bodovi: ['', [Validators.required, Validators.min(1)]],
-      dozvoljenaPomoc: false,
-      odgovori: this.formBuilder.array([
-        this.createOdgovorGroup(),
-        this.createOdgovorGroup(),
+      question: ['', Validators.required],
+      points: ['', [Validators.required, Validators.min(1)]],
+      helpAllowed: false,
+      responses: this.formBuilder.array([
+        this.createResponseGroup(),
+        this.createResponseGroup(),
       ]),
     });
   }
 
-  createOdgovorGroup(): FormGroup {
+  createResponseGroup(): FormGroup {
     return this.formBuilder.group({
-      tekst: ['', Validators.required],
-      tacno: false,
+      text: ['', Validators.required],
+      bool: false,
     });
   }
 
-  addPitanje(): void {
-    const novoPitanje = this.kvizForm.value.pitanja[0];
-    this.svaPitanja.push(novoPitanje.pitanje);
-    this.sviOdgovori.push(novoPitanje.odgovori);
-    this.sviBodovi.push(novoPitanje.bodovi);
-    this.svePomocoi.push(novoPitanje.dozvoljenaPomoc);
-    console.log('Pitanja:', this.svaPitanja);
-    console.log('Odgovori:', this.sviOdgovori);
-    console.log('----' + this.sviBodovi);
-    console.log('----' + novoPitanje.dozvoljenaPomoc);
+  addQuestion(): void {
+    const newQuestion = this.quizForm.value.questions[0];
+    this.allQuestions.push(newQuestion.question);
+    this.allResponses.push(newQuestion.responses);
+    this.allScores.push(newQuestion.points);
+    this.allHelps.push(newQuestion.helpAllowed);
+    console.log('Pitanja:', this.allQuestions);
+    console.log('responses:', this.allResponses);
+    console.log('----' + this.allScores);
+    console.log('----' + newQuestion.helpAllowed);
+    console.log(newQuestion.responses + 'asdafsa-------------');
 
-    this.kvizForm.setControl(
-      'pitanja',
-      this.formBuilder.array([this.createPitanjeGroup()])
+    this.quizForm.setControl(
+      'questions',
+      this.formBuilder.array([this.createQuestionGroup()])
     );
   }
 
-  addOdgovor(index: number): void {
-    const odgovori = this.pitanja.at(index).get('odgovori') as FormArray;
-    odgovori.push(this.createOdgovorGroup());
+  addResponse(index: number): void {
+    const response = this.questions.at(index).get('responses') as FormArray;
+    response.push(this.createResponseGroup());
     // Update pomoc (50:50) option visibility
-    const pitanjaGroup = this.pitanja.at(index) as FormGroup;
-    if (odgovori.length > 2 && !pitanjaGroup.get('dozvoljenaPomoc')) {
-      pitanjaGroup.addControl('dozvoljenaPomoc', new FormControl(false));
+    const questionGroup = this.questions.at(index) as FormGroup;
+    if (response.length > 2 && !questionGroup.get('helpAllowed')) {
+      questionGroup.addControl('helpAllowed', new FormControl(false));
     }
   }
 
@@ -103,43 +104,39 @@ export class CreateQuizComponent {
     });
   }
   onSubmit(): void {
-    console.log('USER');
-
-    let kviz = new Kviz();
-    kviz = this.kvizService.kvizInfo;
-    kviz.bodovi = 0;
-    for (let i = 0; i < this.svaPitanja.length; i++) {
-      let tempKvizPitanja = new KvizPitanja();
-      tempKvizPitanja.tekst = this.svaPitanja[i];
-      tempKvizPitanja.bodovi = this.sviBodovi[i];
-      tempKvizPitanja.pomoc = this.svePomocoi[i];
-      this.kvizPitanja.push(tempKvizPitanja);
-      kviz.bodovi += this.sviBodovi[i];
+    let quiz = new Quiz();
+    quiz = this.quizService.quizInfo;
+    quiz.points = 0;
+    for (let i = 0; i < this.allQuestions.length; i++) {
+      let tempQuizQuestion = new QuizQuestion();
+      tempQuizQuestion.text = this.allQuestions[i];
+      tempQuizQuestion.points = this.allScores[i];
+      tempQuizQuestion.helpAllowed = this.allHelps[i];
+      this.quizQuestions.push(tempQuizQuestion);
+      quiz.points += this.allScores[i];
     }
-    console.log(this.kvizPitanja);
+    console.log(this.quizQuestions);
 
-    for (let odg of this.sviOdgovori) {
-      for (let i = 0; i < odg.length; i++) {
-        let tempKvizOdg = new KvizOdgovori();
-        tempKvizOdg.tekst = odg[i].tekst;
-        tempKvizOdg.odgovorTacan = odg[i].tacno;
-        odg[i] = tempKvizOdg;
+    for (let res of this.allResponses) {
+      for (let i = 0; i < res.length; i++) {
+        let tempQuizResponse = new QuizResponse();
+        tempQuizResponse.text = res[i].text;
+        tempQuizResponse.correctAnswer = res[i].bool;
+        res[i] = tempQuizResponse;
       }
 
-      this.kvizOdgovori.push(odg);
+      this.quizResponese.push(res);
     }
-    let napraviKviz = new NapraviKviz();
-    napraviKviz.kviz = kviz;
-    napraviKviz.kvizOdgovori = this.kvizOdgovori;
-    napraviKviz.kvizPitanja = this.kvizPitanja;
-    napraviKviz.user = this.user;
+    let makeQuiz = new MakeQuiz();
+    makeQuiz.quiz = quiz;
+    makeQuiz.quizResponse = this.quizResponese;
+    makeQuiz.quizQuestions = this.quizQuestions;
+    makeQuiz.user = this.user;
 
-    this.kvizService
-      .napraviKviz(napraviKviz)
-      .subscribe(() => console.log('radi'));
+    this.quizService.makeQuiz(makeQuiz).subscribe(() => console.log('radi'));
 
-    if (this.kvizForm.valid) {
-      console.log(this.kvizForm.value);
+    if (this.quizForm.valid) {
+      console.log(this.quizForm.value);
     } else {
       console.log('Forma nije validna');
     }

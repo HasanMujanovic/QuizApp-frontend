@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Kviz } from '../../common/kviz';
-import { KvizService } from '../../services/kviz.service';
+import { Quiz } from '../../common/quiz';
+import { QuizService } from '../../services/quiz.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -9,23 +9,21 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './quiz-details.component.css',
 })
 export class QuizDetailsComponent implements OnInit {
-  kviz: Kviz = new Kviz();
+  quiz: Quiz = new Quiz();
 
   constructor(
-    private kvizService: KvizService,
+    private quizService: QuizService,
     private route: ActivatedRoute
   ) {}
   ngOnInit(): void {
     this.route.paramMap.subscribe(() => {
-      this.getKviz();
+      this.getQuiz();
     });
   }
 
-  getKviz() {
-    const kvizId: number = +this.route.snapshot.paramMap.get('id');
+  getQuiz() {
+    const quizId: number = +this.route.snapshot.paramMap.get('id');
 
-    this.kvizService
-      .getSingleKviz(kvizId)
-      .subscribe((data) => (this.kviz = data));
+    this.quizService.getOneQuiz(quizId).subscribe((data) => (this.quiz = data));
   }
 }

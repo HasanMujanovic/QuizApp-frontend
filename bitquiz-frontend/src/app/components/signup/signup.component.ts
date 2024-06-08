@@ -16,7 +16,7 @@ import { EMPTY, Observable, catchError, map, of } from 'rxjs';
   styleUrl: './signup.component.css',
 })
 export class SignupComponent implements OnInit {
-  role: string = 'igrac';
+  role: string = 'player';
   user: User = new User();
   flag: boolean = false;
 
@@ -50,8 +50,8 @@ export class SignupComponent implements OnInit {
     this.role = 'admin';
     console.log(this.role);
   }
-  setRoleIgrac() {
-    this.role = 'igrac';
+  setRolePlayer() {
+    this.role = 'player';
     console.log(this.role);
   }
 
@@ -71,8 +71,8 @@ export class SignupComponent implements OnInit {
     let email2 = this.signupForm.get('signup.email').value;
 
     this.user.email = email2;
-    this.user.sifra = password;
-    this.user.ime = userName;
+    this.user.password = password;
+    this.user.name = userName;
     this.user.roles = this.role;
 
     this.authService.getUser(email2).subscribe({

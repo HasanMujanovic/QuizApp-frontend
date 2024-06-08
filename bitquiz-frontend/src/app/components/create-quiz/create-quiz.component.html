@@ -2,16 +2,16 @@
 
 <section class="min-h-screen bg-gray-100 py-8">
   <div class="container mx-auto px-4">
-    <h1 class="text-3xl font-semibold mb-6">Napravi Kviz</h1>
+    <h1 class="text-3xl font-semibold mb-6">Make Quiz!</h1>
 
     <form
-      [formGroup]="kvizForm"
+      [formGroup]="quizForm"
       class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
       (ngSubmit)="onSubmit()"
     >
-      <div formArrayName="pitanja">
+      <div formArrayName="questions">
         <div
-          *ngFor="let pitanje of pitanja.controls; let i = index"
+          *ngFor="let pitanje of questions.controls; let i = index"
           [formGroupName]="i"
           class="mb-6"
         >
@@ -19,14 +19,14 @@
             <label
               class="block text-gray-700 text-sm font-bold mb-2"
               for="question{{ i }}"
-              >Pitanje:</label
+              >Question:</label
             >
             <input
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="question{{ i }}"
               type="text"
-              formControlName="pitanje"
-              placeholder="Unesi pitanje..."
+              formControlName="question"
+              placeholder="Enter a question..."
             />
           </div>
 
@@ -34,21 +34,21 @@
             <label
               class="block text-gray-700 text-sm font-bold mb-2"
               for="points{{ i }}"
-              >Broj bodova koje nosi pitanje:</label
+              >Points:</label
             >
             <input
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="points{{ i }}"
               type="number"
-              formControlName="bodovi"
-              placeholder="Unesi broj bodova..."
+              formControlName="points"
+              placeholder="Enter points..."
             />
           </div>
 
-          <div class="mb-4" formArrayName="odgovori">
+          <div class="mb-4" formArrayName="responses">
             <div
               *ngFor="
-                let odgovor of pitanje.get('odgovori').controls;
+                let odgovor of pitanje.get('responses').controls;
                 let j = index
               "
               [formGroupName]="j"
@@ -56,31 +56,31 @@
               <label
                 class="block text-gray-700 text-sm font-bold mb-2"
                 [for]="'answer' + i + j"
-                >Odgovor {{ j + 1 }}:</label
+                >Response {{ j + 1 }}:</label
               >
               <input
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 [id]="'answer' + i + j"
                 type="text"
-                placeholder="Unesi odgovor..."
-                formControlName="tekst"
+                placeholder="Enter response..."
+                formControlName="text"
               />
-              <input class="mr-2" type="checkbox" formControlName="tacno" />
+              <input class="mr-2" type="checkbox" formControlName="bool" />
               <label [for]="'tacno' + i + j">Tačno</label>
             </div>
           </div>
 
-          <div *ngIf="pitanje.get('odgovori').length > 2" class="mb-4">
-            <input type="checkbox" formControlName="dozvoljenaPomoc" />
-            <label for="dozvoljenaPomoc">Dozvoljena pomoć 50:50</label>
+          <div *ngIf="questions.get('responses').length > 2" class="mb-4">
+            <input type="checkbox" formControlName="helpAllowed" />
+            <label for="dozvoljenaPomoc">Allow help (50:50)</label>
           </div>
 
           <button
             class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-4"
             type="button"
-            (click)="addOdgovor(i)"
+            (click)="addResponse(i)"
           >
-            Dodaj Odgovor
+            Add answer
           </button>
         </div>
       </div>
@@ -89,15 +89,15 @@
         <button
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="button"
-          (click)="addPitanje()"
+          (click)="addQuestion()"
         >
-          Dodaj Pitanje
+          Add answer
         </button>
         <button
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="submit"
         >
-          Sačuvaj Kviz
+          Save quiz
         </button>
       </div>
     </form>
@@ -105,7 +105,7 @@
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
       routerLink="/quizes"
     >
-      Odustani
+      Give up
     </button>
   </div>
 </section>

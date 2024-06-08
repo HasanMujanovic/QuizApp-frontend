@@ -1,17 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SacuvajKvizProgres } from '../common/sacuvaj-kviz-progres';
+import { SaveQuizProgress } from '../common/save-quiz-progress';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SaveQuizService {
-  baseUrl = 'http://localhost:8080/bit';
-
   constructor(private http: HttpClient) {}
 
-  sacuvajProgres(kviz: SacuvajKvizProgres) {
-    const searchUrl = `${this.baseUrl}/kviz-progres/napravi`;
-    return this.http.post<SacuvajKvizProgres>(searchUrl, kviz);
+  saveProgress(quiz: SaveQuizProgress) {
+    const searchUrl = environment.url + `/quiz-progress/make`;
+    return this.http.post<SaveQuizProgress>(searchUrl, quiz);
   }
 }

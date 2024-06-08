@@ -1,37 +1,37 @@
 <div class="container mx-auto px-4 py-8">
   <div class="bg-white rounded-lg shadow-md p-6">
-    <h2 class="text-3xl font-bold mb-4">{{ kviz?.ime }}</h2>
-    <p class="text-gray-600 mb-2">Kategorija: {{ kviz?.kategorija }}</p>
-    <p class="text-gray-600 mb-2">Težina: {{ kviz?.tezina }}</p>
-    <p class="text-gray-600 mb-2">Status: {{ kviz?.status }}</p>
+    <h2 class="text-3xl font-bold mb-4">{{ quiz?.name }}</h2>
+    <p class="text-gray-600 mb-2">Kategorija: {{ quiz?.category }}</p>
+    <p class="text-gray-600 mb-2">Težina: {{ quiz?.difficulty }}</p>
+    <p class="text-gray-600 mb-2">Status: {{ quiz?.status }}</p>
     <p class="text-gray-600 mb-4">
-      Vreme: {{ kviz?.vreme }} min | Bodovi: {{ kviz?.bodovi }}
+      Vreme: {{ quiz?.time }} min | Bodovi: {{ quiz?.points }}
     </p>
-    <p>Preostalo vreme: {{ formatirajVreme(preostaloVreme) }}</p>
+    <p>Time left: {{ formatirajVreme(timeLeft) }}</p>
 
     <div class="question-container bg-white rounded-lg shadow-md p-6 mb-6">
       <h3 class="text-xl font-semibold mb-4">
-        Pitanje {{ flag + 1 }}: {{ activePitanje?.tekst }}
+        Question {{ flag + 1 }}: {{ activeQuestion?.text }}
       </h3>
       <ul>
-        <li *ngFor="let odgovor of activeOdgovori" class="mb-3">
+        <li *ngFor="let res of activeResponse" class="mb-3">
           <button
-            (click)="proveriOdgovor(odgovor)"
+            (click)="checkAnswer(res)"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full text-left"
           >
-            {{ odgovor?.tekst }}
+            {{ res?.text }}
           </button>
         </li>
       </ul>
     </div>
 
     <div class="text-center">
-      <p class="text-lg font-semibold mb-4">Bodovi: {{ bodovi }}</p>
+      <p class="text-lg font-semibold mb-4">Points: {{ points }}</p>
       <button
-        (click)="onSledecePitanje()"
+        (click)="onNextQuestion()"
         class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
       >
-        Sledeće Pitanje
+        Next Question
       </button>
       <button
         (click)="fiftyFifty()"
@@ -41,27 +41,27 @@
         50:50
       </button>
       <button
-        (click)="sacuvajProgres()"
+        (click)="saveProgress()"
         [disabled]="isFiftyFiftyDisabled()"
         class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline mr-4 disabled:cursor-not-allowed"
       >
-        Sacuvaj progres
+        Save Progress
       </button>
     </div>
   </div>
 </div>
-<div *ngIf="krajKviza">
+<div *ngIf="endOfQuiz">
   <div
     class="fixed inset-0 flex items-center justify-center z-10 bg-gray-800 bg-opacity-50"
   >
     <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-6">
-      <h2 class="text-xl font-semibold mb-4">Rezultati</h2>
-      <p class="mb-2">Osvojeni bodovi: {{ earnedPoints }}</p>
-      <p>Da li ste položili kviz: {{ passed ? "Da" : "Ne" }}</p>
+      <h2 class="text-xl font-semibold mb-4">Results</h2>
+      <p class="mb-2">Points won: {{ earnedPoints }}</p>
+      <p>Did you pass: {{ passed ? "Da" : "Ne" }}</p>
       <button
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
         routerLink="/quizes-page"
-        (click)="sacuvajKviz()"
+        (click)="saveQuiz()"
       >
         OK
       </button>

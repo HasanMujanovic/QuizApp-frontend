@@ -1,9 +1,9 @@
 export class User {
   public id: string;
-  public ime: string;
+  public name: string;
   public email: string;
-  public sifra: string;
+  public password: string;
   public roles: string;
-  public nivo: number;
-  public bodovi: number;
+  public level: number;
+  public points: number;
 }

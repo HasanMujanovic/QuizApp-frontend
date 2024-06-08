@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { KvizService } from '../../services/kviz.service';
-import { Kviz } from '../../common/kviz';
+import { QuizService } from '../../services/quiz.service';
+import { Quiz } from '../../common/quiz';
 
 @Component({
   selector: 'app-quizes-page',
@@ -8,17 +8,17 @@ import { Kviz } from '../../common/kviz';
   styleUrl: './quizes-page.component.css',
 })
 export class QuizesPageComponent implements OnInit {
-  kvizovi: Kviz[] = [];
-  constructor(private kvizService: KvizService) {}
+  quizes: Quiz[] = [];
+  constructor(private quizService: QuizService) {}
 
   ngOnInit(): void {
-    this.getKvizove();
+    this.getQuizes();
   }
 
-  getKvizove() {
-    this.kvizService.getKvizove().subscribe((data) => {
-      this.kvizovi = data;
-      console.log(this.kvizovi);
+  getQuizes() {
+    this.quizService.getQuizes().subscribe((data) => {
+      this.quizes = data;
+      console.log(this.quizes);
     });
   }
 }

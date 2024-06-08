@@ -6,8 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Kviz } from '../../common/kviz';
-import { KvizService } from '../../services/kviz.service';
+import { Quiz } from '../../common/quiz';
+import { QuizService } from '../../services/quiz.service';
 
 @Component({
   selector: 'app-quiz-info',
@@ -19,13 +19,13 @@ export class QuizInfoComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private kvizService: KvizService
+    private kvizService: QuizService
   ) {}
 
   ngOnInit(): void {
     this.kvizInfoForm = this.formBuilder.group({
       info: this.formBuilder.group({
-        kategorija: new FormControl('', [
+        category: new FormControl('', [
           Validators.required,
           Validators.minLength(3),
         ]),
@@ -33,25 +33,25 @@ export class QuizInfoComponent implements OnInit {
           Validators.required,
           Validators.minLength(3),
         ]),
-        tezina: new FormControl('', [
+        difficulty: new FormControl('', [
           Validators.required,
           Validators.minLength(3),
         ]),
-        ime: new FormControl('', [
+        name: new FormControl('', [
           Validators.required,
           Validators.minLength(3),
         ]),
 
-        vreme: new FormControl('', [Validators.required, Validators.min(1)]),
+        time: new FormControl('', [Validators.required, Validators.min(1)]),
       }),
     });
   }
 
   onSubmit() {
-    let kviz = new Kviz();
-    kviz = this.kvizInfoForm.controls['info'].value;
+    let quiz = new Quiz();
+    quiz = this.kvizInfoForm.controls['info'].value;
 
-    this.kvizService.kvizInfo = kviz;
+    this.kvizService.quizInfo = quiz;
 
     if (this.kvizInfoForm.valid) {
       console.log(this.kvizInfoForm.value);

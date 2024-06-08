@@ -1,39 +1,39 @@
 <app-header></app-header>
 <div class="container mx-auto px-4 py-8">
   <div class="bg-white rounded-lg shadow-md p-6">
-    <h2 class="text-3xl font-bold mb-4">{{ kviz.ime }}</h2>
+    <h2 class="text-3xl font-bold mb-4">{{ quiz.name }}</h2>
     <div class="grid grid-cols-2 gap-4 mb-6">
       <div>
         <p class="text-gray-600">
-          <span class="font-semibold">Kategorija:</span> {{ kviz.kategorija }}
+          <span class="font-semibold">Category:</span> {{ quiz.category }}
         </p>
         <p class="text-gray-600">
-          <span class="font-semibold">Težina:</span> {{ kviz.tezina }}
+          <span class="font-semibold">Difficulty:</span> {{ quiz.difficulty }}
         </p>
         <p class="text-gray-600">
-          <span class="font-semibold">Status:</span> {{ kviz.status }}
+          <span class="font-semibold">Status:</span> {{ quiz.status }}
         </p>
       </div>
       <div>
         <p class="text-gray-600">
-          <span class="font-semibold">Vreme:</span> {{ kviz.vreme }} min
+          <span class="font-semibold">Time:</span> {{ quiz.time }} min
         </p>
         <p class="text-gray-600">
-          <span class="font-semibold">Bodovi:</span> {{ kviz.bodovi }}
+          <span class="font-semibold">Points:</span> {{ quiz.points }}
         </p>
         <p class="text-gray-600">
-          <span class="font-semibold">Svidjanja:</span> {{ kviz.svidjanja }}
+          <span class="font-semibold">Likes:</span> {{ quiz.likes }}
         </p>
         <p class="text-gray-600">
-          <span class="font-semibold">Završili:</span> {{ kviz.zavrsili }}
+          <span class="font-semibold">Finished:</span> {{ quiz.doneIt }}
         </p>
       </div>
     </div>
     <button
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-      routerLink="/quiz-playing/{{ kviz.id }}"
+      routerLink="/quiz-playing/{{ quiz.id }}"
     >
-      Počni Kviz
+      Start Quiz
     </button>
   </div>
 </div>

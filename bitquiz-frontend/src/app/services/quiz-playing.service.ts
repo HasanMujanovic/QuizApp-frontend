@@ -1,40 +1,40 @@
 import { Injectable } from '@angular/core';
-import { KvizPitanja } from '../common/kviz-pitanja';
+import { QuizQuestion } from '../common/quiz-question';
 import { Observable, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { KvizOdgovori } from '../common/kviz-odgovori';
+import { QuizResponse } from '../common/quiz-response';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class QuizPlayingService {
-  baseUrl = 'http://localhost:8080/bit';
   constructor(private http: HttpClient) {}
 
-  getPitanja(id: number): Observable<KvizPitanja[]> {
-    const pitanjaUrl = `http://localhost:8080/bit/kvizovi/${id}/pitanja`;
+  getQuestions(id: number): Observable<QuizQuestion[]> {
+    const questionUrl = `${environment.url}/quizes/${id}/questions`;
 
     return this.http
-      .get<getPitanje>(pitanjaUrl)
-      .pipe(map((res) => res._embedded.kvizPitanjas));
+      .get<getQuestions>(questionUrl)
+      .pipe(map((res) => res._embedded.quizQuestionses));
   }
-  getOdgovori(id: number) {
-    const odgovoriUrl = `http://localhost:8080/bit/kviz-pitanja/${id}/odgovori`;
+  getResponses(id: number) {
+    const responseUrl = `${environment.url}/quiz-questions/${id}/responses`;
 
     return this.http
-      .get<getOdgovori>(odgovoriUrl)
-      .pipe(map((res) => res._embedded.kvizOdgovoris));
+      .get<getResponses>(responseUrl)
+      .pipe(map((res) => res._embedded.quizResponses));
   }
 }
 
-interface getPitanje {
+interface getQuestions {
   _embedded: {
-    kvizPitanjas: KvizPitanja[];
+    quizQuestionses: QuizQuestion[];
   };
 }
 
-interface getOdgovori {
+interface getResponses {
   _embedded: {
-    kvizOdgovoris: KvizOdgovori[];
+    quizResponses: QuizResponse[];
   };
 }

@@ -1,17 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { QuizPlayingService } from '../../services/quiz-playing.service';
-import { Kviz } from '../../common/kviz';
-import { KvizService } from '../../services/kviz.service';
-import { KvizPitanja } from '../../common/kviz-pitanja';
-import { KvizOdgovori } from '../../common/kviz-odgovori';
-import { ZavrsenKvizService } from '../../services/zavrsen-kviz.service';
+import { Quiz } from '../../common/quiz';
+import { QuizService } from '../../services/quiz.service';
+import { QuizQuestion } from '../../common/quiz-question';
+import { QuizResponse } from '../../common/quiz-response';
+import { DoneQuizService } from '../../services/done-quiz.service';
 import { User } from '../../common/user';
 import { AuthenticateService } from '../../services/authenticate.service';
-import { SacuvajZavrsenKviz } from '../../common/sacuvaj-zavrsen-kviz';
-import { ZavrsenKviz } from '../../common/zavrsen-kviz';
-import { SacuvajKvizProgres } from '../../common/sacuvaj-kviz-progres';
-import { KvizProgres } from '../../common/kviz-progres';
+import { SaveDoneQuiz } from '../../common/save-done-quiz';
+import { DoneQuiz } from '../../common/done-quiz';
+import { SaveQuizProgress } from '../../common/save-quiz-progress';
+import { QuizProgress } from '../../common/quiz-progress';
 import { SaveQuizService } from '../../services/save-quiz.service';
 
 @Component({
@@ -20,15 +20,15 @@ import { SaveQuizService } from '../../services/save-quiz.service';
   styleUrl: './quiz-playing.component.css',
 })
 export class QuizPlayingComponent implements OnInit, OnDestroy {
-  kviz: Kviz;
-  pitanja: KvizPitanja[] = [];
-  activePitanje: KvizPitanja;
-  activeOdgovori: KvizOdgovori[] = [];
+  quiz: Quiz;
+  questions: QuizQuestion[] = [];
+  activeQuestion: QuizQuestion;
+  activeResponse: QuizResponse[] = [];
   flag: number = 0;
-  bodovi: number = 0;
-  krajKviza: boolean = false;
+  points: number = 0;
+  endOfQuiz: boolean = false;
 
-  preostaloVreme: number;
+  timeLeft: number;
   timerInterval: any;
 
   storage: Storage = sessionStorage;
@@ -37,35 +37,35 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private kvizPlayService: QuizPlayingService,
-    private kvizService: KvizService,
-    private zavrsenKvizService: ZavrsenKvizService,
+    private quizPlayingService: QuizPlayingService,
+    private quizService: QuizService,
+    private doneQuizService: DoneQuizService,
     private authService: AuthenticateService,
-    private sacuvProgresService: SaveQuizService
+    private saveQuizService: SaveQuizService
   ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       const kvizId: number = +params.get('id');
-      this.getKviz(kvizId);
+      this.getQuiz(kvizId);
       this.getPitanja(kvizId);
     });
     this.timer();
     this.getUser();
   }
 
-  getKviz(id: number) {
-    this.kvizService.getSingleKviz(id).subscribe((data) => {
-      this.kviz = data;
-      this.preostaloVreme = data.vreme * 60;
-      console.log(this.preostaloVreme);
+  getQuiz(id: number) {
+    this.quizService.getOneQuiz(id).subscribe((data) => {
+      this.quiz = data;
+      this.timeLeft = data.time * 60;
+      console.log(this.timeLeft);
     });
   }
   getPitanja(id: number) {
-    this.kvizPlayService.getPitanja(id).subscribe((data) => {
-      this.pitanja = data;
-      this.activePitanje = this.pitanja[0];
-      this.pocetnoPitanje(+this.activePitanje.id);
+    this.quizPlayingService.getQuestions(id).subscribe((data) => {
+      this.questions = data;
+      this.activeQuestion = this.questions[0];
+      this.startingQuestion(+this.activeQuestion.id);
     });
   }
   getUser() {
@@ -74,61 +74,53 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
       .subscribe((data) => (this.user = data));
   }
 
-  pocetnoPitanje(pitanjeId: number) {
-    this.kvizPlayService
-      .getOdgovori(pitanjeId)
-      .subscribe((data) => (this.activeOdgovori = data));
+  startingQuestion(questionId: number) {
+    this.quizPlayingService
+      .getResponses(questionId)
+      .subscribe((data) => (this.activeResponse = data));
   }
 
-  onSledecePitanje() {
-    if (this.flag < this.pitanja.length - 1) {
+  onNextQuestion() {
+    if (this.flag < this.questions.length - 1) {
       this.flag++;
-      this.activePitanje = this.pitanja[this.flag];
-      this.pocetnoPitanje(+this.activePitanje.id);
+      this.activeQuestion = this.questions[this.flag];
+      this.startingQuestion(+this.activeQuestion.id);
     } else {
-      this.krajKviza = true;
+      this.endOfQuiz = true;
       console.log('Kviz je završen');
-      // Ovde možete dodati logiku za završetak kviza
     }
   }
 
-  proveriOdgovor(odgovor: KvizOdgovori) {
-    if (odgovor.odgovorTacan) {
-      this.bodovi += this.kviz.bodovi; // ili kako god računate bodove po pitanju
+  checkAnswer(res: QuizResponse) {
+    if (res.correctAnswer) {
+      this.points += this.quiz.points;
     }
-    this.onSledecePitanje();
+    this.onNextQuestion();
   }
 
   fiftyFifty() {
     console.log('click');
 
-    // Provera da li ima više od dva tačna odgovora
-    const tacniOdgovori = this.activeOdgovori.filter(
-      (odgovor) => odgovor.odgovorTacan
+    const correctAnswers = this.activeResponse.filter(
+      (odgovor) => odgovor.correctAnswer
     );
-    if (tacniOdgovori.length > 2) {
-      // Ako ima više od dva tačna odgovora, ne radi ništa
+    if (correctAnswers.length > 2) {
       return;
     }
 
-    // Izaberi jedan tačan odgovor
-    const tacanOdgovor = this.activeOdgovori.find(
-      (odgovor) => odgovor.odgovorTacan
-    );
+    const correctAnswer = this.activeResponse.find((res) => res.correctAnswer);
 
-    // Izaberi tri netacna odgovora
-    const netacniOdgovori = this.activeOdgovori
-      .filter((odgovor) => !odgovor.odgovorTacan)
-      .slice(0, Math.ceil((this.activeOdgovori.length - 1) / 2));
+    const wrongAnswers = this.activeResponse
+      .filter((res) => !res.correctAnswer)
+      .slice(0, Math.ceil((this.activeResponse.length - 1) / 2));
 
-    // Spoji tačan odgovor i tri netacna odgovora
-    this.activeOdgovori = [tacanOdgovor, ...netacniOdgovori];
+    this.activeResponse = [correctAnswer, ...wrongAnswers];
   }
   isFiftyFiftyDisabled(): boolean {
-    const tacniOdgovori = this.activeOdgovori.filter(
-      (odgovor) => odgovor.odgovorTacan
+    const correctAnswers = this.activeResponse.filter(
+      (odgovor) => odgovor.correctAnswer
     );
-    if (tacniOdgovori.length > 2 || this.activeOdgovori.length <= 2) {
+    if (correctAnswers.length > 2 || this.activeResponse.length <= 2) {
       return true;
     }
     return false;
@@ -138,58 +130,57 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
     const interval = 1000;
 
     this.timerInterval = setInterval(() => {
-      if (this.preostaloVreme > 0 && !this.krajKviza) {
-        this.preostaloVreme--;
-        console.log(this.preostaloVreme);
+      if (this.timeLeft > 0 && !this.endOfQuiz) {
+        this.timeLeft--;
+        console.log(this.timeLeft);
       } else {
         clearInterval(this.timerInterval);
-        this.krajKviza = true;
+        this.endOfQuiz = true;
         console.log('Vreme je isteklo!');
       }
     }, interval);
   }
 
   formatirajVreme(sekunde: number): string {
-    const minuti = Math.floor(sekunde / 60);
-    const sekundeRest = sekunde % 60;
-    const formatiraniMinuti = minuti < 10 ? '0' + minuti : minuti;
-    const formatiraneSekunde =
-      sekundeRest < 10 ? '0' + sekundeRest : sekundeRest;
-    return `${formatiraniMinuti}:${formatiraneSekunde}`;
+    const minutes = Math.floor(sekunde / 60);
+    const seconds = sekunde % 60;
+    const formattedMin = minutes < 10 ? '0' + minutes : minutes;
+    const formatedSec = seconds < 10 ? '0' + seconds : seconds;
+    return `${formattedMin}:${formatedSec}`;
   }
 
-  sacuvajKviz() {
-    let sacuvajZavKviz = new SacuvajZavrsenKviz();
-    let zavKviz = new ZavrsenKviz();
+  saveQuiz() {
+    let saveDoneQuiz = new SaveDoneQuiz();
+    let doneQuiz = new DoneQuiz();
 
-    sacuvajZavKviz.user = this.user;
-    sacuvajZavKviz.kviz = this.kviz;
+    saveDoneQuiz.user = this.user;
+    saveDoneQuiz.quiz = this.quiz;
 
-    zavKviz.osvojeniBodovi = this.bodovi;
-    zavKviz.preostaloVreme = this.preostaloVreme;
+    doneQuiz.pointsWon = this.points;
+    doneQuiz.timeLeft = this.timeLeft;
 
-    sacuvajZavKviz.zavrsenKviz = zavKviz;
+    saveDoneQuiz.doneQuiz = doneQuiz;
 
-    this.zavrsenKvizService
-      .sacuvajKviz(sacuvajZavKviz)
+    this.doneQuizService
+      .saveQuiz(saveDoneQuiz)
       .subscribe(() => console.log('sacuvalo se'));
   }
 
-  sacuvajProgres() {
-    let sacuvajProgres = new SacuvajKvizProgres();
-    let progresKviz = new KvizProgres();
+  saveProgress() {
+    let saveQuizProgress = new SaveQuizProgress();
+    let quizProgress = new QuizProgress();
 
-    sacuvajProgres.user = this.user;
-    sacuvajProgres.kviz = this.kviz;
+    saveQuizProgress.user = this.user;
+    saveQuizProgress.quiz = this.quiz;
 
-    progresKviz.vreme = this.preostaloVreme;
-    progresKviz.bodovi = this.bodovi;
-    progresKviz.odgovorenihPitanja = this.flag;
+    quizProgress.time = this.timeLeft;
+    quizProgress.points = this.points;
+    quizProgress.questionsAnswered = this.flag;
 
-    sacuvajProgres.kvizProgres = progresKviz;
+    saveQuizProgress.quizProgress = quizProgress;
 
-    this.sacuvProgresService
-      .sacuvajProgres(sacuvajProgres)
+    this.saveQuizService
+      .saveProgress(saveQuizProgress)
       .subscribe(() => console.log('Progres sacuvan'));
   }
 

@@ -16,7 +16,7 @@ import { trigger } from '@angular/animations';
   styleUrl: './login.component.css',
 })
 export class LoginComponent implements OnInit {
-  role: string = 'igrac';
+  role: string = 'player';
   loginForm: FormGroup;
   flag = false;
 
@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.formBuilder.group({
       login: this.formBuilder.group({
         email: new FormControl('', [Validators.required, Validators.email]),
-        sifra: new FormControl('', [
+        password: new FormControl('', [
           Validators.required,
           Validators.minLength(3),
         ]),
@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
   }
   onSubmit() {
     let email = this.loginForm.get('login.email').value;
-    let sifra = this.loginForm.get('login.sifra').value;
+    let password = this.loginForm.get('login.password').value;
 
     this.authService.getUser(email).subscribe({
       next: (res) => {
@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
 
         if (
           res.roles === this.role &&
-          sifra === res.sifra &&
+          password === res.password &&
           email === res.email
         ) {
           this.storage.setItem('user', JSON.stringify(res.email));
@@ -65,8 +65,8 @@ export class LoginComponent implements OnInit {
       error: () => (this.flag = true),
     });
   }
-  setRoleIgrac() {
-    this.role = 'igrac';
+  setRolePlayer() {
+    this.role = 'player';
   }
   setRoleAdmin() {
     this.role = 'admin';
