@@ -4,4 +4,5 @@ export class DoneQuiz {
   public timeLeft: number;
   public userIdForSearch: number;
   public quizIdForSearch: number;
+  public username: string;
 }

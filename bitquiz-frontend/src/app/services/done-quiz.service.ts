@@ -22,8 +22,18 @@ export class DoneQuizService {
       .get<getDoneQuizes>(searchUrl)
       .pipe(map((res) => res._embedded.doneQuizzes));
   }
+
+  getLeaderboardForQuiz(quizId: number): Observable<DoneQuiz[]> {
+    const searchUrl = `${environment.url}/done-quizes/${quizId}/doneQuiz`;
+    return this.http.get<DoneQuiz[]>(searchUrl);
+  }
 }
 interface getDoneQuizes {
+  _embedded: {
+    doneQuizzes: DoneQuiz[];
+  };
+}
+interface getLeaderboardForQuiz {
   _embedded: {
     doneQuizzes: DoneQuiz[];
   };

@@ -18,6 +18,7 @@ import { DoneQuiz } from '../../common/done-quiz';
 export class QuizDetailsComponent implements OnInit {
   quiz: Quiz = new Quiz();
   doneQuize: DoneQuiz = new DoneQuiz();
+  leaderboard: DoneQuiz[] = [];
 
   isQuizDone: boolean = false;
 
@@ -25,8 +26,6 @@ export class QuizDetailsComponent implements OnInit {
   progressOfQuiz: QuizProgress = new QuizProgress();
   isThereProgress: boolean = false;
   storage: Storage = sessionStorage;
-
-  email = JSON.parse(this.storage.getItem('user'));
 
   constructor(
     private quizService: QuizService,
@@ -39,30 +38,37 @@ export class QuizDetailsComponent implements OnInit {
     this.route.paramMap.subscribe(() => {
       this.getQuiz();
       this.getDoneQuizesAndMaybeLookForProgress();
-      // this.lookForProgress();
-      // this.getDoneQuizes();
+      this.getLeaderboard();
     });
   }
 
   getDoneQuizesAndMaybeLookForProgress() {
+    const email = JSON.parse(this.storage.getItem('user'));
+    const quizId: number = +this.route.snapshot.paramMap.get('id');
+
     this.authService
-      .getUser(this.email)
+      .getUser(email)
       .pipe(
         concatMap((data) => this.doneQuizService.getDoneQuizes(+data.id)),
         concatMap((doneQuizes) => {
           this.isQuizDone = doneQuizes.some(
-            (quiz) => quiz.quizIdForSearch === +this.quiz.id
+            (quiz) => quiz.quizIdForSearch === quizId
           );
+          this.quizPlayingService.isQuizDone = this.isQuizDone;
+          console.log(this.quizPlayingService.isQuizDone + '----');
+
           if (this.isQuizDone) {
             console.log('quizdone');
 
             this.doneQuize = doneQuizes.find(
-              (quiz) => quiz.quizIdForSearch === +this.quiz.id
+              (quiz) => quiz.quizIdForSearch === quizId
             );
+            console.log(this.doneQuize);
+
             return of(null);
           } else {
             return this.authService
-              .getUser(this.email)
+              .getUser(email)
               .pipe(
                 concatMap((data) =>
                   this.quizPlayingService.searchForProgressWUserId(+data.id)
@@ -76,7 +82,7 @@ export class QuizDetailsComponent implements OnInit {
           console.log('progres');
 
           for (let res of data) {
-            if (res.quizId == +this.quiz.id) {
+            if (res.quizId == quizId) {
               this.progressOfQuiz = res;
               this.isThereProgress = true;
               this.quizPlayingService.currentQuestion = res.questionsAnswered;
@@ -89,6 +95,15 @@ export class QuizDetailsComponent implements OnInit {
           this.quizPlayingService.isThereProgress = false;
         }
       });
+  }
+
+  getLeaderboard() {
+    const quizId: number = +this.route.snapshot.paramMap.get('id');
+    const email = JSON.parse(this.storage.getItem('user'));
+
+    this.doneQuizService
+      .getLeaderboardForQuiz(quizId)
+      .subscribe((data) => (this.leaderboard = data));
   }
 
   getQuiz() {

@@ -15,6 +15,8 @@ export class QuizPlayingService {
   timeLeft: number;
   isThereProgress: boolean = false;
   points: number = 0;
+
+  isQuizDone: boolean = false;
   constructor(private http: HttpClient) {}
 
   getQuestions(id: number): Observable<QuizQuestion[]> {

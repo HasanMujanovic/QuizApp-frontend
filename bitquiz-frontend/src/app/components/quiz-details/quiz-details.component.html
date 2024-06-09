@@ -1,39 +1,64 @@
 <app-header></app-header>
 <div class="container mx-auto px-4 py-8">
   <div class="bg-white rounded-lg shadow-md p-6">
-    <h2 class="text-3xl font-bold mb-4">{{ quiz.name }}</h2>
-    <div class="grid grid-cols-2 gap-4 mb-6">
+    <h2 class="text-3xl font-bold mb-4 text-green-700">{{ quiz.name }}</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
       <div>
         <p *ngIf="isQuizDone" class="text-gray-600">
-          <span class="font-semibold">Quiz Done</span>
+          <span class="font-semibold text-green-700">Quiz Done</span>
+          <span class="font-semibold text-green-700"></span>
+        </p>
+        <p *ngIf="isQuizDone" class="text-yellow-700">
+          Alert: You can play the quiz again but you wont get any rewards for
+          it!
         </p>
         <p class="text-gray-600">
-          <span class="font-semibold">Category:</span> {{ quiz.category }}
+          <span class="font-semibold text-green-700">Category:</span>
+          {{ quiz.category }}
         </p>
         <p class="text-gray-600">
-          <span class="font-semibold">Difficulty:</span> {{ quiz.difficulty }}
+          <span class="font-semibold text-green-700">Difficulty:</span>
+          {{ quiz.difficulty }}
         </p>
         <p class="text-gray-600">
-          <span class="font-semibold">Status:</span> {{ quiz.status }}
+          <span class="font-semibold text-green-700">Status:</span>
+          {{ quiz.status }}
         </p>
       </div>
       <div>
+        <div *ngIf="isQuizDone">
+          <p class="text-gray-600">
+            <span class="font-semibold text-green-700">Time:</span>
+            {{ quiz.time }} / {{ doneQuize.timeLeft | timeFormat }} min
+          </p>
+          <p class="text-gray-600">
+            <span class="font-semibold text-green-700">Points:</span>
+            {{ quiz.points }} / {{ quiz.points }}
+          </p>
+        </div>
+        <div *ngIf="!isQuizDone">
+          <p class="text-gray-600">
+            <span class="font-semibold text-green-700">Time:</span>
+            {{ quiz.time }} min
+          </p>
+          <p class="text-gray-600">
+            <span class="font-semibold text-green-700">Points:</span>
+            {{ quiz.points }}
+          </p>
+        </div>
+
         <p class="text-gray-600">
-          <span class="font-semibold">Time:</span> {{ quiz.time }} min
+          <span class="font-semibold text-green-700">Likes:</span>
+          {{ quiz.likes }}
         </p>
         <p class="text-gray-600">
-          <span class="font-semibold">Points:</span> {{ quiz.points }}
-        </p>
-        <p class="text-gray-600">
-          <span class="font-semibold">Likes:</span> {{ quiz.likes }}
-        </p>
-        <p class="text-gray-600">
-          <span class="font-semibold">Finished:</span> {{ quiz.doneIt }}
+          <span class="font-semibold text-green-700">Finished:</span>
+          {{ quiz.doneIt }}
         </p>
       </div>
     </div>
     <button
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
       routerLink="/quiz-playing/{{ quiz.id }}"
       *ngIf="!isThereProgress"
     >
@@ -41,13 +66,37 @@
     </button>
     <div *ngIf="isThereProgress">
       <button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         routerLink="/quiz-playing/{{ quiz.id }}"
       >
         Continue
       </button>
-      <p>Current question: {{ progressOfQuiz.questionsAnswered + 1 }}</p>
-      <p>Time left: {{ progressOfQuiz.time | timeFormat }}</p>
+      <p class="text-yellow-700">
+        Current question: {{ progressOfQuiz.questionsAnswered + 1 }}
+      </p>
+      <p class="text-yellow-700">
+        Time left: {{ progressOfQuiz.time | timeFormat }}
+      </p>
     </div>
   </div>
+  <br />
+  <h2 class="text-3xl font-bold mb-4 text-green-700 text-center">
+    Leaderboard
+  </h2>
+  <ul class="bg-white rounded-lg shadow-md p-6 max-w-3xl mx-auto">
+    <li
+      *ngFor="let player of leaderboard"
+      class="border-b last:border-none py-2 flex justify-between items-center"
+    >
+      <span class="text-green-700 font-semibold flex-1">{{
+        player.username
+      }}</span>
+      <span class="text-gray-600 flex-1 text-center">{{
+        player.pointsWon
+      }}</span>
+      <span class="text-yellow-700 flex-1 text-right">{{
+        player.timeLeft | timeFormat
+      }}</span>
+    </li>
+  </ul>
 </div>

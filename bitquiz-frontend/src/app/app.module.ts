@@ -16,10 +16,12 @@ import { QuizesPageComponent } from './components/quizes-page/quizes-page.compon
 import { QuizDetailsComponent } from './components/quiz-details/quiz-details.component';
 import { QuizPlayingComponent } from './components/quiz-playing/quiz-playing.component';
 import { TimeFormatPipe } from './pipes/time-format.pipe';
+import { DoneQuizesComponent } from './components/done-quizes/done-quizes.component';
 
 const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'done-quizes', component: DoneQuizesComponent },
   { path: 'quiz-playing/:id', component: QuizPlayingComponent },
   { path: 'quiz-details/:id', component: QuizDetailsComponent },
   { path: 'quizes-page', component: QuizesPageComponent },
@@ -43,6 +45,7 @@ const routes: Routes = [
     QuizDetailsComponent,
     QuizPlayingComponent,
     TimeFormatPipe,
+    DoneQuizesComponent,
   ],
   imports: [
     BrowserModule,

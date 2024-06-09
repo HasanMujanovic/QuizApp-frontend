@@ -13,6 +13,7 @@ import { DoneQuiz } from '../../common/done-quiz';
 import { SaveQuizProgress } from '../../common/save-quiz-progress';
 import { QuizProgress } from '../../common/quiz-progress';
 import { SaveQuizService } from '../../services/save-quiz.service';
+import { identifierName } from '@angular/compiler';
 
 @Component({
   selector: 'app-quiz-playing',
@@ -30,6 +31,7 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
   points: number = this.quizPlayingService.isThereProgress
     ? this.quizPlayingService.points
     : 0;
+  isQuizBeaten = this.quizPlayingService.isQuizDone;
   endOfQuiz: boolean = false;
 
   timeLeft: number;
@@ -66,6 +68,7 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
     });
     this.timer();
     this.getUser();
+    console.log(this.isQuizBeaten);
   }
 
   getQuiz(id: number) {
@@ -189,12 +192,15 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
     doneQuiz.timeLeft = this.timeLeft;
     doneQuiz.quizIdForSearch = +this.quiz.id;
     doneQuiz.userIdForSearch = +this.user.id;
+    doneQuiz.username = this.user.name;
 
     saveDoneQuiz.doneQuiz = doneQuiz;
 
-    this.doneQuizService
-      .saveQuiz(saveDoneQuiz)
-      .subscribe(() => console.log('sacuvalo se'));
+    if (!this.isQuizBeaten) {
+      this.doneQuizService
+        .saveQuiz(saveDoneQuiz)
+        .subscribe(() => console.log('sacuvalo se'));
+    }
   }
 
   saveProgress() {
@@ -210,9 +216,11 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
 
     saveQuizProgress.quizProgress = quizProgress;
 
-    this.saveQuizService
-      .saveProgress(saveQuizProgress)
-      .subscribe(() => console.log('Progres sacuvan'));
+    if (!this.isQuizBeaten) {
+      this.saveQuizService
+        .saveProgress(saveQuizProgress)
+        .subscribe(() => console.log('Progres sacuvan'));
+    }
   }
 
   ngOnDestroy(): void {
