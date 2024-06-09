@@ -7,17 +7,32 @@
     <p class="text-gray-600 mb-4">
       Vreme: {{ quiz?.time }} min | Bodovi: {{ quiz?.points }}
     </p>
-    <p>Time left: {{ formatirajVreme(timeLeft) }}</p>
+    <p>Time left: {{ timeLeft | timeFormat }}</p>
 
     <div class="question-container bg-white rounded-lg shadow-md p-6 mb-6">
       <h3 class="text-xl font-semibold mb-4">
         Question {{ flag + 1 }}: {{ activeQuestion?.text }}
       </h3>
+      <p>{{ activeQuestion?.points }} points</p>
+      <p>Question {{ flag + 1 }}/{{ questions.length }}</p>
+      <p *ngIf="searchForMultipleCorrect.length >= 2">Multiple answers</p>
       <ul>
-        <li *ngFor="let res of activeResponse" class="mb-3">
+        <li
+          *ngFor="let res of activeResponse"
+          class="mb-3 rounded-lg border border-gray-300"
+        >
           <button
+            [ngClass]="{
+              'bg-green-500 hover:bg-green-700':
+                selectedAnswerTrue && res.correctAnswer,
+              'bg-red-500 hover:bg-red-700':
+                selectedAnswerTrue &&
+                selectedAnswerId == res.id &&
+                !res.correctAnswer,
+            }"
             (click)="checkAnswer(res)"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full text-left"
+            class="text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full text-left"
+            [disabled]="selectedAnswerTrue && !res.correctAnswer"
           >
             {{ res?.text }}
           </button>
@@ -31,8 +46,9 @@
         (click)="onNextQuestion()"
         class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
       >
-        Next Question
+        Continue
       </button>
+
       <button
         (click)="fiftyFifty()"
         [disabled]="isFiftyFiftyDisabled()"
@@ -42,7 +58,6 @@
       </button>
       <button
         (click)="saveProgress()"
-        [disabled]="isFiftyFiftyDisabled()"
         class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline mr-4 disabled:cursor-not-allowed"
       >
         Save Progress
@@ -56,14 +71,14 @@
   >
     <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-6">
       <h2 class="text-xl font-semibold mb-4">Results</h2>
-      <p class="mb-2">Points won: {{ earnedPoints }}</p>
-      <p>Did you pass: {{ passed ? "Da" : "Ne" }}</p>
+      <p class="mb-2">Points won: {{ points }}</p>
+      <p>How did you do: {{ passed ? "Good" : "Bad" }}</p>
       <button
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
         routerLink="/quizes-page"
         (click)="saveQuiz()"
       >
-        OK
+        Submit Quiz
       </button>
     </div>
   </div>

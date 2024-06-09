@@ -26,7 +26,7 @@ export class QuizService {
     return this.http.get<Quiz>(quizById);
   }
 
-  makeQuiz(quiz: MakeQuiz) {
+  makeQuiz(quiz: MakeQuiz): Observable<any> {
     const makeQuizUrl = `${environment.url}/make-quiz/make`;
     return this.http.post<MakeQuiz>(makeQuizUrl, quiz);
   }

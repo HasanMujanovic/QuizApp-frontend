@@ -24,8 +24,12 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
   questions: QuizQuestion[] = [];
   activeQuestion: QuizQuestion;
   activeResponse: QuizResponse[] = [];
-  flag: number = 0;
-  points: number = 0;
+  flag: number = this.quizPlayingService.isThereProgress
+    ? this.quizPlayingService.currentQuestion
+    : 0;
+  points: number = this.quizPlayingService.isThereProgress
+    ? this.quizPlayingService.points
+    : 0;
   endOfQuiz: boolean = false;
 
   timeLeft: number;
@@ -34,6 +38,16 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
   storage: Storage = sessionStorage;
   email: string = JSON.parse(this.storage.getItem('user'));
   user: User = new User();
+
+  selectedAnswerTrue: boolean = false;
+  selectedAnswerId: string = '';
+  whenMultipleCorrect: number = 0;
+
+  isFiftyUsed: boolean = false;
+
+  searchForMultipleCorrect: QuizResponse[] = [];
+
+  passed: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -57,14 +71,16 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
   getQuiz(id: number) {
     this.quizService.getOneQuiz(id).subscribe((data) => {
       this.quiz = data;
-      this.timeLeft = data.time * 60;
+      this.timeLeft = this.quizPlayingService.isThereProgress
+        ? this.quizPlayingService.timeLeft
+        : data.time * 60;
       console.log(this.timeLeft);
     });
   }
   getPitanja(id: number) {
     this.quizPlayingService.getQuestions(id).subscribe((data) => {
       this.questions = data;
-      this.activeQuestion = this.questions[0];
+      this.activeQuestion = this.questions[this.flag];
       this.startingQuestion(+this.activeQuestion.id);
     });
   }
@@ -75,9 +91,12 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
   }
 
   startingQuestion(questionId: number) {
-    this.quizPlayingService
-      .getResponses(questionId)
-      .subscribe((data) => (this.activeResponse = data));
+    this.quizPlayingService.getResponses(questionId).subscribe((data) => {
+      this.activeResponse = data;
+      this.searchForMultipleCorrect = this.activeResponse.filter(
+        (res) => res.correctAnswer
+      );
+    });
   }
 
   onNextQuestion() {
@@ -89,25 +108,39 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
       this.endOfQuiz = true;
       console.log('Kviz je završen');
     }
+    this.selectedAnswerTrue = false;
   }
 
   checkAnswer(res: QuizResponse) {
-    if (res.correctAnswer) {
-      this.points += this.quiz.points;
+    const correctAnswers = this.searchForMultipleCorrect;
+    if (correctAnswers.length == 1) {
+      if (!this.selectedAnswerTrue) {
+        this.selectedAnswerId = res.id;
+        this.selectedAnswerTrue = true;
+
+        if (res.correctAnswer) {
+          this.points += this.activeQuestion.points;
+        }
+      }
+    } else {
+      if (!this.selectedAnswerTrue) {
+        if (!res.correctAnswer) {
+          this.selectedAnswerTrue = true;
+          this.selectedAnswerId = res.id;
+        } else {
+          this.whenMultipleCorrect++;
+        }
+        if (this.whenMultipleCorrect >= correctAnswers.length) {
+          this.selectedAnswerTrue = true;
+          this.selectedAnswerId = res.id;
+          this.points += this.activeQuestion.points;
+        }
+      }
     }
-    this.onNextQuestion();
+    this.passed = this.points > this.quiz.points / 2 ? true : false;
   }
 
   fiftyFifty() {
-    console.log('click');
-
-    const correctAnswers = this.activeResponse.filter(
-      (odgovor) => odgovor.correctAnswer
-    );
-    if (correctAnswers.length > 2) {
-      return;
-    }
-
     const correctAnswer = this.activeResponse.find((res) => res.correctAnswer);
 
     const wrongAnswers = this.activeResponse
@@ -115,12 +148,16 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
       .slice(0, Math.ceil((this.activeResponse.length - 1) / 2));
 
     this.activeResponse = [correctAnswer, ...wrongAnswers];
+    this.isFiftyUsed = true;
   }
   isFiftyFiftyDisabled(): boolean {
-    const correctAnswers = this.activeResponse.filter(
-      (odgovor) => odgovor.correctAnswer
-    );
-    if (correctAnswers.length > 2 || this.activeResponse.length <= 2) {
+    const correctAnswers = this.searchForMultipleCorrect;
+    if (
+      correctAnswers.length >= 2 ||
+      this.activeResponse.length <= 2 ||
+      this.selectedAnswerTrue ||
+      this.isFiftyUsed
+    ) {
       return true;
     }
     return false;
@@ -141,14 +178,6 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
     }, interval);
   }
 
-  formatirajVreme(sekunde: number): string {
-    const minutes = Math.floor(sekunde / 60);
-    const seconds = sekunde % 60;
-    const formattedMin = minutes < 10 ? '0' + minutes : minutes;
-    const formatedSec = seconds < 10 ? '0' + seconds : seconds;
-    return `${formattedMin}:${formatedSec}`;
-  }
-
   saveQuiz() {
     let saveDoneQuiz = new SaveDoneQuiz();
     let doneQuiz = new DoneQuiz();
@@ -158,6 +187,8 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
 
     doneQuiz.pointsWon = this.points;
     doneQuiz.timeLeft = this.timeLeft;
+    doneQuiz.quizIdForSearch = +this.quiz.id;
+    doneQuiz.userIdForSearch = +this.user.id;
 
     saveDoneQuiz.doneQuiz = doneQuiz;
 
@@ -171,11 +202,11 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
     let quizProgress = new QuizProgress();
 
     saveQuizProgress.user = this.user;
-    saveQuizProgress.quiz = this.quiz;
 
     quizProgress.time = this.timeLeft;
     quizProgress.points = this.points;
     quizProgress.questionsAnswered = this.flag;
+    quizProgress.quizId = +this.quiz.id;
 
     saveQuizProgress.quizProgress = quizProgress;
 

@@ -4,6 +4,9 @@
     <h2 class="text-3xl font-bold mb-4">{{ quiz.name }}</h2>
     <div class="grid grid-cols-2 gap-4 mb-6">
       <div>
+        <p *ngIf="isQuizDone" class="text-gray-600">
+          <span class="font-semibold">Quiz Done</span>
+        </p>
         <p class="text-gray-600">
           <span class="font-semibold">Category:</span> {{ quiz.category }}
         </p>
@@ -32,8 +35,19 @@
     <button
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
       routerLink="/quiz-playing/{{ quiz.id }}"
+      *ngIf="!isThereProgress"
     >
       Start Quiz
     </button>
+    <div *ngIf="isThereProgress">
+      <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        routerLink="/quiz-playing/{{ quiz.id }}"
+      >
+        Continue
+      </button>
+      <p>Current question: {{ progressOfQuiz.questionsAnswered + 1 }}</p>
+      <p>Time left: {{ progressOfQuiz.time | timeFormat }}</p>
+    </div>
   </div>
 </div>

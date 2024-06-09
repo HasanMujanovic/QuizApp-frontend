@@ -8,6 +8,7 @@ import {
 import { Router } from '@angular/router';
 import { Quiz } from '../../common/quiz';
 import { QuizService } from '../../services/quiz.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-quiz-info',
@@ -58,7 +59,11 @@ export class QuizInfoComponent implements OnInit {
       // Dalja obrada forme
       this.router.navigate(['/create-quiz']);
     } else {
-      console.log('Forma nije validna');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'All fields requierd',
+      });
     }
   }
 }

@@ -11,7 +11,7 @@
     >
       <div formArrayName="questions">
         <div
-          *ngFor="let pitanje of questions.controls; let i = index"
+          *ngFor="let question of questions.controls; let i = index"
           [formGroupName]="i"
           class="mb-6"
         >
@@ -48,7 +48,7 @@
           <div class="mb-4" formArrayName="responses">
             <div
               *ngFor="
-                let odgovor of pitanje.get('responses').controls;
+                let odgovor of question.get('responses').controls;
                 let j = index
               "
               [formGroupName]="j"
@@ -66,11 +66,19 @@
                 formControlName="text"
               />
               <input class="mr-2" type="checkbox" formControlName="bool" />
-              <label [for]="'tacno' + i + j">Tačno</label>
+              <label [for]="'tacno' + i + j">Correct</label>
+              <button
+                *ngIf="odgovor.get('isNew').value"
+                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                type="button"
+                (click)="removeResponse(i, j)"
+              >
+                Delete
+              </button>
             </div>
           </div>
 
-          <div *ngIf="questions.get('responses').length > 2" class="mb-4">
+          <div *ngIf="question.get('responses').length > 2" class="mb-4">
             <input type="checkbox" formControlName="helpAllowed" />
             <label for="dozvoljenaPomoc">Allow help (50:50)</label>
           </div>
@@ -91,7 +99,7 @@
           type="button"
           (click)="addQuestion()"
         >
-          Add answer
+          Add Question
         </button>
         <button
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

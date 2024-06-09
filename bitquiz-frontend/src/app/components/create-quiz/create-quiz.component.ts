@@ -14,6 +14,8 @@ import { Quiz } from '../../common/quiz';
 import { MakeQuiz } from '../../common/make-quiz';
 import { User } from '../../common/user';
 import { AuthenticateService } from '../../services/authenticate.service';
+import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-create-quiz',
@@ -32,6 +34,8 @@ export class CreateQuizComponent {
   storage: Storage = sessionStorage;
   userEmail: string = JSON.parse(this.storage.getItem('user'));
   user: User = new User();
+
+  errors = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -52,14 +56,15 @@ export class CreateQuizComponent {
   }
 
   createQuestionGroup(): FormGroup {
+    const responseGroup = this.createResponseGroup();
+    const responseGroup2 = this.createResponseGroup();
+    responseGroup.get('isNew').setValue(false);
+    responseGroup2.get('isNew').setValue(false);
     return this.formBuilder.group({
       question: ['', Validators.required],
       points: ['', [Validators.required, Validators.min(1)]],
       helpAllowed: false,
-      responses: this.formBuilder.array([
-        this.createResponseGroup(),
-        this.createResponseGroup(),
-      ]),
+      responses: this.formBuilder.array([responseGroup, responseGroup2]),
     });
   }
 
@@ -67,10 +72,59 @@ export class CreateQuizComponent {
     return this.formBuilder.group({
       text: ['', Validators.required],
       bool: false,
+      isNew: true,
     });
   }
 
+  removeResponse(questionIndex: number, responseIndex: number): void {
+    const question = this.questions.at(questionIndex) as FormGroup;
+    const responses = question.get('responses') as FormArray;
+    responses.removeAt(responseIndex);
+    console.log('Pitanja:', this.allQuestions);
+    console.log('responses:', this.allResponses);
+  }
+
+  checkCorrectAnswers(): boolean {
+    const question = (this.quizForm.get('questions') as FormArray)
+      .controls[0] as FormGroup;
+
+    const responses = question.get('responses') as FormArray;
+    return responses.controls.some(
+      (response: FormGroup) => response.get('bool').value
+    );
+  }
+
+  displayAlert() {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error!',
+      text: this.errors.join('\n'),
+    });
+  }
+
+  errorMessages(): boolean {
+    let tempErr = [];
+    if (!this.quizForm.valid || !this.checkCorrectAnswers()) {
+      if (!this.checkCorrectAnswers()) {
+        tempErr.push('At least one correct answer is required.');
+      }
+      if (this.quizForm.get('questions').invalid) {
+        tempErr.push('All Fields are required.');
+      }
+      this.errors = tempErr;
+
+      return true;
+    }
+    return false;
+  }
+
   addQuestion(): void {
+    if (this.errorMessages()) {
+      this.displayAlert();
+      return;
+    }
+    console.log(this.quizForm.valid);
+
     const newQuestion = this.quizForm.value.questions[0];
     this.allQuestions.push(newQuestion.question);
     this.allResponses.push(newQuestion.responses);
@@ -90,8 +144,9 @@ export class CreateQuizComponent {
 
   addResponse(index: number): void {
     const response = this.questions.at(index).get('responses') as FormArray;
+
     response.push(this.createResponseGroup());
-    // Update pomoc (50:50) option visibility
+
     const questionGroup = this.questions.at(index) as FormGroup;
     if (response.length > 2 && !questionGroup.get('helpAllowed')) {
       questionGroup.addControl('helpAllowed', new FormControl(false));
@@ -103,7 +158,13 @@ export class CreateQuizComponent {
       this.user = data;
     });
   }
+
   onSubmit(): void {
+    if (this.errorMessages()) {
+      this.displayAlert();
+      return;
+    }
+
     let quiz = new Quiz();
     quiz = this.quizService.quizInfo;
     quiz.points = 0;

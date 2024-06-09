@@ -32,14 +32,23 @@
       class="bg-white rounded-lg shadow-md p-4 max-w-xs"
     >
       <h2 class="text-lg font-semibold mb-2">{{ quiz.name }}</h2>
+      <p *ngIf="quizIdsFromDoneQuizes.includes(+quiz.id)">Alredy Done!</p>
       <p class="text-gray-700 mb-2">Category: {{ quiz.category }}</p>
       <p class="text-gray-700 mb-2">Difficulty: {{ quiz.difficulty }}</p>
       <p class="text-gray-700 mb-2">Points: {{ quiz.points }}</p>
       <button
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
         routerLink="/quiz-details/{{ quiz.id }}"
+        *ngIf="!quizIdsFromDoneQuizes.includes(+quiz.id)"
       >
         Start a quiz!
+      </button>
+      <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+        routerLink="/quiz-details/{{ quiz.id }}"
+        *ngIf="quizIdsFromDoneQuizes.includes(+quiz.id)"
+      >
+        Check Your Results
       </button>
     </div>
   </div>

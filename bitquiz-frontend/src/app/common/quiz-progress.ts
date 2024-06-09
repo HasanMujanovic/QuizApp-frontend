@@ -3,4 +3,5 @@ export class QuizProgress {
   public points: number;
   public time: number;
   public questionsAnswered: number;
+  public quizId: number;
 }

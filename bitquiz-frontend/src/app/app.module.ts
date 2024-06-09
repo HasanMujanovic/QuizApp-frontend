@@ -15,6 +15,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { QuizesPageComponent } from './components/quizes-page/quizes-page.component';
 import { QuizDetailsComponent } from './components/quiz-details/quiz-details.component';
 import { QuizPlayingComponent } from './components/quiz-playing/quiz-playing.component';
+import { TimeFormatPipe } from './pipes/time-format.pipe';
 
 const routes: Routes = [
   { path: 'signup', component: SignupComponent },
@@ -41,6 +42,7 @@ const routes: Routes = [
     QuizesPageComponent,
     QuizDetailsComponent,
     QuizPlayingComponent,
+    TimeFormatPipe,
   ],
   imports: [
     BrowserModule,

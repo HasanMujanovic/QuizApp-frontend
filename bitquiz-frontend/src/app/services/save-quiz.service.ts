@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SaveQuizProgress } from '../common/save-quiz-progress';
 import { environment } from '../../environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { environment } from '../../environments/environment';
 export class SaveQuizService {
   constructor(private http: HttpClient) {}
 
-  saveProgress(quiz: SaveQuizProgress) {
+  saveProgress(quiz: SaveQuizProgress): Observable<any> {
     const searchUrl = environment.url + `/quiz-progress/make`;
     return this.http.post<SaveQuizProgress>(searchUrl, quiz);
   }
