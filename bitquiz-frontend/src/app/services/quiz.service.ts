@@ -5,6 +5,7 @@ import { Observable, map } from 'rxjs';
 import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 import { MakeQuiz } from '../common/make-quiz';
 import { environment } from '../../environments/environment';
+import { identifierName } from '@angular/compiler';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +30,16 @@ export class QuizService {
   makeQuiz(quiz: MakeQuiz): Observable<any> {
     const makeQuizUrl = `${environment.url}/make-quiz/make`;
     return this.http.post<MakeQuiz>(makeQuizUrl, quiz);
+  }
+  editQuiz(quiz: Quiz): Observable<any> {
+    const updateUrl = `${environment.url}/make-quiz/edit`;
+    return this.http.post<Quiz>(updateUrl, quiz);
+  }
+  getMadeQuizes(userId: number): Observable<Quiz[]> {
+    const searchUrl = `${environment.url}/users/${userId}/quizzes`;
+    return this.http
+      .get<getQuiz>(searchUrl)
+      .pipe(map((res) => res._embedded.quizzes));
   }
 }
 interface getQuiz {

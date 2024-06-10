@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.custom-snackbar-success {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.custom-snackbar-warning {
+  background-color: #ffeb3b;
+  color: #000;
+}

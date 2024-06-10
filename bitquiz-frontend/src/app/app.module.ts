@@ -17,10 +17,16 @@ import { QuizDetailsComponent } from './components/quiz-details/quiz-details.com
 import { QuizPlayingComponent } from './components/quiz-playing/quiz-playing.component';
 import { TimeFormatPipe } from './pipes/time-format.pipe';
 import { DoneQuizesComponent } from './components/done-quizes/done-quizes.component';
+import { EditQuizComponent } from './components/edit-quiz/edit-quiz.component';
+import { MadeQuizesComponent } from './components/made-quizes/made-quizes.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'edit-quizes/:id', component: EditQuizComponent },
+  { path: 'made-quizes', component: MadeQuizesComponent },
   { path: 'done-quizes', component: DoneQuizesComponent },
   { path: 'quiz-playing/:id', component: QuizPlayingComponent },
   { path: 'quiz-details/:id', component: QuizDetailsComponent },
@@ -46,12 +52,16 @@ const routes: Routes = [
     QuizPlayingComponent,
     TimeFormatPipe,
     DoneQuizesComponent,
+    EditQuizComponent,
+    MadeQuizesComponent,
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes),
     HttpClientModule,
     ReactiveFormsModule,
+    MatSnackBarModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
