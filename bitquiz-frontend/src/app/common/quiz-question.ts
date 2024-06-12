@@ -3,4 +3,5 @@ export class QuizQuestion {
   public text: string;
   public points: number;
   public helpAllowed: boolean;
+  public minusPoints: number;
 }

@@ -20,6 +20,8 @@ export class QuizDetailsComponent implements OnInit {
   doneQuize: DoneQuiz = new DoneQuiz();
   leaderboard: DoneQuiz[] = [];
 
+  statusOfQuiz: boolean = false;
+
   isQuizDone: boolean = false;
 
   user: User = new User();
@@ -54,8 +56,6 @@ export class QuizDetailsComponent implements OnInit {
           this.isQuizDone = doneQuizes.some(
             (quiz) => quiz.quizIdForSearch === quizId
           );
-          this.quizPlayingService.isQuizDone = this.isQuizDone;
-          console.log(this.quizPlayingService.isQuizDone + '----');
 
           if (this.isQuizDone) {
             console.log('quizdone');
@@ -85,14 +85,10 @@ export class QuizDetailsComponent implements OnInit {
             if (res.quizId == quizId) {
               this.progressOfQuiz = res;
               this.isThereProgress = true;
-              this.quizPlayingService.currentQuestion = res.questionsAnswered;
-              this.quizPlayingService.isThereProgress = true;
-              this.quizPlayingService.timeLeft = res.time;
-              this.quizPlayingService.points = res.points;
+
               return;
             }
           }
-          this.quizPlayingService.isThereProgress = false;
         }
       });
   }
@@ -110,6 +106,7 @@ export class QuizDetailsComponent implements OnInit {
     const quizId: number = +this.route.snapshot.paramMap.get('id');
     this.quizService.getQuizById(quizId).subscribe((data) => {
       this.quiz = data;
+      this.statusOfQuiz = data.status == 'Public' ? true : false;
     });
   }
 }

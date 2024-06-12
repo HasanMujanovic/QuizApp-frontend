@@ -14,6 +14,7 @@ import { SaveQuizProgress } from '../../common/save-quiz-progress';
 import { QuizProgress } from '../../common/quiz-progress';
 import { SaveQuizService } from '../../services/save-quiz.service';
 import { identifierName } from '@angular/compiler';
+import { concatMap, of } from 'rxjs';
 
 @Component({
   selector: 'app-quiz-playing',
@@ -25,14 +26,12 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
   questions: QuizQuestion[] = [];
   activeQuestion: QuizQuestion;
   activeResponse: QuizResponse[] = [];
-  flag: number = this.quizPlayingService.isThereProgress
-    ? this.quizPlayingService.currentQuestion
-    : 0;
-  points: number = this.quizPlayingService.isThereProgress
-    ? this.quizPlayingService.points
-    : 0;
-  isQuizBeaten = this.quizPlayingService.isQuizDone;
+  flag: number = 0;
+  points: number = 0;
+  isQuizBeaten: boolean = false;
+  isThereProgress: boolean = false;
   endOfQuiz: boolean = false;
+  statusOfQuiz: boolean = false;
 
   timeLeft: number;
   timerInterval: any;
@@ -44,12 +43,17 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
   selectedAnswerTrue: boolean = false;
   selectedAnswerId: string = '';
   whenMultipleCorrect: number = 0;
+  alredyAnswered: number[] = [];
 
   isFiftyUsed: boolean = false;
 
   searchForMultipleCorrect: QuizResponse[] = [];
 
   passed: boolean = false;
+
+  statsCorrectAnsw: number = 0;
+  statsWrongAnsw: number = 0;
+  statsSkippedAnsw: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -66,20 +70,23 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
       this.getQuiz(kvizId);
       this.getPitanja(kvizId);
     });
+    this.getDoneQuizesAndMaybeLookForProgress();
     this.timer();
     this.getUser();
     console.log(this.isQuizBeaten);
   }
 
   getQuiz(id: number) {
+    console.log('getkviz');
+
     this.quizService.getQuizById(id).subscribe((data) => {
       this.quiz = data;
-      this.timeLeft = this.quizPlayingService.isThereProgress
-        ? this.quizPlayingService.timeLeft
-        : data.time * 60;
+      this.statusOfQuiz = data.status == 'Public' ? true : false;
+      this.timeLeft = this.isThereProgress ? this.timeLeft : data.time * 60;
       console.log(this.timeLeft);
     });
   }
+
   getPitanja(id: number) {
     this.quizPlayingService.getQuestions(id).subscribe((data) => {
       this.questions = data;
@@ -100,6 +107,11 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
         (res) => res.correctAnswer
       );
     });
+  }
+
+  onSkipQuestion() {
+    this.statsSkippedAnsw++;
+    this.onNextQuestion();
   }
 
   onNextQuestion() {
@@ -123,6 +135,14 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
 
         if (res.correctAnswer) {
           this.points += this.activeQuestion.points;
+          this.statsCorrectAnsw++;
+        } else {
+          this.points =
+            this.points - this.activeQuestion.minusPoints < 0
+              ? 0
+              : this.points - this.activeQuestion.minusPoints;
+
+          this.statsWrongAnsw++;
         }
       }
     } else {
@@ -130,7 +150,9 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
         if (!res.correctAnswer) {
           this.selectedAnswerTrue = true;
           this.selectedAnswerId = res.id;
-        } else {
+        }
+        if (!this.alredyAnswered.includes(+res.id)) {
+          this.alredyAnswered.push(+res.id);
           this.whenMultipleCorrect++;
         }
         if (this.whenMultipleCorrect >= correctAnswers.length) {
@@ -213,6 +235,9 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
     quizProgress.points = this.points;
     quizProgress.questionsAnswered = this.flag;
     quizProgress.quizId = +this.quiz.id;
+    quizProgress.correctAns = this.statsCorrectAnsw;
+    quizProgress.skippedAns = this.statsSkippedAnsw;
+    quizProgress.wrongAns = this.statsWrongAnsw;
 
     saveQuizProgress.quizProgress = quizProgress;
 
@@ -221,6 +246,51 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
         .saveProgress(saveQuizProgress)
         .subscribe(() => console.log('Progres sacuvan'));
     }
+  }
+
+  getDoneQuizesAndMaybeLookForProgress() {
+    const email = JSON.parse(this.storage.getItem('user'));
+    const quizId: number = +this.route.snapshot.paramMap.get('id');
+
+    this.authService
+      .getUser(email)
+      .pipe(
+        concatMap((data) => this.doneQuizService.getDoneQuizes(+data.id)),
+        concatMap((doneQuizes) => {
+          this.isQuizBeaten = doneQuizes.some(
+            (quiz) => quiz.quizIdForSearch === quizId
+          );
+          if (this.isQuizBeaten) {
+            return of(null);
+          } else {
+            return this.authService
+              .getUser(email)
+              .pipe(
+                concatMap((data) =>
+                  this.quizPlayingService.searchForProgressWUserId(+data.id)
+                )
+              );
+          }
+        })
+      )
+      .subscribe((data) => {
+        if (data) {
+          console.log('progres');
+
+          for (let res of data) {
+            if (res.quizId == quizId) {
+              this.points = res.points;
+              this.isThereProgress = true;
+              this.statsCorrectAnsw = res.correctAns;
+              this.statsWrongAnsw = res.wrongAns;
+              this.statsSkippedAnsw = res.skippedAns;
+              this.flag = res.questionsAnswered;
+              this.timeLeft = res.time;
+              return;
+            }
+          }
+        }
+      });
   }
 
   ngOnDestroy(): void {

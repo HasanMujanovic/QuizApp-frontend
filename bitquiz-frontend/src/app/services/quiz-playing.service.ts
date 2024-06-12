@@ -5,18 +5,11 @@ import { HttpClient } from '@angular/common/http';
 import { QuizResponse } from '../common/quiz-response';
 import { environment } from '../../environments/environment';
 import { QuizProgress } from '../common/quiz-progress';
-import { Quiz } from '../common/quiz';
 
 @Injectable({
   providedIn: 'root',
 })
 export class QuizPlayingService {
-  currentQuestion: number = 0;
-  timeLeft: number;
-  isThereProgress: boolean = false;
-  points: number = 0;
-
-  isQuizDone: boolean = false;
   constructor(private http: HttpClient) {}
 
   getQuestions(id: number): Observable<QuizQuestion[]> {

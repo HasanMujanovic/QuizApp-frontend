@@ -28,6 +28,7 @@ export class CreateQuizComponent {
   allResponses: any[] = [];
   allScores: any[] = [];
   allHelps: any[] = [];
+  allNegativePoints: number[] = [];
   quizQuestions: QuizQuestion[] = [];
   quizResponese: QuizResponse[] = [];
 
@@ -36,6 +37,7 @@ export class CreateQuizComponent {
   user: User = new User();
 
   errors = [];
+  atleastOneQuestion = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -63,6 +65,7 @@ export class CreateQuizComponent {
     return this.formBuilder.group({
       question: ['', Validators.required],
       points: ['', [Validators.required, Validators.min(1)]],
+      minusPoints: ['', [Validators.required, Validators.min(1)]],
       helpAllowed: false,
       responses: this.formBuilder.array([responseGroup, responseGroup2]),
     });
@@ -130,6 +133,7 @@ export class CreateQuizComponent {
     this.allResponses.push(newQuestion.responses);
     this.allScores.push(newQuestion.points);
     this.allHelps.push(newQuestion.helpAllowed);
+    this.allNegativePoints.push(newQuestion.minusPoints);
     console.log('Pitanja:', this.allQuestions);
     console.log('responses:', this.allResponses);
     console.log('----' + this.allScores);
@@ -140,6 +144,8 @@ export class CreateQuizComponent {
       'questions',
       this.formBuilder.array([this.createQuestionGroup()])
     );
+
+    this.atleastOneQuestion = true;
   }
 
   addResponse(index: number): void {
@@ -160,7 +166,7 @@ export class CreateQuizComponent {
   }
 
   onSubmit(): void {
-    if (this.errorMessages()) {
+    if (!this.atleastOneQuestion && this.errorMessages()) {
       this.displayAlert();
       return;
     }
@@ -173,6 +179,7 @@ export class CreateQuizComponent {
       tempQuizQuestion.text = this.allQuestions[i];
       tempQuizQuestion.points = this.allScores[i];
       tempQuizQuestion.helpAllowed = this.allHelps[i];
+      tempQuizQuestion.minusPoints = this.allNegativePoints[i];
       this.quizQuestions.push(tempQuizQuestion);
       quiz.points += this.allScores[i];
     }

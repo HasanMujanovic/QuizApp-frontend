@@ -44,6 +44,20 @@
               placeholder="Enter points..."
             />
           </div>
+          <div class="mb-4">
+            <label
+              class="block text-gray-700 text-sm font-bold mb-2"
+              for="minusPoints{{ i }}"
+              >Negative Points:</label
+            >
+            <input
+              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="minusPoints{{ i }}"
+              type="number"
+              formControlName="minusPoints"
+              placeholder="Enter negative points..."
+            />
+          </div>
 
           <div class="mb-4" formArrayName="responses">
             <div
