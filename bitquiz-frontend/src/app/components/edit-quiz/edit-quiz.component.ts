@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Quiz } from '../../common/quiz';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuizService } from '../../services/quiz.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import Swal from 'sweetalert2';
+import { Quiz } from '../../Interface/quiz';
 
 @Component({
   selector: 'app-edit-quiz',

@@ -6,9 +6,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Quiz } from '../../common/quiz';
 import { QuizService } from '../../services/quiz.service';
 import Swal from 'sweetalert2';
+import { Quiz } from '../../Interface/quiz';
 
 @Component({
   selector: 'app-quiz-info',

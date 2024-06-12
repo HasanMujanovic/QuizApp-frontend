@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { SaveQuizProgress } from '../common/save-quiz-progress';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
+import { SaveQuizProgress } from '../Interface/save-quiz-progress';
 
 @Injectable({
   providedIn: 'root',

@@ -28,7 +28,7 @@
   </div>
   <div class="col-span-3 p-4 grid grid-cols-3 gap-4">
     <div
-      *ngFor="let quiz of quizes"
+      *ngFor="let quiz of quizes | async"
       class="bg-white rounded-lg shadow-md p-4 max-w-xs"
     >
       <h2 class="text-lg font-semibold mb-2">{{ quiz.name }}</h2>

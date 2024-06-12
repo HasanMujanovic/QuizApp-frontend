@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Quiz } from '../../common/quiz';
 import { QuizService } from '../../services/quiz.service';
 import { ActivatedRoute } from '@angular/router';
-import { User } from '../../common/user';
 import { AuthenticateService } from '../../services/authenticate.service';
 import { concatMap, of } from 'rxjs';
 import { QuizPlayingService } from '../../services/quiz-playing.service';
-import { QuizProgress } from '../../common/quiz-progress';
 import { DoneQuizService } from '../../services/done-quiz.service';
-import { DoneQuiz } from '../../common/done-quiz';
+import { Quiz } from '../../Interface/quiz';
+import { DoneQuiz } from '../../Interface/done-quiz';
+import { QuizProgress } from '../../Interface/quiz-progress';
+import { User } from '../../Interface/user';
 
 @Component({
   selector: 'app-quiz-details',

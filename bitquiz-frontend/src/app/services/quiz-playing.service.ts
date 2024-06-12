@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { QuizQuestion } from '../common/quiz-question';
 import { Observable, map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { QuizResponse } from '../common/quiz-response';
 import { environment } from '../../environments/environment';
-import { QuizProgress } from '../common/quiz-progress';
+import { QuizQuestion } from '../Interface/quiz-question';
+import { QuizResponse } from '../Interface/quiz-response';
+import { QuizProgress } from '../Interface/quiz-progress';
 
 @Injectable({
   providedIn: 'root',

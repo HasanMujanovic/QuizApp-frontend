@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Quiz } from '../common/quiz';
 import { Observable, map } from 'rxjs';
 import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
-import { MakeQuiz } from '../common/make-quiz';
 import { environment } from '../../environments/environment';
 import { identifierName } from '@angular/compiler';
+import { Quiz } from '../Interface/quiz';
+import { MakeQuiz } from '../Interface/make-quiz';
 
 @Injectable({
   providedIn: 'root',

@@ -8,14 +8,14 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { QuizService } from '../../services/quiz.service';
-import { QuizQuestion } from '../../common/quiz-question';
-import { QuizResponse } from '../../common/quiz-response';
-import { Quiz } from '../../common/quiz';
-import { MakeQuiz } from '../../common/make-quiz';
-import { User } from '../../common/user';
 import { AuthenticateService } from '../../services/authenticate.service';
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
+import { MakeQuiz } from '../../Interface/make-quiz';
+import { Quiz } from '../../Interface/quiz';
+import { QuizQuestion } from '../../Interface/quiz-question';
+import { QuizResponse } from '../../Interface/quiz-response';
+import { User } from '../../Interface/user';
 
 @Component({
   selector: 'app-create-quiz',

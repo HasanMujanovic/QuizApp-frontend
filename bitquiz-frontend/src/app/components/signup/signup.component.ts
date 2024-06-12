@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from '../../common/user';
 import {
   FormBuilder,
   FormControl,
@@ -9,7 +8,7 @@ import {
 import { Router } from '@angular/router';
 import { AuthenticateService } from '../../services/authenticate.service';
 import { EMPTY, Observable, catchError, map, of } from 'rxjs';
-import { UserToSave } from '../../common/user-to-save';
+import { UserToSave } from '../../Interface/user-to-save';
 
 @Component({
   selector: 'app-signup',

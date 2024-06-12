@@ -1,20 +1,20 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { QuizPlayingService } from '../../services/quiz-playing.service';
-import { Quiz } from '../../common/quiz';
 import { QuizService } from '../../services/quiz.service';
-import { QuizQuestion } from '../../common/quiz-question';
-import { QuizResponse } from '../../common/quiz-response';
 import { DoneQuizService } from '../../services/done-quiz.service';
-import { User } from '../../common/user';
 import { AuthenticateService } from '../../services/authenticate.service';
-import { SaveDoneQuiz } from '../../common/save-done-quiz';
-import { DoneQuiz } from '../../common/done-quiz';
-import { SaveQuizProgress } from '../../common/save-quiz-progress';
-import { QuizProgress } from '../../common/quiz-progress';
 import { SaveQuizService } from '../../services/save-quiz.service';
 import { identifierName } from '@angular/compiler';
 import { concatMap, of } from 'rxjs';
+import { Quiz } from '../../Interface/quiz';
+import { QuizQuestion } from '../../Interface/quiz-question';
+import { QuizResponse } from '../../Interface/quiz-response';
+import { SaveDoneQuiz } from '../../Interface/save-done-quiz';
+import { DoneQuiz } from '../../Interface/done-quiz';
+import { SaveQuizProgress } from '../../Interface/save-quiz-progress';
+import { QuizProgress } from '../../Interface/quiz-progress';
+import { User } from '../../Interface/user';
 
 @Component({
   selector: 'app-quiz-playing',

@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticateService } from '../../services/authenticate.service';
 import { QuizService } from '../../services/quiz.service';
 import { concatMap } from 'rxjs';
-import { User } from '../../common/user';
-import { Quiz } from '../../common/quiz';
 import { ActivatedRoute } from '@angular/router';
+import { Quiz } from '../../Interface/quiz';
+import { User } from '../../Interface/user';
 
 @Component({
   selector: 'app-made-quizes',

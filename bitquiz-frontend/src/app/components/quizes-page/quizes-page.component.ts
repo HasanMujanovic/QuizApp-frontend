@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { QuizService } from '../../services/quiz.service';
-import { Quiz } from '../../common/quiz';
-import { DoneQuiz } from '../../common/done-quiz';
 import { AuthenticateService } from '../../services/authenticate.service';
-import { concatMap } from 'rxjs';
+import { Observable, concatMap } from 'rxjs';
 import { DoneQuizService } from '../../services/done-quiz.service';
+import { DoneQuiz } from '../../Interface/done-quiz';
+import { Quiz } from '../../Interface/quiz';
 
 @Component({
   selector: 'app-quizes-page',
@@ -12,7 +12,7 @@ import { DoneQuizService } from '../../services/done-quiz.service';
   styleUrl: './quizes-page.component.css',
 })
 export class QuizesPageComponent implements OnInit {
-  quizes: Quiz[] = [];
+  quizes: Observable<Quiz[]> = this.quizService.getQuizes();
   doneQuizes: DoneQuiz[] = [];
 
   quizIdsFromDoneQuizes: number[] = [];
@@ -26,7 +26,6 @@ export class QuizesPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getQuizes();
     this.getDoneQuizes();
   }
   getDoneQuizes() {
@@ -41,11 +40,10 @@ export class QuizesPageComponent implements OnInit {
       });
   }
 
-  getQuizes() {
-    this.quizService.getQuizes().subscribe((data) => {
-      this.quizes = data;
-
-      console.log(this.quizes);
-    });
-  }
+  // getQuizes() {
+  //   this.quizService.getQuizes().subscribe((data) => {
+  //     this.quizes = data;
+  //     console.log(this.quizes);
+  //   });
+  // }
 }

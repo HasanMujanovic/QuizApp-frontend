@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from '../common/user';
 import { Observable, catchError, of } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { UserToSave } from '../common/user-to-save';
+import { UserToSave } from '../Interface/user-to-save';
+import { User } from '../Interface/user';
 
 @Injectable({
   providedIn: 'root',

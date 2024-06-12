@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticateService } from '../../services/authenticate.service';
 import { DoneQuizService } from '../../services/done-quiz.service';
 import { concatMap, forkJoin, of, switchMap } from 'rxjs';
-import { DoneQuiz } from '../../common/done-quiz';
 import { ActivatedRoute } from '@angular/router';
 import { QuizService } from '../../services/quiz.service';
-import { Quiz } from '../../common/quiz';
+import { Quiz } from '../../Interface/quiz';
 
 @Component({
   selector: 'app-done-quizes',
