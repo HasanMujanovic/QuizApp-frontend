@@ -20,41 +20,18 @@ export class QuizPlayingService {
   constructor(private http: HttpClient) {}
 
   getQuestions(id: number): Observable<QuizQuestion[]> {
-    const questionUrl = `${environment.url}/quizes/${id}/questions`;
+    const questionUrl = `${environment.url}/playing/${id}/questions`;
 
-    return this.http
-      .get<getQuestions>(questionUrl)
-      .pipe(map((res) => res._embedded.quizQuestionses));
+    return this.http.get<QuizQuestion[]>(questionUrl);
   }
   getResponses(id: number): Observable<QuizResponse[]> {
-    const responseUrl = `${environment.url}/quiz-questions/${id}/responses`;
+    const responseUrl = `${environment.url}/playing/questions/${id}/responses`;
 
-    return this.http
-      .get<getResponses>(responseUrl)
-      .pipe(map((res) => res._embedded.quizResponses));
+    return this.http.get<QuizResponse[]>(responseUrl);
   }
   searchForProgressWUserId(userId: number): Observable<QuizProgress[]> {
-    const searchUrl = `${environment.url}/users/${userId}/kvizProgres`;
+    const searchUrl = `${environment.url}/playing/users/${userId}/progress`;
 
-    return this.http
-      .get<getProgress>(searchUrl)
-      .pipe(map((res) => res._embedded.quizProgresses));
+    return this.http.get<QuizProgress[]>(searchUrl);
   }
-}
-interface getProgress {
-  _embedded: {
-    quizProgresses: QuizProgress[];
-  };
-}
-
-interface getQuestions {
-  _embedded: {
-    quizQuestionses: QuizQuestion[];
-  };
-}
-
-interface getResponses {
-  _embedded: {
-    quizResponses: QuizResponse[];
-  };
 }

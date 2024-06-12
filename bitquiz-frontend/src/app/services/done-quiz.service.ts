@@ -16,25 +16,13 @@ export class DoneQuizService {
     return this.http.post<SaveDoneQuiz>(makeUrl, quiz);
   }
   getDoneQuizes(userId: number): Observable<DoneQuiz[]> {
-    const searchUrl = `${environment.url}/users/${userId}/doneQuiz`;
+    const searchUrl = `${environment.url}/done-quizes/user/${userId}`;
 
-    return this.http
-      .get<getDoneQuizes>(searchUrl)
-      .pipe(map((res) => res._embedded.doneQuizzes));
+    return this.http.get<DoneQuiz[]>(searchUrl);
   }
 
   getLeaderboardForQuiz(quizId: number): Observable<DoneQuiz[]> {
     const searchUrl = `${environment.url}/done-quizes/${quizId}/doneQuiz`;
     return this.http.get<DoneQuiz[]>(searchUrl);
   }
-}
-interface getDoneQuizes {
-  _embedded: {
-    doneQuizzes: DoneQuiz[];
-  };
-}
-interface getLeaderboardForQuiz {
-  _embedded: {
-    doneQuizzes: DoneQuiz[];
-  };
 }

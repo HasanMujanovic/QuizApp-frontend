@@ -72,7 +72,7 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
   }
 
   getQuiz(id: number) {
-    this.quizService.getOneQuiz(id).subscribe((data) => {
+    this.quizService.getQuizById(id).subscribe((data) => {
       this.quiz = data;
       this.timeLeft = this.quizPlayingService.isThereProgress
         ? this.quizPlayingService.timeLeft

@@ -43,22 +43,13 @@ export class LoginComponent implements OnInit {
     let email = this.loginForm.get('login.email').value;
     let password = this.loginForm.get('login.password').value;
 
-    this.authService.getUser(email).subscribe({
+    this.authService.checkIfUserExistsLogIn(email, password).subscribe({
       next: (res) => {
-        console.log('nastavak');
-        console.log();
-
-        if (
-          res.roles === this.role &&
-          password === res.password &&
-          email === res.email
-        ) {
-          this.storage.setItem('user', JSON.stringify(res.email));
-          this.storage.setItem('role', JSON.stringify(res.roles));
+        if (res) {
+          this.storage.setItem('user', JSON.stringify(email));
+          this.storage.setItem('role', JSON.stringify(this.role));
           this.router.navigate(['/quizes']);
-          console.log('Login successful:', res);
         } else {
-          console.log('Login failed:', res);
           this.flag = true;
         }
       },

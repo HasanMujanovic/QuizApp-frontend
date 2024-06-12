@@ -108,7 +108,7 @@ export class QuizDetailsComponent implements OnInit {
 
   getQuiz() {
     const quizId: number = +this.route.snapshot.paramMap.get('id');
-    this.quizService.getOneQuiz(quizId).subscribe((data) => {
+    this.quizService.getQuizById(quizId).subscribe((data) => {
       this.quiz = data;
     });
   }

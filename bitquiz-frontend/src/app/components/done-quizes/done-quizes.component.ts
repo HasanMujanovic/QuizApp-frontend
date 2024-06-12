@@ -37,12 +37,14 @@ export class DoneQuizesComponent implements OnInit {
       .pipe(
         concatMap((userData) => {
           const userId = userData.id;
+          console.log(userData);
+
           return this.doneQuizService.getDoneQuizes(+userId);
         }),
         concatMap((doneQuizes) => {
           const quizIds = doneQuizes.map((quiz) => quiz.quizIdForSearch);
           const observables = quizIds.map((quizId) =>
-            this.quizService.getOneQuiz(quizId)
+            this.quizService.getQuizById(quizId)
           );
           return forkJoin(observables);
         })

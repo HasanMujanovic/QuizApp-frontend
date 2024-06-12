@@ -11,19 +11,18 @@ import { identifierName } from '@angular/compiler';
   providedIn: 'root',
 })
 export class QuizService {
-  searchUrl = environment.url + '/quizes';
   quizInfo: Quiz;
 
   constructor(private http: HttpClient) {}
 
   getQuizes(): Observable<Quiz[]> {
-    return this.http
-      .get<getQuiz>(this.searchUrl)
-      .pipe(map((res) => res._embedded.quizzes));
+    const searchUrl = `${environment.url}/quiz/getAll`;
+
+    return this.http.get<Quiz[]>(searchUrl);
   }
 
-  getOneQuiz(id: number): Observable<Quiz> {
-    const quizById = this.searchUrl + `/${id}`;
+  getQuizById(id: number): Observable<Quiz> {
+    const quizById = `${environment.url}/quiz/${id}`;
     return this.http.get<Quiz>(quizById);
   }
 
@@ -36,14 +35,7 @@ export class QuizService {
     return this.http.post<Quiz>(updateUrl, quiz);
   }
   getMadeQuizes(userId: number): Observable<Quiz[]> {
-    const searchUrl = `${environment.url}/users/${userId}/quizzes`;
-    return this.http
-      .get<getQuiz>(searchUrl)
-      .pipe(map((res) => res._embedded.quizzes));
+    const searchUrl = `${environment.url}/quiz/${userId}/quizzes`;
+    return this.http.get<Quiz[]>(searchUrl);
   }
-}
-interface getQuiz {
-  _embedded: {
-    quizzes: Quiz[];
-  };
 }

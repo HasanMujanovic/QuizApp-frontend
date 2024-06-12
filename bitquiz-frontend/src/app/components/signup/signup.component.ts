@@ -9,6 +9,7 @@ import {
 import { Router } from '@angular/router';
 import { AuthenticateService } from '../../services/authenticate.service';
 import { EMPTY, Observable, catchError, map, of } from 'rxjs';
+import { UserToSave } from '../../common/user-to-save';
 
 @Component({
   selector: 'app-signup',
@@ -17,7 +18,7 @@ import { EMPTY, Observable, catchError, map, of } from 'rxjs';
 })
 export class SignupComponent implements OnInit {
   role: string = 'player';
-  user: User = new User();
+  user: UserToSave = new UserToSave();
   flag: boolean = false;
 
   signupForm: FormGroup;
@@ -55,15 +56,15 @@ export class SignupComponent implements OnInit {
     console.log(this.role);
   }
 
-  checkIfUserExists(email: string): Observable<boolean> {
-    return this.authService.getUser(email).pipe(
-      map((res) => res.email === email),
-      catchError((error) => {
-        console.error('Error checking if user exists:', error);
-        return of(false); // Vraćamo false ako se dogodila greška
-      })
-    );
-  }
+  // checkIfUserExists(email: string): Observable<boolean> {
+  //   return this.authService.getUserToVerify(email).pipe(
+  //     map((res) => res.email === email),
+  //     catchError((error) => {
+  //       console.error('Error checking if user exists:', error);
+  //       return of(false);
+  //     })
+  //   );
+  // }
 
   onSubmit() {
     let userName = this.signupForm.get('signup.ime').value;
@@ -71,28 +72,34 @@ export class SignupComponent implements OnInit {
     let email2 = this.signupForm.get('signup.email').value;
 
     this.user.email = email2;
-    this.user.password = password;
     this.user.name = userName;
+    this.user.password = password;
     this.user.roles = this.role;
 
-    this.authService.getUser(email2).subscribe({
-      next: () => {
-        this.flag = true;
-        console.log('errror');
-      },
-      error: () => {
-        this.authService.saveUser(this.user).subscribe(() => {
-          this.storage.setItem('user', JSON.stringify(this.user.email));
-          this.storage.setItem('role', JSON.stringify(this.user.roles));
-          this.router.navigate(['/quizes']);
-          setTimeout(() => {
-            window.location.reload();
-          }, 5);
-        });
-      },
-    });
+    if (this.signupForm.valid) {
+      this.authService.getUserToVerify(email2).subscribe({
+        next: (exists) => {
+          if (exists) {
+            console.log('user exists');
+            this.flag = true;
+          } else {
+            this.authService.saveUser(this.user).subscribe(() => {
+              this.storage.setItem('user', JSON.stringify(this.user.email));
+              this.storage.setItem('role', JSON.stringify(this.user.roles));
+              this.router.navigate(['/quizes']);
+              setTimeout(() => {
+                window.location.reload();
+              }, 5);
+            });
+          }
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
 
-    console.log('submitted');
+      console.log('submitted');
+    } else this.flag = true;
   }
 
   refreshPage() {
