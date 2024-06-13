@@ -6,13 +6,16 @@
     routerLink="/quizes"
   />
 
-  <div class="flex items-center">
+  <div
+    routerLink="/user-details/{{ user.id }}"
+    class="cursor-pointer flex items-center"
+  >
     <img
       src="../assets/images/download.jpg"
       alt="Profile Picture"
       class="h-14 rounded-full mr-4"
     />
-    <p class="mr-4">171</p>
-    <p>Level</p>
+    <p class="mr-4">{{ user.points }}</p>
+    <p>{{ user.level }}</p>
   </div>
 </header>

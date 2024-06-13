@@ -7,7 +7,7 @@ import { SignupComponent } from './components/signup/signup.component';
 import { QuizesComponent } from './components/quizes/quizes.component';
 import { RouterModule, Routes } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { CreateQuizComponent } from './components/create-quiz/create-quiz.component';
 import { QuizInfoComponent } from './components/quiz-info/quiz-info.component';
@@ -21,10 +21,14 @@ import { EditQuizComponent } from './components/edit-quiz/edit-quiz.component';
 import { MadeQuizesComponent } from './components/made-quizes/made-quizes.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UserDetailsComponent } from './components/user-details/user-details.component';
+import { OtherUserDetailsComponent } from './components/other-user-details/other-user-details.component';
 
 const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'other-user-details/:id', component: OtherUserDetailsComponent },
+  { path: 'user-details/:id', component: UserDetailsComponent },
   { path: 'edit-quizes/:id', component: EditQuizComponent },
   { path: 'made-quizes', component: MadeQuizesComponent },
   { path: 'done-quizes', component: DoneQuizesComponent },
@@ -54,6 +58,8 @@ const routes: Routes = [
     DoneQuizesComponent,
     EditQuizComponent,
     MadeQuizesComponent,
+    UserDetailsComponent,
+    OtherUserDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,6 +68,7 @@ const routes: Routes = [
     ReactiveFormsModule,
     MatSnackBarModule,
     BrowserAnimationsModule,
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { QuizPlayingService } from '../../services/quiz-playing.service';
 import { QuizService } from '../../services/quiz.service';
 import { DoneQuizService } from '../../services/done-quiz.service';
-import { AuthenticateService } from '../../services/authenticate.service';
+import { AuthenticateService } from '../../services/user.service';
 import { SaveQuizService } from '../../services/save-quiz.service';
 import { identifierName } from '@angular/compiler';
 import { concatMap, of } from 'rxjs';

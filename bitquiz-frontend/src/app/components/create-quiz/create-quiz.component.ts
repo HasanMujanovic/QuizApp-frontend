@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { QuizService } from '../../services/quiz.service';
-import { AuthenticateService } from '../../services/authenticate.service';
+import { AuthenticateService } from '../../services/user.service';
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import { MakeQuiz } from '../../Interface/make-quiz';

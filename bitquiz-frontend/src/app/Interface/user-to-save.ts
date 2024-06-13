@@ -6,4 +6,5 @@ export class UserToSave {
   public roles: string;
   public level: number;
   public points: number;
+  public status: string;
 }

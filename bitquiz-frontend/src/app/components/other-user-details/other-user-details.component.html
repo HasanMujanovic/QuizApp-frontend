@@ -1,0 +1,54 @@
+<app-header></app-header>
+
+<div class="container mx-auto px-4 py-8">
+  <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <h2 class="text-3xl font-bold mb-4 text-green-700">{{ user.name }}</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <p class="text-gray-600">
+          <span class="font-semibold text-green-700">Role:</span>
+          {{ user.roles }}
+        </p>
+        <p class="text-gray-600">
+          <span class="font-semibold text-green-700">Status:</span>
+          {{ user.status }}
+        </p>
+      </div>
+      <div *ngIf="userStatus" class="text-gray-600">
+        <p>
+          <span class="font-semibold text-green-700">Level:</span>
+          {{ user.level }}
+        </p>
+        <p>
+          <span class="font-semibold text-green-700">Points:</span>
+          {{ user.points }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="userStatus" class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <h1 class="text-3xl font-bold mb-4 text-green-700">Progress</h1>
+    <p class="text-gray-600">
+      <span class="font-semibold text-green-700">Rank:</span> {{ user.level }}
+    </p>
+    <p class="text-gray-600">
+      <span class="font-semibold text-green-700">Level:</span> {{ user.level }}
+    </p>
+    <p class="text-gray-600">
+      <span class="font-semibold text-green-700">Quizzes Finished:</span>
+      {{ doneQuizesNumber }}
+    </p>
+    <p class="text-gray-600">
+      <span class="font-semibold text-green-700">Quizzes Started:</span>
+      {{ inProgressQuizes }}
+    </p>
+  </div>
+
+  <div
+    *ngIf="!userStatus"
+    class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-2 rounded-md mb-8"
+  >
+    This user's status is Private!
+  </div>
+</div>

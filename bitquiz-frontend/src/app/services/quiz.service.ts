@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import { identifierName } from '@angular/compiler';
 import { Quiz } from '../Interface/quiz';
 import { MakeQuiz } from '../Interface/make-quiz';
+import { User } from '../Interface/user';
 
 @Injectable({
   providedIn: 'root',
@@ -37,5 +38,10 @@ export class QuizService {
   getMadeQuizes(userId: number): Observable<Quiz[]> {
     const searchUrl = `${environment.url}/quiz/${userId}/quizzes`;
     return this.http.get<Quiz[]>(searchUrl);
+  }
+  getAdminOfQuiz(quizId: number): Observable<User> {
+    const searchUrl = `${environment.url}/quiz/${quizId}/admin`;
+
+    return this.http.get<User>(searchUrl);
   }
 }

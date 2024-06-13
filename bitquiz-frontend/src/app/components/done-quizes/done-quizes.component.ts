@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticateService } from '../../services/authenticate.service';
+import { AuthenticateService } from '../../services/user.service';
 import { DoneQuizService } from '../../services/done-quiz.service';
 import { concatMap, forkJoin, of, switchMap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';

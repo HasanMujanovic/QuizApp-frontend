@@ -16,6 +16,11 @@ export class AuthenticateService {
     return this.http.get<User>(searchUrl);
   }
 
+  getUserById(userId: number): Observable<User> {
+    const searchUrl = `${environment.url}/user/getById/${userId}`;
+    return this.http.get<User>(searchUrl);
+  }
+
   saveUser(user: UserToSave): Observable<any> {
     const saveUrl = `${environment.url}/user/save`;
     return this.http.post<UserToSave>(saveUrl, user);
@@ -28,5 +33,11 @@ export class AuthenticateService {
   checkIfUserExistsLogIn(email: string, password: string): Observable<boolean> {
     const url = `${environment.url}/user/checkUserLogIn`;
     return this.http.post<boolean>(url, { email, password });
+  }
+
+  editStatus(status: string, email: string): Observable<any> {
+    const url = `${environment.url}/user/save-status/${status}/${email}`;
+
+    return this.http.post<any>(url, null);
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { QuizService } from '../../services/quiz.service';
-import { AuthenticateService } from '../../services/authenticate.service';
+import { AuthenticateService } from '../../services/user.service';
 import { Observable, concatMap } from 'rxjs';
 import { DoneQuizService } from '../../services/done-quiz.service';
 import { DoneQuiz } from '../../Interface/done-quiz';

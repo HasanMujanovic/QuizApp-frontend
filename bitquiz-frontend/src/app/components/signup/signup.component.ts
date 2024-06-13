@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthenticateService } from '../../services/authenticate.service';
+import { AuthenticateService } from '../../services/user.service';
 import { EMPTY, Observable, catchError, map, of } from 'rxjs';
 import { UserToSave } from '../../Interface/user-to-save';
 
@@ -74,7 +74,7 @@ export class SignupComponent implements OnInit {
     this.user.name = userName;
     this.user.password = password;
     this.user.roles = this.role;
-
+    this.user.status = 'Public';
     if (this.signupForm.valid) {
       this.authService.getUserToVerify(email2).subscribe({
         next: (exists) => {

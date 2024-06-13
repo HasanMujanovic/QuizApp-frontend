@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { QuizService } from '../../services/quiz.service';
 import { ActivatedRoute } from '@angular/router';
-import { AuthenticateService } from '../../services/authenticate.service';
+import { AuthenticateService } from '../../services/user.service';
 import { concatMap, of } from 'rxjs';
 import { QuizPlayingService } from '../../services/quiz-playing.service';
 import { DoneQuizService } from '../../services/done-quiz.service';
