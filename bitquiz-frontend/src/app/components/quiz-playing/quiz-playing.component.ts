@@ -23,6 +23,7 @@ import { User } from '../../Interface/user';
 })
 export class QuizPlayingComponent implements OnInit, OnDestroy {
   quiz: Quiz;
+  admin: User;
   questions: QuizQuestion[] = [];
   activeQuestion: QuizQuestion;
   activeResponse: QuizResponse[] = [];
@@ -79,12 +80,20 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
   getQuiz(id: number) {
     console.log('getkviz');
 
-    this.quizService.getQuizById(id).subscribe((data) => {
-      this.quiz = data;
-      this.statusOfQuiz = data.status == 'Public' ? true : false;
-      this.timeLeft = this.isThereProgress ? this.timeLeft : data.time * 60;
-      console.log(this.timeLeft);
-    });
+    this.quizService
+      .getQuizById(id)
+      .pipe(
+        concatMap((data) => {
+          this.quiz = data;
+          this.statusOfQuiz = data.status == 'Public' ? true : false;
+          this.timeLeft = this.isThereProgress ? this.timeLeft : data.time * 60;
+          console.log(this.timeLeft);
+          return this.quizService.getAdminOfQuiz(+data.id);
+        })
+      )
+      .subscribe((data) => {
+        this.admin = data;
+      });
   }
 
   getPitanja(id: number) {
@@ -218,7 +227,7 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
 
     saveDoneQuiz.doneQuiz = doneQuiz;
 
-    if (!this.isQuizBeaten) {
+    if (!this.isQuizBeaten && +this.user.id != +this.admin.id) {
       this.doneQuizService
         .saveQuiz(saveDoneQuiz)
         .subscribe(() => console.log('sacuvalo se'));
@@ -291,6 +300,12 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
           }
         }
       });
+  }
+
+  likeQuiz() {
+    this.quizService.likeQuiz(+this.quiz.id).subscribe(() => {
+      console.log('liked');
+    });
   }
 
   ngOnDestroy(): void {

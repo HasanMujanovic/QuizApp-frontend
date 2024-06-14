@@ -46,4 +46,16 @@ export class MadeQuizesComponent implements OnInit {
         console.log(this.quizes);
       });
   }
+
+  onDelete(quizId: number) {
+    const confirmation = window.confirm(
+      'Are you sure you want to delete this quiz?'
+    );
+
+    if (confirmation) {
+      this.quizService.deleteQUiz(quizId, +this.user.id).subscribe(() => {
+        console.log('deleted');
+      });
+    }
+  }
 }

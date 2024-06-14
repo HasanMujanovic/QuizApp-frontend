@@ -104,9 +104,17 @@ export class QuizDetailsComponent implements OnInit {
 
   getQuiz() {
     const quizId: number = +this.route.snapshot.paramMap.get('id');
-    this.quizService.getQuizById(quizId).subscribe((data) => {
-      this.quiz = data;
-      this.statusOfQuiz = data.status == 'Public' ? true : false;
-    });
+    this.quizService
+      .getQuizById(quizId)
+      .pipe(
+        concatMap((data) => {
+          this.quiz = data;
+          this.statusOfQuiz = data.status == 'Public' ? true : false;
+          return this.quizService.getAdminOfQuiz(+data.id);
+        })
+      )
+      .subscribe((data) => {
+        this.user = data;
+      });
   }
 }

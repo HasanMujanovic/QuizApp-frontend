@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 import { environment } from '../../environments/environment';
-import { identifierName } from '@angular/compiler';
+import { HtmlParser, identifierName } from '@angular/compiler';
 import { Quiz } from '../Interface/quiz';
 import { MakeQuiz } from '../Interface/make-quiz';
 import { User } from '../Interface/user';
@@ -41,7 +41,19 @@ export class QuizService {
   }
   getAdminOfQuiz(quizId: number): Observable<User> {
     const searchUrl = `${environment.url}/quiz/${quizId}/admin`;
-
     return this.http.get<User>(searchUrl);
+  }
+
+  deleteQUiz(quizId: number, userId: number): Observable<any> {
+    const deleteUrl = `${environment.url}/quiz/${quizId}/user/${userId}/delete`;
+    return this.http.delete<any>(deleteUrl);
+  }
+  likeQuiz(quizId: number): Observable<any> {
+    const likeUrl = `${environment.url}/quiz/${quizId}/like`;
+    return this.http.post<any>(likeUrl, null);
+  }
+  filterQuizes(category: string, difficulty: string): Observable<Quiz[]> {
+    const filterUrl = `${environment.url}/quiz/${category}/${difficulty}/filtered`;
+    return this.http.get<Quiz[]>(filterUrl);
   }
 }

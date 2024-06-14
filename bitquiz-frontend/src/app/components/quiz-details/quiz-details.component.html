@@ -24,6 +24,13 @@
           <span class="font-semibold text-green-700">Status:</span>
           {{ quiz.status }}
         </p>
+        <p
+          class="text-gray-600 cursor-pointer"
+          routerLink="/other-user-details/{{ user.id }}"
+        >
+          <span class="font-semibold text-green-700">Author:</span>
+          {{ user.name }}
+        </p>
       </div>
       <div>
         <div *ngIf="isQuizDone">
@@ -64,6 +71,7 @@
     >
       Start Quiz
     </button>
+
     <div *ngIf="isThereProgress">
       <button
         class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

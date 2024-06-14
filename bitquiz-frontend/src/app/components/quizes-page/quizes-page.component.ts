@@ -5,6 +5,8 @@ import { Observable, concatMap } from 'rxjs';
 import { DoneQuizService } from '../../services/done-quiz.service';
 import { DoneQuiz } from '../../Interface/done-quiz';
 import { Quiz } from '../../Interface/quiz';
+import { CategoryService } from '../../services/category.service';
+import { Category } from '../../Interface/category';
 
 @Component({
   selector: 'app-quizes-page',
@@ -12,7 +14,14 @@ import { Quiz } from '../../Interface/quiz';
   styleUrl: './quizes-page.component.css',
 })
 export class QuizesPageComponent implements OnInit {
-  quizes: Observable<Quiz[]> = this.quizService.getQuizes();
+  quizes: Quiz[] = [];
+  stringSet: Set<string> = new Set<string>();
+
+  categories: Category[] = [];
+
+  selectedCategory: string = 'All';
+  selectedDifficulty: string = 'All';
+
   doneQuizes: DoneQuiz[] = [];
 
   quizIdsFromDoneQuizes: number[] = [];
@@ -22,11 +31,14 @@ export class QuizesPageComponent implements OnInit {
   constructor(
     private quizService: QuizService,
     private authService: AuthenticateService,
-    private doneQuizService: DoneQuizService
+    private doneQuizService: DoneQuizService,
+    private categoryService: CategoryService
   ) {}
 
   ngOnInit(): void {
+    this.getQuizes();
     this.getDoneQuizes();
+    this.getCategories();
   }
   getDoneQuizes() {
     this.authService
@@ -40,10 +52,37 @@ export class QuizesPageComponent implements OnInit {
       });
   }
 
-  // getQuizes() {
-  //   this.quizService.getQuizes().subscribe((data) => {
-  //     this.quizes = data;
-  //     console.log(this.quizes);
-  //   });
-  // }
+  onFilter() {
+    let categoryUrl =
+      this.selectedCategory === 'ALL' ? null : this.selectedCategory;
+    let difficultyUrl =
+      this.selectedDifficulty === 'ALL' ? null : this.selectedDifficulty;
+
+    console.log(categoryUrl);
+    console.log(difficultyUrl);
+
+    this.quizService
+      .filterQuizes(categoryUrl, difficultyUrl)
+      .subscribe((data) => {
+        this.quizes = data;
+        console.log(this.quizes);
+        console.log(data);
+
+        console.log('filtered');
+      });
+  }
+
+  getCategories() {
+    this.categoryService.getCategories().subscribe((data) => {
+      this.categories = data;
+      console.log(this.categories);
+    });
+  }
+
+  getQuizes() {
+    this.quizService.getQuizes().subscribe((data) => {
+      this.quizes = data;
+      console.log(this.quizes);
+    });
+  }
 }
