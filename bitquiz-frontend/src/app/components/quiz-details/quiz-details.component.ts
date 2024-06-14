@@ -16,16 +16,16 @@ import { User } from '../../Interface/user';
   styleUrl: './quiz-details.component.css',
 })
 export class QuizDetailsComponent implements OnInit {
-  quiz: Quiz = new Quiz();
-  doneQuize: DoneQuiz = new DoneQuiz();
+  quiz: Quiz;
+  doneQuize: DoneQuiz;
   leaderboard: DoneQuiz[] = [];
 
   statusOfQuiz: boolean = false;
 
   isQuizDone: boolean = false;
 
-  user: User = new User();
-  progressOfQuiz: QuizProgress = new QuizProgress();
+  user: User;
+  progressOfQuiz: QuizProgress;
   isThereProgress: boolean = false;
   storage: Storage = sessionStorage;
 
@@ -109,6 +109,8 @@ export class QuizDetailsComponent implements OnInit {
       .pipe(
         concatMap((data) => {
           this.quiz = data;
+          console.log(this.quiz.name + '-------------');
+
           this.statusOfQuiz = data.status == 'Public' ? true : false;
           return this.quizService.getAdminOfQuiz(+data.id);
         })

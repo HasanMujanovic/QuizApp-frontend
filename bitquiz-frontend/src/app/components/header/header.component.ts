@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 export class HeaderComponent implements OnInit {
   storage: Storage = sessionStorage;
   email = JSON.parse(this.storage.getItem('user'));
-  user: User = new User();
+  user: User;
 
   constructor(private authService: AuthenticateService) {}
 

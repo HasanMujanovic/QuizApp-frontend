@@ -17,7 +17,7 @@ import { UserToSave } from '../../Interface/user-to-save';
 })
 export class SignupComponent implements OnInit {
   role: string = 'player';
-  user: UserToSave = new UserToSave();
+  user: UserToSave = {} as UserToSave;
   flag: boolean = false;
 
   signupForm: FormGroup;
@@ -70,11 +70,13 @@ export class SignupComponent implements OnInit {
     let password = this.signupForm.get('signup.sifra').value;
     let email2 = this.signupForm.get('signup.email').value;
 
-    this.user.email = email2;
-    this.user.name = userName;
-    this.user.password = password;
-    this.user.roles = this.role;
-    this.user.status = 'Public';
+    this.user = {
+      email: email2,
+      name: userName,
+      password: password,
+      roles: this.role,
+      status: 'Public',
+    };
     if (this.signupForm.valid) {
       this.authService.getUserToVerify(email2).subscribe({
         next: (exists) => {

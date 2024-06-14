@@ -1,7 +1,7 @@
-export class QuizQuestion {
-  public id: string;
-  public text: string;
-  public points: number;
-  public helpAllowed: boolean;
-  public minusPoints: number;
+export interface QuizQuestion {
+  id?: string;
+  text: string;
+  points: number;
+  helpAllowed: boolean;
+  minusPoints: number;
 }

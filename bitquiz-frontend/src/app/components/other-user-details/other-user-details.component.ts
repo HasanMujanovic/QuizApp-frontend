@@ -11,10 +11,9 @@ import { AuthenticateService } from '../../services/user.service';
   styleUrl: './other-user-details.component.css',
 })
 export class OtherUserDetailsComponent {
-  user: User = new User();
+  user: User;
   doneQuizesNumber: number;
   inProgressQuizes: number;
-  selectedStatus: any;
   userStatus: boolean;
   constructor(
     private route: ActivatedRoute,
@@ -29,7 +28,6 @@ export class OtherUserDetailsComponent {
       this.getUserDoneQuizes();
       this.getUserProgressQuizes();
     });
-    console.log(this.selectedStatus);
   }
 
   getUser() {
@@ -51,16 +49,5 @@ export class OtherUserDetailsComponent {
     this.quizPLayingService
       .searchForProgressWUserId(userId)
       .subscribe((data) => (this.inProgressQuizes = data.length));
-  }
-  saveStatus() {
-    this.authService
-      .editStatus(this.selectedStatus, this.user.email)
-      .subscribe(() => {
-        console.log('done');
-      });
-    console.log(this.user.email);
-    console.log(this.selectedStatus);
-
-    console.log('saved');
   }
 }

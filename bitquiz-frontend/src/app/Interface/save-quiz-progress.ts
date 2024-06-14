@@ -3,7 +3,7 @@ import { QuizQuestion } from './quiz-question';
 import { QuizProgress } from './quiz-progress';
 import { User } from './user';
 
-export class SaveQuizProgress {
-  public user: User;
-  public quizProgress: QuizProgress;
+export interface SaveQuizProgress {
+  user: User;
+  quizProgress: QuizProgress;
 }

@@ -1,10 +1,10 @@
-export class QuizProgress {
-  public id: string;
-  public points: number;
-  public time: number;
-  public questionsAnswered: number;
-  public quizId: number;
-  public correctAns: number;
-  public wrongAns: number;
-  public skippedAns: number;
+export interface QuizProgress {
+  id?: string;
+  points: number;
+  time: number;
+  questionsAnswered: number;
+  quizId: number;
+  correctAns: number;
+  wrongAns: number;
+  skippedAns: number;
 }

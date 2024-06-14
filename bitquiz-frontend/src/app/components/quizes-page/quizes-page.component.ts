@@ -54,9 +54,9 @@ export class QuizesPageComponent implements OnInit {
 
   onFilter() {
     let categoryUrl =
-      this.selectedCategory === 'ALL' ? null : this.selectedCategory;
+      this.selectedCategory === 'All' ? null : this.selectedCategory;
     let difficultyUrl =
-      this.selectedDifficulty === 'ALL' ? null : this.selectedDifficulty;
+      this.selectedDifficulty === 'All' ? null : this.selectedDifficulty;
 
     console.log(categoryUrl);
     console.log(difficultyUrl);

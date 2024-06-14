@@ -34,7 +34,7 @@ export class CreateQuizComponent {
 
   storage: Storage = sessionStorage;
   userEmail: string = JSON.parse(this.storage.getItem('user'));
-  user: User = new User();
+  user: User;
 
   errors = [];
   atleastOneQuestion = false;
@@ -171,15 +171,16 @@ export class CreateQuizComponent {
       return;
     }
 
-    let quiz = new Quiz();
-    quiz = this.quizService.quizInfo;
+    let quiz: Quiz = this.quizService.quizInfo; // Pretpostavljam da quizService vraća objekat tipa Quiz
     quiz.points = 0;
+
     for (let i = 0; i < this.allQuestions.length; i++) {
-      let tempQuizQuestion = new QuizQuestion();
-      tempQuizQuestion.text = this.allQuestions[i];
-      tempQuizQuestion.points = this.allScores[i];
-      tempQuizQuestion.helpAllowed = this.allHelps[i];
-      tempQuizQuestion.minusPoints = this.allNegativePoints[i];
+      let tempQuizQuestion: QuizQuestion = {
+        text: this.allQuestions[i],
+        points: this.allScores[i],
+        helpAllowed: this.allHelps[i],
+        minusPoints: this.allNegativePoints[i],
+      };
       this.quizQuestions.push(tempQuizQuestion);
       quiz.points += this.allScores[i];
     }
@@ -187,19 +188,21 @@ export class CreateQuizComponent {
 
     for (let res of this.allResponses) {
       for (let i = 0; i < res.length; i++) {
-        let tempQuizResponse = new QuizResponse();
-        tempQuizResponse.text = res[i].text;
-        tempQuizResponse.correctAnswer = res[i].bool;
+        let tempQuizResponse: QuizResponse = {
+          text: res[i].text,
+          correctAnswer: res[i].bool,
+        };
         res[i] = tempQuizResponse;
       }
 
       this.quizResponese.push(res);
     }
-    let makeQuiz = new MakeQuiz();
-    makeQuiz.quiz = quiz;
-    makeQuiz.quizResponse = this.quizResponese;
-    makeQuiz.quizQuestions = this.quizQuestions;
-    makeQuiz.user = this.user;
+    let makeQuiz: MakeQuiz = {
+      quiz: quiz,
+      quizResponse: this.quizResponese,
+      quizQuestions: this.quizQuestions,
+      user: this.user,
+    };
 
     this.quizService.makeQuiz(makeQuiz).subscribe(() => console.log('radi'));
 

@@ -1,8 +1,8 @@
-export class DoneQuiz {
-  public id: string;
-  public pointsWon: number;
-  public timeLeft: number;
-  public userIdForSearch: number;
-  public quizIdForSearch: number;
-  public username: string;
+export interface DoneQuiz {
+  id?: string;
+  pointsWon: number;
+  timeLeft: number;
+  userIdForSearch: number;
+  quizIdForSearch: number;
+  username: string;
 }

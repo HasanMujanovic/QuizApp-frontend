@@ -39,7 +39,7 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
 
   storage: Storage = sessionStorage;
   email: string = JSON.parse(this.storage.getItem('user'));
-  user: User = new User();
+  user: User;
 
   selectedAnswerTrue: boolean = false;
   selectedAnswerId: string = '';
@@ -213,19 +213,18 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
   }
 
   saveQuiz() {
-    let saveDoneQuiz = new SaveDoneQuiz();
-    let doneQuiz = new DoneQuiz();
-
-    saveDoneQuiz.user = this.user;
-    saveDoneQuiz.quiz = this.quiz;
-
-    doneQuiz.pointsWon = this.points;
-    doneQuiz.timeLeft = this.timeLeft;
-    doneQuiz.quizIdForSearch = +this.quiz.id;
-    doneQuiz.userIdForSearch = +this.user.id;
-    doneQuiz.username = this.user.name;
-
-    saveDoneQuiz.doneQuiz = doneQuiz;
+    let saveDoneQuiz: SaveDoneQuiz = {
+      user: this.user,
+      quiz: this.quiz,
+      doneQuiz: {
+        pointsWon: this.points,
+        timeLeft: this.timeLeft,
+        quizIdForSearch: +this.quiz.id,
+        userIdForSearch: +this.user.id,
+        username: this.user.name,
+      },
+    };
+    console.log(saveDoneQuiz);
 
     if (!this.isQuizBeaten && +this.user.id != +this.admin.id) {
       this.doneQuizService
@@ -235,20 +234,18 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
   }
 
   saveProgress() {
-    let saveQuizProgress = new SaveQuizProgress();
-    let quizProgress = new QuizProgress();
-
-    saveQuizProgress.user = this.user;
-
-    quizProgress.time = this.timeLeft;
-    quizProgress.points = this.points;
-    quizProgress.questionsAnswered = this.flag;
-    quizProgress.quizId = +this.quiz.id;
-    quizProgress.correctAns = this.statsCorrectAnsw;
-    quizProgress.skippedAns = this.statsSkippedAnsw;
-    quizProgress.wrongAns = this.statsWrongAnsw;
-
-    saveQuizProgress.quizProgress = quizProgress;
+    let saveQuizProgress: SaveQuizProgress = {
+      user: this.user,
+      quizProgress: {
+        time: this.timeLeft,
+        points: this.points,
+        questionsAnswered: this.flag,
+        quizId: +this.quiz.id,
+        correctAns: this.statsCorrectAnsw,
+        skippedAns: this.statsSkippedAnsw,
+        wrongAns: this.statsWrongAnsw,
+      },
+    };
 
     if (!this.isQuizBeaten) {
       this.saveQuizService

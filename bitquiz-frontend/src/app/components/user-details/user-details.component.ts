@@ -13,7 +13,7 @@ import { SaveDoneQuiz } from '../../Interface/save-done-quiz';
   styleUrl: './user-details.component.css',
 })
 export class UserDetailsComponent implements OnInit {
-  user: User = new User();
+  user: User;
   doneQuizesNumber: number;
   inProgressQuizes: number;
   selectedStatus: any;

@@ -12,7 +12,7 @@ import { Quiz } from '../../Interface/quiz';
   styleUrl: './edit-quiz.component.css',
 })
 export class EditQuizComponent implements OnInit {
-  quiz: Quiz = new Quiz();
+  quiz: Quiz;
   kvizInfoForm: FormGroup;
 
   constructor(

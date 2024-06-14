@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
@@ -52,8 +52,18 @@ export class QuizService {
     const likeUrl = `${environment.url}/quiz/${quizId}/like`;
     return this.http.post<any>(likeUrl, null);
   }
+
   filterQuizes(category: string, difficulty: string): Observable<Quiz[]> {
-    const filterUrl = `${environment.url}/quiz/${category}/${difficulty}/filtered`;
-    return this.http.get<Quiz[]>(filterUrl);
+    let filterUrl = `${environment.url}/quiz/filtered`;
+
+    let params = new HttpParams();
+    if (category) {
+      params = params.set('category', category);
+    }
+    if (difficulty) {
+      params = params.set('difficulty', difficulty);
+    }
+
+    return this.http.get<Quiz[]>(filterUrl, { params });
   }
 }

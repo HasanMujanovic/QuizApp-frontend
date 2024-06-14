@@ -49,7 +49,7 @@ export class QuizInfoComponent implements OnInit {
   }
 
   onSubmit() {
-    let quiz = new Quiz();
+    let quiz;
     quiz = this.kvizInfoForm.controls['info'].value;
 
     this.kvizService.quizInfo = quiz;

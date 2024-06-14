@@ -1,5 +1,5 @@
-export class QuizResponse {
-  public id: string;
-  public text: string;
-  public correctAnswer: boolean;
+export interface QuizResponse {
+  id?: string;
+  text: string;
+  correctAnswer: boolean;
 }

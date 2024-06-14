@@ -4,6 +4,7 @@ import { Observable, catchError, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { UserToSave } from '../Interface/user-to-save';
 import { User } from '../Interface/user';
+import { UrlTree } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +38,11 @@ export class AuthenticateService {
 
   editStatus(status: string, email: string): Observable<any> {
     const url = `${environment.url}/user/save-status/${status}/${email}`;
-
     return this.http.post<any>(url, null);
+  }
+
+  getUserLeaderboard(): Observable<User[]> {
+    const url = `${environment.url}/user/sorted`;
+    return this.http.get<User[]>(url);
   }
 }

@@ -33,11 +33,7 @@
     <div class="h-full bg-red-600 p-6 text-white flex flex-col items-center">
       <h1 class="text-2xl font-bold mb-4">LeaderBoard</h1>
       <ul class="space-y-2 text-left w-full pl-8">
-        <li>Prvi</li>
-        <li>Drugi</li>
-        <li>Treći</li>
-        <li>Četvrti</li>
-        <li>Peti</li>
+        <li *ngFor="let user of users">{{ user.name }}</li>
       </ul>
     </div>
   </main>

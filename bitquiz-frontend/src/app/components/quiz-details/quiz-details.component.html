@@ -1,7 +1,7 @@
 <app-header></app-header>
 <div class="container mx-auto px-4 py-8">
   <div class="bg-white rounded-lg shadow-md p-6">
-    <h2 class="text-3xl font-bold mb-4 text-green-700">{{ quiz.name }}</h2>
+    <h2 class="text-3xl font-bold mb-4 text-green-700">{{ quiz?.name }}</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
       <div>
         <p *ngIf="isQuizDone" class="text-gray-600">
@@ -14,59 +14,59 @@
         </p>
         <p class="text-gray-600">
           <span class="font-semibold text-green-700">Category:</span>
-          {{ quiz.category }}
+          {{ quiz?.category }}
         </p>
         <p class="text-gray-600">
           <span class="font-semibold text-green-700">Difficulty:</span>
-          {{ quiz.difficulty }}
+          {{ quiz?.difficulty }}
         </p>
         <p class="text-gray-600">
           <span class="font-semibold text-green-700">Status:</span>
-          {{ quiz.status }}
+          {{ quiz?.status }}
         </p>
         <p
           class="text-gray-600 cursor-pointer"
-          routerLink="/other-user-details/{{ user.id }}"
+          routerLink="/other-user-details/{{ user?.id }}"
         >
           <span class="font-semibold text-green-700">Author:</span>
-          {{ user.name }}
+          {{ user?.name }}
         </p>
       </div>
       <div>
         <div *ngIf="isQuizDone">
           <p class="text-gray-600">
             <span class="font-semibold text-green-700">Time:</span>
-            {{ quiz.time }} / {{ doneQuize.timeLeft | timeFormat }} min
+            {{ quiz?.time }} / {{ doneQuize?.timeLeft | timeFormat }} min
           </p>
           <p class="text-gray-600">
             <span class="font-semibold text-green-700">Points:</span>
-            {{ quiz.points }} / {{ quiz.points }}
+            {{ quiz?.points }} / {{ quiz?.points }}
           </p>
         </div>
         <div *ngIf="!isQuizDone">
           <p class="text-gray-600">
             <span class="font-semibold text-green-700">Time:</span>
-            {{ quiz.time }} min
+            {{ quiz?.time }} min
           </p>
           <p class="text-gray-600">
             <span class="font-semibold text-green-700">Points:</span>
-            {{ quiz.points }}
+            {{ quiz?.points }}
           </p>
         </div>
 
         <p class="text-gray-600">
           <span class="font-semibold text-green-700">Likes:</span>
-          {{ quiz.likes }}
+          {{ quiz?.likes }}
         </p>
         <p class="text-gray-600">
           <span class="font-semibold text-green-700">Finished:</span>
-          {{ quiz.doneIt }}
+          {{ quiz?.doneIt }}
         </p>
       </div>
     </div>
     <button
       class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-      routerLink="/quiz-playing/{{ quiz.id }}"
+      routerLink="/quiz-playing/{{ quiz?.id }}"
       *ngIf="!isThereProgress"
     >
       Start Quiz
@@ -83,7 +83,7 @@
         Current question: {{ progressOfQuiz.questionsAnswered + 1 }}
       </p>
       <p class="text-yellow-700">
-        Time left: {{ progressOfQuiz.time | timeFormat }}
+        Time left: {{ progressOfQuiz?.time | timeFormat }}
       </p>
     </div>
   </div>
@@ -99,13 +99,13 @@
           class="border-b last:border-none py-2 flex justify-between cursor-pointer hover:bg-gray-200 items-center"
         >
           <span class="text-green-700 font-semibold flex-1">{{
-            player.username
+            player?.username
           }}</span>
           <span class="text-gray-600 flex-1 text-center">{{
-            player.pointsWon
+            player?.pointsWon
           }}</span>
           <span class="text-yellow-700 flex-1 text-right">{{
-            player.timeLeft | timeFormat
+            player?.timeLeft | timeFormat
           }}</span>
         </li>
       </div>

@@ -14,9 +14,9 @@ import { User } from '../../Interface/user';
 export class MadeQuizesComponent implements OnInit {
   storage: Storage = sessionStorage;
 
-  user: User = new User();
+  user: User;
   quizes: Quiz[] = [];
-  quiz: Quiz = new Quiz();
+  quiz: Quiz;
 
   constructor(
     private authService: AuthenticateService,

@@ -1,11 +1,11 @@
-export class Quiz {
-  public id: string;
-  public category: string;
-  public status: string;
-  public difficulty: string;
-  public name: string;
-  public likes: number;
-  public doneIt: number;
-  public time: number;
-  public points: number;
+export interface Quiz {
+  id?: string;
+  category: string;
+  status: string;
+  difficulty: string;
+  name: string;
+  likes: number;
+  doneIt: number;
+  time: number;
+  points: number;
 }
