@@ -43,17 +43,15 @@ export class LoginComponent implements OnInit {
     let email = this.loginForm.get('login.email').value;
     let password = this.loginForm.get('login.password').value;
 
-    this.authService.checkIfUserExistsLogIn(email, password).subscribe({
-      next: (res) => {
-        if (res) {
-          this.storage.setItem('user', JSON.stringify(email));
-          this.storage.setItem('role', JSON.stringify(this.role));
-          this.router.navigate(['/quizes']);
-        } else {
-          this.flag = true;
-        }
+    this.authService.login(email, password).subscribe({
+      next: (data) => {
+        this.storage.setItem('user', JSON.stringify(email));
+        this.storage.setItem('role', JSON.stringify(this.role));
+        this.router.navigate(['/quizes']);
       },
-      error: () => (this.flag = true),
+      error: (error) => {
+        this.flag = true;
+      },
     });
   }
   setRolePlayer() {

@@ -8,7 +8,8 @@ import {
 import { Router } from '@angular/router';
 import { AuthenticateService } from '../../services/user.service';
 import { EMPTY, Observable, catchError, map, of } from 'rxjs';
-import { UserToSave } from '../../Interface/user-to-save';
+import { User } from '../../Interface/user';
+import { Register } from '../../Interface/register';
 
 @Component({
   selector: 'app-signup',
@@ -17,7 +18,7 @@ import { UserToSave } from '../../Interface/user-to-save';
 })
 export class SignupComponent implements OnInit {
   role: string = 'player';
-  user: UserToSave = {} as UserToSave;
+  user: User = {} as User;
   flag: boolean = false;
 
   signupForm: FormGroup;
@@ -55,16 +56,6 @@ export class SignupComponent implements OnInit {
     console.log(this.role);
   }
 
-  // checkIfUserExists(email: string): Observable<boolean> {
-  //   return this.authService.getUserToVerify(email).pipe(
-  //     map((res) => res.email === email),
-  //     catchError((error) => {
-  //       console.error('Error checking if user exists:', error);
-  //       return of(false);
-  //     })
-  //   );
-  // }
-
   onSubmit() {
     let userName = this.signupForm.get('signup.ime').value;
     let password = this.signupForm.get('signup.sifra').value;
@@ -73,34 +64,30 @@ export class SignupComponent implements OnInit {
     this.user = {
       email: email2,
       name: userName,
-      password: password,
       roles: this.role,
       status: 'Public',
     };
-    if (this.signupForm.valid) {
-      this.authService.getUserToVerify(email2).subscribe({
-        next: (exists) => {
-          if (exists) {
-            console.log('user exists');
-            this.flag = true;
-          } else {
-            this.authService.saveUser(this.user).subscribe(() => {
-              this.storage.setItem('user', JSON.stringify(this.user.email));
-              this.storage.setItem('role', JSON.stringify(this.user.roles));
-              this.router.navigate(['/quizes']);
-              setTimeout(() => {
-                window.location.reload();
-              }, 5);
-            });
-          }
-        },
-        error: (error) => {
-          console.log(error);
-        },
-      });
 
-      console.log('submitted');
-    } else this.flag = true;
+    let register: Register = {
+      userDTO: this.user,
+      password: password,
+    };
+    this.authService.register(register).subscribe({
+      next: (data) => {
+        console.log(data);
+
+        this.storage.setItem('user', JSON.stringify(this.user.email));
+        this.storage.setItem('role', JSON.stringify(this.user.roles));
+        this.router.navigate(['/quizes']);
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 5);
+      },
+      error: (error) => {
+        this.flag = true;
+        console.log(error);
+      },
+    });
   }
 
   refreshPage() {

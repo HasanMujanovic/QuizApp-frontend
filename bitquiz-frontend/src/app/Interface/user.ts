@@ -3,7 +3,7 @@ export interface User {
   name: string;
   email: string;
   roles: string;
-  level: number;
-  points: number;
+  level?: number;
+  points?: number;
   status: string;
 }
