@@ -18,7 +18,7 @@ import { Register } from '../../Interface/register';
 })
 export class SignupComponent implements OnInit {
   role: string = 'player';
-  user: User = {} as User;
+  userDTO: User = {} as User;
   flag: boolean = false;
 
   signupForm: FormGroup;
@@ -61,7 +61,7 @@ export class SignupComponent implements OnInit {
     let password = this.signupForm.get('signup.sifra').value;
     let email2 = this.signupForm.get('signup.email').value;
 
-    this.user = {
+    this.userDTO = {
       email: email2,
       name: userName,
       roles: this.role,
@@ -69,15 +69,15 @@ export class SignupComponent implements OnInit {
     };
 
     let register: Register = {
-      userDTO: this.user,
+      userDTO: this.userDTO,
       password: password,
     };
-    this.authService.register(register).subscribe({
+    this.authService.register(this.userDTO, password).subscribe({
       next: (data) => {
         console.log(data);
 
-        this.storage.setItem('user', JSON.stringify(this.user.email));
-        this.storage.setItem('role', JSON.stringify(this.user.roles));
+        this.storage.setItem('user', JSON.stringify(this.userDTO.email));
+        this.storage.setItem('role', JSON.stringify(this.userDTO.roles));
         this.router.navigate(['/quizes']);
         // setTimeout(() => {
         //   window.location.reload();

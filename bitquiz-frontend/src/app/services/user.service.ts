@@ -4,7 +4,6 @@ import { Observable, catchError, of, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { User } from '../Interface/user';
 import { UrlTree } from '@angular/router';
-import { Register } from '../Interface/register';
 
 @Injectable({
   providedIn: 'root',
@@ -52,10 +51,10 @@ export class AuthenticateService {
     );
   }
 
-  register(register: Register): Observable<any> {
+  register(userDTO: User, password: string): Observable<any> {
     const url = `${environment.url}/user/register`;
 
-    return this.http.post<any>(url, register);
+    return this.http.post<any>(url, { userDTO, password });
   }
 
   login(email: string, password: string): Observable<User> {
