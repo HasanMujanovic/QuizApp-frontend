@@ -44,6 +44,7 @@ export class SignupComponent implements OnInit {
         ]),
       }),
     });
+    console.log(this.storage.getItem('user'));
   }
 
   setRoleAdmin() {

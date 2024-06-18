@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { QuizPlayingService } from '../../services/quiz-playing.service';
 import { QuizService } from '../../services/quiz.service';
 import { DoneQuizService } from '../../services/done-quiz.service';
@@ -15,6 +15,7 @@ import { DoneQuiz } from '../../Interface/done-quiz';
 import { SaveQuizProgress } from '../../Interface/save-quiz-progress';
 import { QuizProgress } from '../../Interface/quiz-progress';
 import { User } from '../../Interface/user';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-quiz-playing',
@@ -56,13 +57,16 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
   statsWrongAnsw: number = 0;
   statsSkippedAnsw: number = 0;
 
+  liked: boolean = true;
+
   constructor(
     private route: ActivatedRoute,
     private quizPlayingService: QuizPlayingService,
     private quizService: QuizService,
     private doneQuizService: DoneQuizService,
     private authService: AuthenticateService,
-    private saveQuizService: SaveQuizService
+    private saveQuizService: SaveQuizService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -145,6 +149,9 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
         if (res.correctAnswer) {
           this.points += this.activeQuestion.points;
           this.statsCorrectAnsw++;
+          setTimeout(() => {
+            this.onNextQuestion();
+          }, 1000);
         } else {
           this.points =
             this.points - this.activeQuestion.minusPoints < 0
@@ -152,6 +159,9 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
               : this.points - this.activeQuestion.minusPoints;
 
           this.statsWrongAnsw++;
+          setTimeout(() => {
+            this.onNextQuestion();
+          }, 1000);
         }
       }
     } else {
@@ -250,7 +260,7 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
     if (!this.isQuizBeaten) {
       this.saveQuizService
         .saveProgress(saveQuizProgress)
-        .subscribe(() => console.log('Progres sacuvan'));
+        .subscribe(() => this.router.navigate(['/quizes-page']));
     }
   }
 
@@ -300,9 +310,18 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
   }
 
   likeQuiz() {
-    this.quizService.likeQuiz(+this.quiz.id).subscribe(() => {
-      console.log('liked');
-    });
+    if (this.liked) {
+      this.quizService.likeQuiz(+this.quiz.id).subscribe(() => {
+        console.log('liked');
+      });
+      this.liked = false;
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'Alredy Liked!',
+      });
+    }
   }
 
   ngOnDestroy(): void {

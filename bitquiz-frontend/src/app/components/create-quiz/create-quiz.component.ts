@@ -9,7 +9,6 @@ import {
 import { Router } from '@angular/router';
 import { QuizService } from '../../services/quiz.service';
 import { AuthenticateService } from '../../services/user.service';
-import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import { MakeQuiz } from '../../Interface/make-quiz';
 import { Quiz } from '../../Interface/quiz';
@@ -42,7 +41,8 @@ export class CreateQuizComponent {
   constructor(
     private formBuilder: FormBuilder,
     private quizService: QuizService,
-    private authService: AuthenticateService
+    private authService: AuthenticateService,
+    private router: Router
   ) {
     this.getUser(this.userEmail);
   }
@@ -83,8 +83,6 @@ export class CreateQuizComponent {
     const question = this.questions.at(questionIndex) as FormGroup;
     const responses = question.get('responses') as FormArray;
     responses.removeAt(responseIndex);
-    console.log('Pitanja:', this.allQuestions);
-    console.log('responses:', this.allResponses);
   }
 
   checkCorrectAnswers(): boolean {
@@ -134,11 +132,6 @@ export class CreateQuizComponent {
     this.allScores.push(newQuestion.points);
     this.allHelps.push(newQuestion.helpAllowed);
     this.allNegativePoints.push(newQuestion.minusPoints);
-    console.log('Pitanja:', this.allQuestions);
-    console.log('responses:', this.allResponses);
-    console.log('----' + this.allScores);
-    console.log('----' + newQuestion.helpAllowed);
-    console.log(newQuestion.responses + 'asdafsa-------------');
 
     this.quizForm.setControl(
       'questions',
@@ -171,7 +164,7 @@ export class CreateQuizComponent {
       return;
     }
 
-    let quiz: Quiz = this.quizService.quizInfo; // Pretpostavljam da quizService vraća objekat tipa Quiz
+    let quiz: Quiz = this.quizService.quizInfo;
     quiz.points = 0;
 
     for (let i = 0; i < this.allQuestions.length; i++) {
@@ -204,12 +197,8 @@ export class CreateQuizComponent {
       user: this.user,
     };
 
-    this.quizService.makeQuiz(makeQuiz).subscribe(() => console.log('radi'));
-
-    if (this.quizForm.valid) {
-      console.log(this.quizForm.value);
-    } else {
-      console.log('Forma nije validna');
-    }
+    this.quizService.makeQuiz(makeQuiz).subscribe(() => {
+      this.router.navigate(['/quizes']);
+    });
   }
 }

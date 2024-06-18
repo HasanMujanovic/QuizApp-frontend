@@ -3,10 +3,10 @@
   <main class="bg-customBlue flex-grow grid grid-cols-[20%_80%]">
     <div class="h-full bg-slate-300 p-4">
       <ul class="space-y-4">
-        <li class="text-lg font-semibold">Practice</li>
         <li
           routerLink="/quiz-info"
           class="cursor-pointer text-lg font-semibold text-blue-700 hover:underline"
+          *ngIf="role == 'admin'"
         >
           Create quiz
         </li>
@@ -25,6 +25,7 @@
         <li
           routerLink="/made-quizes"
           class="cursor-pointer text-lg font-semibold text-blue-700 hover:underline"
+          *ngIf="role == 'admin'"
         >
           Quizes You Made
         </li>

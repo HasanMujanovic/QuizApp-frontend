@@ -9,6 +9,8 @@ import { User } from '../../Interface/user';
 })
 export class QuizesComponent implements OnInit {
   users: User[] = [];
+  storage: Storage = sessionStorage;
+  role: string = JSON.parse(this.storage.getItem('role'));
   constructor(private authService: AuthenticateService) {}
 
   ngOnInit(): void {

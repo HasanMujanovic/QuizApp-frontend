@@ -23,21 +23,59 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
 import { OtherUserDetailsComponent } from './components/other-user-details/other-user-details.component';
+import { authGuard } from './guards/auth.guard';
+import { adminGuard } from './guards/admin.guard';
 
 const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'other-user-details/:id', component: OtherUserDetailsComponent },
-  { path: 'user-details/:id', component: UserDetailsComponent },
-  { path: 'edit-quizes/:id', component: EditQuizComponent },
-  { path: 'made-quizes', component: MadeQuizesComponent },
-  { path: 'done-quizes', component: DoneQuizesComponent },
-  { path: 'quiz-playing/:id', component: QuizPlayingComponent },
-  { path: 'quiz-details/:id', component: QuizDetailsComponent },
-  { path: 'quizes-page', component: QuizesPageComponent },
-  { path: 'quiz-info', component: QuizInfoComponent },
-  { path: 'create-quiz', component: CreateQuizComponent },
-  { path: 'quizes', component: QuizesComponent },
+  {
+    path: 'other-user-details/:id',
+    component: OtherUserDetailsComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'user-details/:id',
+    component: UserDetailsComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'edit-quizes/:id',
+    component: EditQuizComponent,
+    canActivate: [adminGuard],
+  },
+  {
+    path: 'made-quizes',
+    component: MadeQuizesComponent,
+    canActivate: [adminGuard],
+  },
+  {
+    path: 'done-quizes',
+    component: DoneQuizesComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'quiz-playing/:id',
+    component: QuizPlayingComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'quiz-details/:id',
+    component: QuizDetailsComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'quizes-page',
+    component: QuizesPageComponent,
+    canActivate: [authGuard],
+  },
+  { path: 'quiz-info', component: QuizInfoComponent, canActivate: [authGuard] },
+  {
+    path: 'create-quiz',
+    component: CreateQuizComponent,
+    canActivate: [adminGuard],
+  },
+  { path: 'quizes', component: QuizesComponent, canActivate: [authGuard] },
   { path: '', component: LandingPageComponent },
 ];
 
