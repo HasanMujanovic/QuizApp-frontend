@@ -9,6 +9,7 @@ module.exports = {
         customBetween: "#818274",
         customLessYellow: "#C6DF66",
         customYellow: "#BDE038",
+        figmaBlue: "#89c5cc",
       },
     },
   },

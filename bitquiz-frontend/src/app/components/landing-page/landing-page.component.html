@@ -1,107 +1,180 @@
-<body class="flex flex-col min-h-screen">
-  <header class="bg-white h-20 flex justify-between items-center">
-    <img src="../assets/images/logo.png" alt="Logo" class="ml-12 h-full" />
-    <div class="mr-14 flex items-center">
+<header class="flex justify-between items-center px-16 py-4 shadow-md">
+  <img src="../assets/images/logo.png" alt="Logo" class="h-16" />
+  <ul class="flex space-x-8">
+    <li class="hover:text-blue-500 cursor-pointer">
+      <a (click)="scrollToSection('home')">Home</a>
+    </li>
+
+    <li class="hover:text-blue-500 cursor-pointer">
+      <a (click)="scrollToSection('about')">About</a>
+    </li>
+    <li class="hover:text-blue-500 cursor-pointer">
+      <a (click)="scrollToSection('connect')">Connect</a>
+    </li>
+  </ul>
+  <div class="flex space-x-4">
+    <button
+      class="px-4 py-2 border-2 border-figmaBlue text-gray-400 rounded hover:bg-figmaBlue hover:text-white"
+      routerLink="/signup"
+    >
+      Sign Up
+    </button>
+    <button
+      class="px-4 py-2 bg-figmaBlue text-white rounded hover:text-gray-400 hover:bg-white hover:border-2 hover:border-figmaBlue"
+      routerLink="/login"
+    >
+      Login
+    </button>
+  </div>
+</header>
+
+<body>
+  <div
+    class="container mx-auto flex items-center px-16 py-16 space-x-8"
+    id="home"
+  >
+    <div class="flex-1">
+      <h1 class="text-7xl font-bold mb-4 text-figmaBlue">
+        Challenge yourself <br />
+        Aim for the top!
+      </h1>
+      <h3 class="text-xl mb-6">
+        Enhance your coding through dynamic challenges. Our platform offers the
+        opportunity to learn through experience, compete with fellow students,
+        and continuously improve your knowledge through innovative and
+        stimulating quizzes.
+      </h3>
       <button
-        class="p-2 border-2 border-customBlue rounded text-customBlue mr-4"
-        routerLink="/login"
-      >
-        Login
-      </button>
-      <button
-        class="p-2 border-2 border-customBlue rounded text-customBlue"
+        class="px-6 py-3 bg-figmaBlue text-white rounded hover:bg-blue-500"
         routerLink="/signup"
       >
-        Signup
+        Get started!
       </button>
     </div>
-  </header>
-  <hr class="border-t-2 border-gray-200" />
-  <main class="bg-white flex-grow grid place-items-center">
-    <div class="text-center">
-      <h1 class="text-4xl font-bold text-customBlue mb-4">
-        Izazovite Sebe <br />
-        Dostignite Vrh
+    <div class="flex-1">
+      <img
+        src="../assets/images/HeroPic.png"
+        alt="Hero Image"
+        class="w-full h-auto"
+      />
+    </div>
+  </div>
+
+  <h1 class="text-6xl my-10 px-16 text-customBlue" id="about">
+    Inovative <br />
+    Simple <br />
+    Extraordinary
+  </h1>
+
+  <div class="container mx-auto px-16 py-24">
+    <div class="flex justify-between items-start space-x-8">
+      <div class="flex-1 text-center p-4 bg-white shadow-lg rounded">
+        <img
+          src="../assets/images/Ilustracija3.png"
+          alt="Ilustration 3"
+          class="mx-auto mb-4"
+        />
+        <h2 class="text-2xl font-bold mb-2 text-blue-950">Who We Are</h2>
+        <p class="text-gray-600">
+          Discover our passion for fostering expertise. We are dedicated to
+          providing a dynamic learning environment where enthusiasts and
+          learners can thrive. Join us as we explore the limitless possibilities
+          of together.
+        </p>
+      </div>
+      <div
+        class="flex-1 text-center p-4 bg-white shadow-lg rounded relative -top-12"
+      >
+        <img
+          src="../assets/images/ilustracija1.png"
+          alt="Ilustration 2"
+          class="mx-auto mb-4"
+        />
+        <h2 class="text-2xl font-bold mb-2 text-blue-950">Why Choose Us</h2>
+        <p class="text-gray-600">
+          Choose our platform for its engaging challenges, collaborative
+          community, and innovative quizzes. Whether you're a beginner or
+          seasoned, our resources are designed to continuously enhance your
+          skills and passions.
+        </p>
+      </div>
+      <div class="flex-1 text-center p-4 bg-white shadow-lg rounded">
+        <img
+          src="../assets/images/Ilustracij2.png"
+          alt="Ilustration 3"
+          class="mx-auto mb-4"
+        />
+        <h2 class="text-2xl font-bold mb-2 text-blue-950">Our Mission</h2>
+        <p class="text-gray-600">
+          At our core, we're driven by a mission to empower individuals through
+          coding. We aim to inspire and equip learners to exceed their
+          potential, fostering a community where knowledge and innovation
+          intersect.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="container mx-auto flex items-center px-16 py-16 space-x-8"
+    id="connect"
+  >
+    <div class="flex-1">
+      <h1 class="text-7xl font-bold mb-4 text-figmaBlue">
+        Reach for the Top with Our Engaging Platform
       </h1>
-      <p class="text-lg mb-6">
-        Usavršite svoje koderske veštine kroz dinamične izazove. <br />
-        Naša platforma nudi priliku da učite kroz iskustvo, takmičite se sa
-        kolegama programerima i neprestano unapređujete svoje znanje kroz
-        inovativne i stimulativne kvizove.
-      </p>
-      <button class="p-3 bg-customBlue text-white rounded">
-        Započnite Svoju Avanturu
+      <h3 class="text-xl mb-6">
+        "Refine your abilities with engaging challenges. Join our platform to
+        learn by doing, collaborate with peers, and advance your skills through
+        interactive and thought-provoking quizzes."
+      </h3>
+      <button
+        class="px-6 py-3 bg-figmaBlue text-white rounded hover:bg-blue-500"
+        routerLink="/signup"
+      >
+        Get started!
       </button>
     </div>
-  </main>
+    <div class="flex-1">
+      <div class="flex-1 relative right-52">
+        <img
+          src="../assets/images/Rectangle1.png"
+          alt="Hero Image 1"
+          class="ml-auto mt-8 h-80"
+        />
+        <img
+          src="../assets/images/Rectangle2.png"
+          alt="Hero Image 2"
+          class="absolute top-10 right-0 transform translate-x-1/4 -translate-y-1/4 h-80"
+        />
+      </div>
+    </div>
+  </div>
 </body>
-<section class="py-12 h-80 bg-white text-customBlue">
-  <div class="container mx-auto px-6">
-    <h2 class="text-3xl text-customBlue font-bold text-center mb-8">
-      Ključne Karakteristike
-    </h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <div class="p-6 border rounded shadow-lg bg-customYellow">
-        <h3 class="text-xl font-semibold mb-4">Interaktivni Kvizovi</h3>
-        <p>
-          Učestvujte u kvizovima koji su dizajnirani da izazovu i unaprede vaše
-          veštine.
-        </p>
-        <button class="mt-4 w-full bg-customBlue text-white rounded-md py-2">
-          Počnite
-        </button>
-      </div>
-      <div class="p-6 border rounded shadow-lg bg-customYellow">
-        <h3 class="text-xl font-semibold mb-4">Takmičenja u Realnom Vremenu</h3>
-        <p>
-          Takmičite se sa kolegama i postignite bolje rezultate kroz zdravu
-          konkurenciju.
-        </p>
-        <button class="mt-4 w-full bg-customBlue text-white rounded-md py-2">
-          Počnite
-        </button>
-      </div>
-    </div>
+
+<footer class="bg-gray-100 py-8 relative mt-28">
+  <img
+    src="../assets/images/logo2.png"
+    alt="Logo"
+    class="absolute bottom-0 left-0 h-36"
+  />
+
+  <div class="container mx-auto flex items-center justify-center px-8">
+    <ul class="flex space-x-8 items-center">
+      <li class="hover:text-blue-500 cursor-pointer">
+        <a (click)="scrollToSection('home')">Home</a>
+      </li>
+
+      <li class="hover:text-blue-500 cursor-pointer">
+        <a (click)="scrollToSection('about')">About</a>
+      </li>
+      <li class="hover:text-blue-500 cursor-pointer">
+        <a (click)="scrollToSection('connect')">Connect</a>
+      </li>
+    </ul>
   </div>
-</section>
 
-<section class="py-16 bg-customLessYellow">
-  <div class="ml-72 px-6">
-    <div class="w-3/4">
-      <div class="p-6 border rounded shadow-lg text-center bg-customYellow">
-        <h2 class="text-3xl font-bold text-center mb-8 text-customBlue">
-          Kreirajte Svoj Kviz
-        </h2>
-        <p class="text-lg text-center mb-8 text-customBlue">
-          Autori Kviza mogu da se fokusiraju na svoje interese i treniraju
-          određene veštine. <br />
-          Izazovite zajednicu. Kreirajte sve, od uobičajenih pitanja za razgovor
-          za posao do izazova koji guraju granice vaše kreativnosti.
-        </p>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-customBlue">
-          <div>
-            <h3 class="text-xl font-semibold mb-4">Fokus na Interesima</h3>
-            <p>Kreirajte kvix koji odražavaju vaše lične interese i strasti.</p>
-          </div>
-          <div>
-            <h3 class="text-xl font-semibold mb-4">Izazov Za Zajednicu</h3>
-            <p>Izazovite zajednicu svojim uvidima i razumevanjem koda.</p>
-          </div>
-          <div>
-            <h3 class="text-xl font-semibold mb-4">Kreativni Izazovi</h3>
-            <p>Kreirajte izazove koji guraju granice vaše kreativnosti.</p>
-          </div>
-        </div>
-        <button class="mt-4 w-full bg-customBlue text-white rounded-md py-2">
-          Počnite
-        </button>
-      </div>
-    </div>
+  <div class="container mx-auto text-right px-8">
+    <p class="text-gray-500">BITConEx All Rights Reserved</p>
   </div>
-</section>
-
-<footer class="bg-customYellow h-20 flex justify-between items-center">
-  <p class="ml-12">&copy; 2024 BITQuiz. Sva prava zadržana.</p>
-
-  <img src="../assets/images/logo.png" alt="Logo" class="mr-12 h-full" />
 </footer>

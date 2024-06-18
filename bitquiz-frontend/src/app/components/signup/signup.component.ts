@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 import { AuthenticateService } from '../../services/user.service';
 import { EMPTY, Observable, catchError, map, of } from 'rxjs';
 import { User } from '../../Interface/user';
-import { Register } from '../../Interface/register';
 
 @Component({
   selector: 'app-signup',
@@ -68,10 +67,6 @@ export class SignupComponent implements OnInit {
       status: 'Public',
     };
 
-    let register: Register = {
-      userDTO: this.userDTO,
-      password: password,
-    };
     this.authService.register(this.userDTO, password).subscribe({
       next: (data) => {
         console.log(data);
