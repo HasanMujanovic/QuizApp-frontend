@@ -15,7 +15,7 @@ export class AuthenticateService {
     const searchUrl = `${environment.url}/user/getByEmail/${email}`;
     return this.http.get<User>(searchUrl).pipe(
       catchError((error) => {
-        console.error('Greška prilikom uzimanja usera:', error);
+        console.error('Error while getting user:', error);
         return of(null);
       })
     );
@@ -25,7 +25,7 @@ export class AuthenticateService {
     const searchUrl = `${environment.url}/user/getById/${userId}`;
     return this.http.get<User>(searchUrl).pipe(
       catchError((error) => {
-        console.error('Greška prilikom uzimanja usera po idu:', error);
+        console.error('Error while getting user by Id:', error);
         return of(null);
       })
     );
@@ -35,7 +35,7 @@ export class AuthenticateService {
     const url = `${environment.url}/user/save-status/${status}/${email}`;
     return this.http.post<any>(url, null).pipe(
       catchError((error) => {
-        console.error('Greška prilikom editovanja statusa:', error);
+        console.error('Error while editing status:', error);
         return of(null);
       })
     );
@@ -45,7 +45,7 @@ export class AuthenticateService {
     const url = `${environment.url}/user/sorted`;
     return this.http.get<User[]>(url).pipe(
       catchError((error) => {
-        console.error('Greška prilikom uzimanja leaderboarda:', error);
+        console.error('Error while getting leaderboard:', error);
         return of(null);
       })
     );
