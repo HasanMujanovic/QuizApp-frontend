@@ -1,49 +1,25 @@
 <app-header></app-header>
+<h1 class="text-3xl font-bold mb-4 text-center">Done Quizzes</h1>
+
 <div class="grid grid-cols-4 gap-4 overflow-x-hidden min-w-0 w-screen">
-  <div class="col-span-1 p-4">
-    <h2 class="text-lg font-semibold mb-4">Filter</h2>
-    <label class="block mb-2">
-      <span class="text-gray-700">Category:</span>
-      <select class="form-select mt-1 block w-full">
-        <option>All</option>
-        <option>Category</option>
-      </select>
-    </label>
-
-    <label class="block mb-2">
-      <span class="text-gray-700">Difficulty:</span>
-      <select class="form-select mt-1 block w-full">
-        <option>All</option>
-        <option>Easy</option>
-        <option>Medium</option>
-        <option>Hard</option>
-      </select>
-    </label>
-
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
-    >
-      Apply filter
-    </button>
-  </div>
-  <div class="col-span-3 p-4 grid grid-cols-3 gap-4">
-    <div
-      *ngFor="let quiz of quizes"
-      class="bg-white rounded-lg shadow-md p-4 max-w-xs"
-    >
+  <div
+    class="col-span-3 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+  >
+    <div *ngFor="let quiz of quizes" class="bg-white rounded-lg shadow-md p-4">
       <h2 class="text-lg font-semibold mb-2">{{ quiz.name }}</h2>
+
       <p class="text-gray-700 mb-2">Category: {{ quiz.category }}</p>
       <p class="text-gray-700 mb-2">Difficulty: {{ quiz.difficulty }}</p>
       <p class="text-gray-700 mb-2">Points: {{ quiz.points }}</p>
 
       <button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+        class="bg-green-500 hover:bg-green-700 mb-3 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
         routerLink="/edit-quizes/{{ quiz.id }}"
       >
-        Check Your Quiz
+        Edit
       </button>
       <button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
         (click)="onDelete(+quiz.id)"
       >
         Delete

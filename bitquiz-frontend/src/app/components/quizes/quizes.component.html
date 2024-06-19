@@ -1,40 +1,59 @@
 <app-header></app-header>
-<section class="flex flex-col min-h-screen w-screen">
-  <main class="bg-customBlue flex-grow grid grid-cols-[20%_80%]">
-    <div class="h-full bg-slate-300 p-4">
+<section class="flex flex-col min-h-screen w-full bg-white overflow-x-hidden">
+  <main class="flex-grow grid grid-cols-1 md:grid-cols-[20%_80%]">
+    <div class="h-full p-4 border-r">
       <ul class="space-y-4">
         <li
           routerLink="/quiz-info"
-          class="cursor-pointer text-lg font-semibold text-blue-700 hover:underline"
+          class="cursor-pointer text-lg font-semibold text-customBlue hover:text-green-600"
           *ngIf="role == 'admin'"
         >
           Create quiz
         </li>
         <li
           routerLink="/quizes-page"
-          class="cursor-pointer text-lg font-semibold text-blue-700 hover:underline"
+          class="cursor-pointer text-lg font-semibold text-customBlue hover:text-green-600"
         >
           See Quizes
         </li>
         <li
           routerLink="/done-quizes"
-          class="cursor-pointer text-lg font-semibold text-blue-700 hover:underline"
+          class="cursor-pointer text-lg font-semibold text-customBlue hover:text-green-600"
         >
           See Done Quizes
         </li>
         <li
           routerLink="/made-quizes"
-          class="cursor-pointer text-lg font-semibold text-blue-700 hover:underline"
+          class="cursor-pointer text-lg font-semibold text-customBlue hover:text-green-600"
           *ngIf="role == 'admin'"
         >
           Quizes You Made
         </li>
       </ul>
     </div>
-    <div class="h-full bg-red-600 p-6 text-white flex flex-col items-center">
-      <h1 class="text-2xl font-bold mb-4">LeaderBoard</h1>
-      <ul class="space-y-2 text-left w-full pl-8">
-        <li *ngFor="let user of users">{{ user.name }}</li>
+    <div
+      class="h-full bg-white p-6 text-gray-800 flex flex-col items-center w-full"
+    >
+      <h1 class="text-2xl font-bold mb-4 text-customBlue">LeaderBoard</h1>
+      <ul class="space-y-2 w-full">
+        <li
+          *ngFor="let user of users"
+          class="flex items-center bg-white p-4 rounded-lg shadow-md hover:bg-gray-100 transition-colors duration-300 cursor-pointer"
+          routerLink="/other-user-details/{{ user.id }}"
+        >
+          <img
+            src="../assets/images/download.jpg"
+            alt="User Image"
+            class="w-12 h-12 rounded-full mr-4"
+          />
+          <p class="flex-1 font-semibold text-customBlue">{{ user.name }}</p>
+          <p class="w-24 text-center font-semibold text-customBlue">
+            {{ user.points }}
+          </p>
+          <p class="w-24 text-center font-semibold text-customBlue">
+            {{ user.level }}
+          </p>
+        </li>
       </ul>
     </div>
   </main>

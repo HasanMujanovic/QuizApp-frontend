@@ -1,4 +1,5 @@
 <app-header></app-header>
+
 <div class="container mx-auto px-4 py-8">
   <div class="bg-white rounded-lg shadow-md p-6 mb-8">
     <h2 class="text-3xl font-bold mb-4 text-green-700">{{ user?.name }}</h2>
@@ -27,15 +28,16 @@
           {{ user?.points }}
         </p>
       </div>
-      <!-- Select for changing user status -->
       <div class="col-span-2 flex items-center">
-        <label for="status" class="block text-sm font-medium text-gray-700 mr-2"
+        <label
+          for="status"
+          class="block text-sm font-medium text-green-700 mr-2"
           >Change Status:</label
         >
         <select
           id="status"
           name="status"
-          class="mt-1 block w-auto py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm mr-2"
+          class="mt-1 block w-36 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm mr-2"
           [(ngModel)]="selectedStatus"
         >
           <option value="Public">Public</option>

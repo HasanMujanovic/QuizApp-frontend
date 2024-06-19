@@ -15,6 +15,10 @@ export class DoneQuizesComponent implements OnInit {
   storage: Storage = sessionStorage;
   doneQuizes: Quiz[] = [];
   quizIdsFromDoneQuizes: number[] = [];
+
+  selectedCategory: string = 'All';
+  selectedDifficulty: string = 'All';
+
   constructor(
     private authService: AuthenticateService,
     private doneQuizService: DoneQuizService,
@@ -53,4 +57,24 @@ export class DoneQuizesComponent implements OnInit {
         console.log(this.doneQuizes);
       });
   }
+
+  // onFilter() {
+  //   let categoryUrl =
+  //     this.selectedCategory === 'All' ? null : this.selectedCategory;
+  //   let difficultyUrl =
+  //     this.selectedDifficulty === 'All' ? null : this.selectedDifficulty;
+
+  //   console.log(categoryUrl);
+  //   console.log(difficultyUrl);
+
+  //   this.quizService
+  //     .filterQuizes(categoryUrl, difficultyUrl)
+  //     .subscribe((data) => {
+  //       this.quizes = data;
+  //       console.log(this.quizes);
+  //       console.log(data);
+
+  //       console.log('filtered');
+  //     });
+  // }
 }
