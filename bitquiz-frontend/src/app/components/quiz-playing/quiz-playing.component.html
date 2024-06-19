@@ -75,15 +75,17 @@
       <div *ngIf="statusOfQuiz">
         <p>
           Correct answers: {{ statsCorrectAnsw }} (
-          {{ (statsCorrectAnsw / questions.length) * 100 }}% )
+          {{ (statsCorrectAnsw / questions.length) * 100 | number : "1.2-2" }}%
+          )
         </p>
         <p>
           Wrong answers: {{ statsWrongAnsw }} (
-          {{ (statsWrongAnsw / questions.length) * 100 }}% )
+          {{ (statsWrongAnsw / questions.length) * 100 | number : "1.2-2" }}% )
         </p>
         <p>
           Skipped: {{ statsSkippedAnsw }} (
-          {{ (statsSkippedAnsw / questions.length) * 100 }}% )
+          {{ (statsSkippedAnsw / questions.length) * 100 | number : "1.2-2" }}%
+          )
         </p>
       </div>
       <p>How did you do: {{ passed ? "Good" : "Bad" }}</p>

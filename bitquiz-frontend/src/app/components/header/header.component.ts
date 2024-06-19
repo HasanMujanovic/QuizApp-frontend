@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../../Interface/user';
 import { AuthenticateService } from '../../services/user.service';
 import { Observable } from 'rxjs';
+import { Route, Router, RouterEvent } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -13,7 +14,10 @@ export class HeaderComponent implements OnInit {
   email = JSON.parse(this.storage.getItem('user'));
   user: User;
 
-  constructor(private authService: AuthenticateService) {}
+  constructor(
+    private authService: AuthenticateService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.getUser();
@@ -23,5 +27,11 @@ export class HeaderComponent implements OnInit {
     this.authService.getUser(this.email).subscribe((data) => {
       this.user = data;
     });
+  }
+
+  onLogout() {
+    this.storage.removeItem('user');
+    this.storage.removeItem('role');
+    this.router.navigate(['']);
   }
 }

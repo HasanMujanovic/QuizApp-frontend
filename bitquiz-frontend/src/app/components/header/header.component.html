@@ -6,6 +6,10 @@
     routerLink="/quizes"
   />
 
+  <button (click)="onLogout()" class="border-2 border-customBlue p-2">
+    Logout
+  </button>
+
   <div
     routerLink="/user-details/{{ user?.id }}"
     class="cursor-pointer flex items-center"
