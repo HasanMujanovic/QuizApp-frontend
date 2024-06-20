@@ -171,6 +171,14 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
         if (!res.correctAnswer) {
           this.selectedAnswerTrue = true;
           this.selectedAnswerId = res.id;
+          this.points =
+            this.points - this.activeQuestion.minusPoints < 0
+              ? 0
+              : this.points - this.activeQuestion.minusPoints;
+
+          setTimeout(() => {
+            this.onNextQuestion();
+          }, 1000);
         } else if (!this.alredyAnswered.includes(+res.id)) {
           this.alredyAnswered.push(+res.id);
           this.whenMultipleCorrect++;

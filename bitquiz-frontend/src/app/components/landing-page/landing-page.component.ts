@@ -12,4 +12,8 @@ export class LandingPageComponent {
       section.scrollIntoView({ behavior: 'smooth' });
     }
   }
+  toggleMenu() {
+    let menu = document.getElementById('mobile-menu');
+    menu.classList.toggle('hidden');
+  }
 }

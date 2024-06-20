@@ -12,6 +12,10 @@
           Alert: You can play the quiz again but you wont get any rewards for
           it!
         </p>
+        <p *ngIf="+admin.id === +user.id" class="text-yellow-700">
+          Alert: As the author of the quiz, you wont be able to get any points
+          from finishing quiz!
+        </p>
         <p class="text-gray-600">
           <span class="font-semibold text-green-700">Category:</span>
           {{ quiz?.category }}

@@ -2,18 +2,35 @@
   class="flex sticky top-0 z-10 bg-white flex-wrap justify-between items-center px-8 py-4 shadow-md w-full"
 >
   <img src="../assets/images/logo.png" alt="Logo" class="h-16" />
-  <ul class="flex space-x-4 md:space-x-8">
+  <button class="md:hidden block" onclick="toggleMenu()">
+    <svg
+      class="w-6 h-6"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      (click)="toggleMenu()"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M4 6h16M4 12h16M4 18h16"
+      ></path>
+    </svg>
+  </button>
+  <ul class="hidden md:flex space-x-4 md:space-x-8">
     <li class="hover:text-blue-500 cursor-pointer">
-      <a (click)="scrollToSection('home')">Home</a>
+      <a href="#home">Home</a>
     </li>
     <li class="hover:text-blue-500 cursor-pointer">
-      <a (click)="scrollToSection('about')">About</a>
+      <a href="#about">About</a>
     </li>
     <li class="hover:text-blue-500 cursor-pointer">
-      <a (click)="scrollToSection('connect')">Connect</a>
+      <a href="#connect">Connect</a>
     </li>
   </ul>
-  <div class="flex space-x-2 md:space-x-4 mt-4 md:mt-0">
+  <div class="hidden md:flex space-x-2 md:space-x-4 mt-4 md:mt-0">
     <button
       class="px-4 py-2 border-2 border-figmaBlue text-gray-400 rounded hover:bg-figmaBlue hover:text-white"
       routerLink="/signup"
@@ -28,6 +45,33 @@
     </button>
   </div>
 </header>
+
+<!-- Mobile menu -->
+<ul id="mobile-menu" class="hidden md:hidden flex flex-col space-y-4 mt-4 px-8">
+  <li class="hover:text-blue-500 cursor-pointer">
+    <a href="#home">Home</a>
+  </li>
+  <li class="hover:text-blue-500 cursor-pointer">
+    <a href="#about">About</a>
+  </li>
+  <li class="hover:text-blue-500 cursor-pointer">
+    <a href="#connect">Connect</a>
+  </li>
+  <li class="flex space-x-2 mt-4">
+    <button
+      class="px-4 py-2 border-2 border-figmaBlue text-gray-400 rounded hover:bg-figmaBlue hover:text-white w-full"
+      routerLink="/signup"
+    >
+      Sign Up
+    </button>
+    <button
+      class="px-4 py-2 bg-figmaBlue text-white rounded hover:text-gray-400 hover:bg-white hover:border-2 hover:border-figmaBlue w-full"
+      routerLink="/login"
+    >
+      Login
+    </button>
+  </li>
+</ul>
 
 <body>
   <div
