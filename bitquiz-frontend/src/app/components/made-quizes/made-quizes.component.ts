@@ -55,6 +55,7 @@ export class MadeQuizesComponent implements OnInit {
     if (confirmation) {
       this.quizService.deleteQUiz(quizId, +this.user.id).subscribe(() => {
         console.log('deleted');
+        window.location.reload();
       });
     }
   }

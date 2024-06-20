@@ -7,7 +7,7 @@
   >
     <div
       *ngFor="let quiz of doneQuizes"
-      class="bg-white rounded-lg shadow-md p-4"
+      class="bg-white rounded-lg shadow-md p-4 kartica"
     >
       <h2 class="text-lg font-semibold mb-2">{{ quiz.name }}</h2>
       <p
@@ -28,4 +28,10 @@
       </button>
     </div>
   </div>
+</div>
+<div
+  *ngIf="doneQuizes.length == 0"
+  class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-2 text-center rounded-md mb-8"
+>
+  No quizes done!
 </div>

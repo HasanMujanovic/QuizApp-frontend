@@ -2,36 +2,34 @@
 
 <div class="container mx-auto px-4 py-8">
   <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-    <h2 class="text-3xl font-bold mb-4 text-green-700">{{ user?.name }}</h2>
+    <h2 class="text-3xl font-bold mb-4">{{ user?.name }}</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
         <p class="text-gray-600">
-          <span class="font-semibold text-green-700">Email:</span>
+          <span class="font-semibold">Email:</span>
           {{ user?.email }}
         </p>
         <p class="text-gray-600">
-          <span class="font-semibold text-green-700">Role:</span>
+          <span class="font-semibold">Role:</span>
           {{ user?.roles }}
         </p>
         <p class="text-gray-600">
-          <span class="font-semibold text-green-700">Status:</span>
+          <span class="font-semibold">Status:</span>
           {{ user?.status }}
         </p>
       </div>
       <div>
         <p class="text-gray-600">
-          <span class="font-semibold text-green-700">Level:</span>
+          <span class="font-semibold">Level:</span>
           {{ user?.level }}
         </p>
         <p class="text-gray-600">
-          <span class="font-semibold text-green-700">Points:</span>
+          <span class="font-semibold">Points:</span>
           {{ user?.points }}
         </p>
       </div>
       <div class="col-span-2 flex items-center">
-        <label
-          for="status"
-          class="block text-sm font-medium text-green-700 mr-2"
+        <label for="status" class="block text-sm font-medium mr-2"
           >Change Status:</label
         >
         <select
@@ -55,20 +53,14 @@
     </div>
   </div>
   <div class="bg-white rounded-lg shadow-md p-6">
-    <h1 class="text-3xl font-bold mb-4 text-green-700">Progress</h1>
+    <h1 class="text-3xl font-bold mb-4">Progress</h1>
+
     <p class="text-gray-600">
-      <span class="font-semibold text-green-700">Points:</span>
-      {{ user?.points }}
-    </p>
-    <p class="text-gray-600">
-      <span class="font-semibold text-green-700">Level:</span> {{ user?.level }}
-    </p>
-    <p class="text-gray-600">
-      <span class="font-semibold text-green-700">Quizzes Finished:</span>
+      <span class="font-semibold">Quizzes Finished:</span>
       {{ doneQuizesNumber }}
     </p>
     <p class="text-gray-600">
-      <span class="font-semibold text-green-700">Quizzes Started:</span>
+      <span class="font-semibold">Quizzes Started:</span>
       {{ inProgressQuizes }}
     </p>
   </div>

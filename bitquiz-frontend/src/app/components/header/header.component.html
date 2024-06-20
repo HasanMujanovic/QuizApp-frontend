@@ -6,20 +6,18 @@
     routerLink="/quizes"
   />
 
-  <button (click)="onLogout()" class="border-2 border-customBlue p-2">
-    Logout
-  </button>
-
-  <div
-    routerLink="/user-details/{{ user?.id }}"
-    class="cursor-pointer flex items-center"
-  >
+  <div class="cursor-pointer flex items-center">
     <img
       src="../assets/images/download.jpg"
       alt="Profile Picture"
-      class="h-14 rounded-full mr-4"
+      class="mt-2 profileImg"
+      routerLink="/user-details/{{ user?.id }}"
     />
-    <p class="mr-4">Points: {{ user?.points }}</p>
-    <p>Level: {{ user?.level }}</p>
+    <button
+      (click)="onLogout()"
+      class="border-2 logout text-yellow-50 p-2 hover-animate ml-2"
+    >
+      Logout
+    </button>
   </div>
 </header>

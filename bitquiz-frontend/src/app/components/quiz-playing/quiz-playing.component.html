@@ -15,8 +15,10 @@
       </h3>
       <p>{{ activeQuestion?.points }} points</p>
       <p>Question {{ flag + 1 }}/{{ questions.length }}</p>
-      <p *ngIf="searchForMultipleCorrect.length >= 2">Multiple answers</p>
-      <ul>
+      <p class="text-red-500" *ngIf="searchForMultipleCorrect.length >= 2">
+        Multiple answers (help disabled)
+      </p>
+      <ul class="mt-2">
         <li
           *ngFor="let res of activeResponse"
           class="mb-3 rounded-lg border border-gray-300"
@@ -44,7 +46,7 @@
       <p class="text-lg font-semibold mb-4">Points: {{ points }}</p>
       <button
         (click)="onSkipQuestion()"
-        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
+        class="bg-green-500 hover:bg-green-700 mr-4 text-white font-bold py-2 px-6 rounded focus:outline-none focus:shadow-outline"
       >
         Skip
       </button>
@@ -92,9 +94,8 @@
       <button
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
         routerLink="/quizes-page"
-        (click)="saveQuiz()"
       >
-        Submit Quiz
+        Leave Quiz
       </button>
       <button
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"

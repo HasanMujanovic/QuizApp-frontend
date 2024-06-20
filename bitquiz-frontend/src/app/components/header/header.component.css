@@ -1,0 +1,26 @@
+.hover-animate:hover {
+  transform: translateY(-3px);
+  transition: transform 0.2s ease-in-out;
+}
+
+.logout {
+  border-radius: 22px;
+  background-color: red;
+  letter-spacing: 1px;
+  padding: 5px 15px;
+  color: white;
+  margin-top: 17px;
+}
+.profileImg {
+  border-radius: 50%;
+  height: 4rem;
+  width: 66px;
+}
+
+.d {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-top: 55px;
+}

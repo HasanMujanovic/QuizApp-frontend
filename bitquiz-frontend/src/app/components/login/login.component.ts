@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { EMPTY, catchError, empty, of } from 'rxjs';
 import { trigger } from '@angular/animations';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,6 @@ import { trigger } from '@angular/animations';
 export class LoginComponent implements OnInit {
   role: string = 'player';
   loginForm: FormGroup;
-  flag = false;
 
   storage: Storage = sessionStorage;
 
@@ -46,11 +46,16 @@ export class LoginComponent implements OnInit {
     this.authService.login(email, password).subscribe({
       next: (data) => {
         this.storage.setItem('user', JSON.stringify(email));
-        this.storage.setItem('role', JSON.stringify(this.role));
+        this.storage.setItem('role', JSON.stringify(data.roles));
         this.router.navigate(['/quizes']);
       },
       error: (error) => {
-        this.flag = true;
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'User exists',
+        });
+        console.log(error);
       },
     });
   }

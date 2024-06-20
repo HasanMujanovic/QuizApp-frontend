@@ -103,26 +103,15 @@
             Sign Up
           </button>
         </div>
-        <a routerLink="/login" class="hover:text-figmaBlue"
-          >Already have an account?</a
-        >
-      </form>
-    </div>
-    <div *ngIf="flag">
-      <div
-        class="fixed inset-0 flex items-center justify-center z-10 bg-gray-800 bg-opacity-50"
-      >
-        <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-6">
-          <h2 class="text-xl font-semibold mb-4">User exists!</h2>
-
-          <button
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
-            (click)="refreshPage()"
+        <div class="flex justify-between">
+          <a routerLink="/login" class="hover:text-figmaBlue"
+            >Already have an account?</a
           >
-            OK
-          </button>
+          <a routerLink="" class="hover:text-figmaBlue"
+            >Go back to landing page</a
+          >
         </div>
-      </div>
+      </form>
     </div>
   </body>
 </html>

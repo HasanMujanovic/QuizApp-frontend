@@ -30,8 +30,12 @@ export class HeaderComponent implements OnInit {
   }
 
   onLogout() {
-    this.storage.removeItem('user');
-    this.storage.removeItem('role');
-    this.router.navigate(['']);
+    const confirmation = window.confirm('Are you sure you want to logout');
+
+    if (confirmation) {
+      this.storage.removeItem('user');
+      this.storage.removeItem('role');
+      this.router.navigate(['']);
+    }
   }
 }

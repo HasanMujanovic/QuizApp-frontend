@@ -15,6 +15,7 @@ export class QuizesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getLeaderboard();
+    console.log(this.role);
   }
 
   getLeaderboard() {

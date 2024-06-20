@@ -39,9 +39,9 @@
   </div>
 
   <div
-    class="col-span-2 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
+    class="col-span-2 p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-16"
   >
-    <div *ngFor="let quiz of quizes" class="bg-white rounded-lg shadow-md p-4">
+    <div *ngFor="let quiz of quizes" class="bg-white shadow-md kartica">
       <h2 class="text-lg font-semibold mb-2">{{ quiz.name }}</h2>
       <p *ngIf="quizIdsFromDoneQuizes.includes(+quiz.id)" class="text-red-400">
         Already Done!
@@ -61,7 +61,7 @@
         routerLink="/quiz-details/{{ quiz.id }}"
         *ngIf="quizIdsFromDoneQuizes.includes(+quiz.id)"
       >
-        Check Your Results
+        Review
       </button>
     </div>
     <div

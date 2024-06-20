@@ -24,6 +24,7 @@ export class QuizDetailsComponent implements OnInit {
 
   isQuizDone: boolean = false;
 
+  admin: User;
   user: User;
   progressOfQuiz: QuizProgress;
   isThereProgress: boolean = false;
@@ -51,7 +52,10 @@ export class QuizDetailsComponent implements OnInit {
     this.authService
       .getUser(email)
       .pipe(
-        concatMap((data) => this.doneQuizService.getDoneQuizes(+data.id)),
+        concatMap((data) => {
+          this.user = data;
+          return this.doneQuizService.getDoneQuizes(+data.id);
+        }),
         concatMap((doneQuizes) => {
           this.isQuizDone = doneQuizes.some(
             (quiz) => quiz.quizIdForSearch === quizId
@@ -111,12 +115,17 @@ export class QuizDetailsComponent implements OnInit {
           this.quiz = data;
           console.log(this.quiz.name + '-------------');
 
-          this.statusOfQuiz = data.status == 'Public' ? true : false;
           return this.quizService.getAdminOfQuiz(+data.id);
         })
       )
       .subscribe((data) => {
-        this.user = data;
+        this.admin = data;
+        this.statusOfQuiz =
+          this.admin.id == this.user.id
+            ? true
+            : this.quiz.status == 'Public'
+            ? true
+            : false;
       });
   }
 }

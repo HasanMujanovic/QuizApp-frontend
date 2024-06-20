@@ -132,8 +132,10 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
       this.flag++;
       this.activeQuestion = this.questions[this.flag];
       this.startingQuestion(+this.activeQuestion.id);
+      this.isFiftyUsed = false;
     } else {
       this.endOfQuiz = true;
+      this.saveQuiz();
       console.log('Kviz je završen');
     }
     this.selectedAnswerTrue = false;
@@ -169,8 +171,7 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
         if (!res.correctAnswer) {
           this.selectedAnswerTrue = true;
           this.selectedAnswerId = res.id;
-        }
-        if (!this.alredyAnswered.includes(+res.id)) {
+        } else if (!this.alredyAnswered.includes(+res.id)) {
           this.alredyAnswered.push(+res.id);
           this.whenMultipleCorrect++;
         }
@@ -178,6 +179,9 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
           this.selectedAnswerTrue = true;
           this.selectedAnswerId = res.id;
           this.points += this.activeQuestion.points;
+          setTimeout(() => {
+            this.onNextQuestion();
+          }, 1000);
         }
       }
     }
@@ -189,7 +193,7 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
 
     const wrongAnswers = this.activeResponse
       .filter((res) => !res.correctAnswer)
-      .slice(0, Math.ceil((this.activeResponse.length - 1) / 2));
+      .slice(0, Math.ceil((this.activeResponse.length - 1) / 2) - 1);
 
     this.activeResponse = [correctAnswer, ...wrongAnswers];
     this.isFiftyUsed = true;
@@ -258,9 +262,11 @@ export class QuizPlayingComponent implements OnInit, OnDestroy {
     };
 
     if (!this.isQuizBeaten) {
-      this.saveQuizService
-        .saveProgress(saveQuizProgress)
-        .subscribe(() => this.router.navigate(['/quizes-page']));
+      this.saveQuizService.saveProgress(saveQuizProgress).subscribe(() => {
+        console.log('pre');
+        this.router.navigate(['/quizes-page']);
+        console.log('posle');
+      });
     }
   }
 

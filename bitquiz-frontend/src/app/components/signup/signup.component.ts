@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { AuthenticateService } from '../../services/user.service';
 import { EMPTY, Observable, catchError, map, of } from 'rxjs';
 import { User } from '../../Interface/user';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-signup',
@@ -18,7 +19,6 @@ import { User } from '../../Interface/user';
 export class SignupComponent implements OnInit {
   role: string = 'player';
   userDTO: User = {} as User;
-  flag: boolean = false;
 
   signupForm: FormGroup;
 
@@ -68,22 +68,31 @@ export class SignupComponent implements OnInit {
       status: 'Public',
     };
 
-    this.authService.register(this.userDTO, password).subscribe({
-      next: (data) => {
-        console.log(data);
+    if (this.signupForm.valid) {
+      this.authService.register(this.userDTO, password).subscribe({
+        next: (data) => {
+          console.log(data);
 
-        this.storage.setItem('user', JSON.stringify(this.userDTO.email));
-        this.storage.setItem('role', JSON.stringify(this.userDTO.roles));
-        this.router.navigate(['/quizes']);
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 5);
-      },
-      error: (error) => {
-        this.flag = true;
-        console.log(error);
-      },
-    });
+          this.storage.setItem('user', JSON.stringify(this.userDTO.email));
+          this.storage.setItem('role', JSON.stringify(this.userDTO.roles));
+          this.router.navigate(['/quizes']);
+        },
+        error: (error) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'User exists',
+          });
+          console.log(error);
+        },
+      });
+    } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'Invalid Credentials',
+      });
+    }
   }
 
   refreshPage() {
